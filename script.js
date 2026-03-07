@@ -16,7 +16,7 @@
 // CONFIGURATION
 // ============================================
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbwD-1J9Hupa9i06_ssRZHX-77R_ELwh4a5V6o7_W-cMeJ3QuNM8m8K8vEjQWIy1F_yP/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbwiBCmdlJ8XhtPCh5REmYVaxpso3q1ti2IzU0-eZNAtMqOIm-W0x9fuw_OuMoI_Lj56/exec',
   STORAGE_KEY: 'tapTapWarUser',
   AUTO_SAVE_INTERVAL: 10000, // 10 seconds - more frequent for realtime
   LEADERBOARD_REFRESH_INTERVAL: 15000, // 15 seconds
