@@ -1,17 +1,3 @@
-/**
- * TAP TAP WAR - Unified JavaScript
- * Real-time Integration with Google Sheets via Google Apps Script
- * API URL: https://script.google.com/macros/s/AKfycbwD-1J9Hupa9i06_ssRZHX-77R_ELwh4a5V6o7_W-cMeJ3QuNM8m8K8vEjQWIy1F_yP/exec
- * 
- * Database Structure:
- * - Users: ID, Username, Password_Hash, Email, Score, Coin, VIP_Status, VIP_Expired, Registered_Date, Last_Login, Status
- * - Leaderboard: Rank, Username, Score, VIP_Status, Last_Updated
- * - Transactions: ID, Username, Item_Name, Price, Transaction_Date, Type, Status
- * - Withdrawals: ID, Username, Amount, Payment_Method, Status, Request_Date, Admin_Notes
- * - Shop_Items: ID, Item_Name, Icon, Description, Price, Type, Availability
- * - Chat: ID, Username, Message, Timestamp, Status
- */
-
 // ============================================
 // CONFIGURATION
 // ============================================
