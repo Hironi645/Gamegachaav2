@@ -16,7 +16,7 @@
 // ============================================
 const CONFIG = {
   // GANTI URL INI DENGAN URL GOOGLE APPS SCRIPT ANDA
-  API_URL: 'https://script.google.com/macros/s/AKfycbw1a38Z3D5Xe0qjn_l3oMMk1CkE5kXBg3c3omNhDDq-ceNWreWZRVd_fCg5pot5Gj6-/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbzBRsDbnf7XEfkgmQY5iNRFyzetvx-QM1z9H_Al6tL8TMW0q1-dsQaq3EOeC3NUIBCw/exec',
   
   // Admin credentials
   ADMIN_USERNAME: 'admin',
