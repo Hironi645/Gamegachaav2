@@ -22,7 +22,7 @@
 const CONFIG = {
   // GANTI URL INI DENGAN URL GOOGLE APPS SCRIPT ANDA
   // Contoh: 'https://script.google.com/macros/s/AKfycbx.../exec'
-  API_URL: 'https://script.google.com/macros/s/AKfycbw1a38Z3D5Xe0qjn_l3oMMk1CkE5kXBg3c3omNhDDq-ceNWreWZRVd_fCg5pot5Gj6-/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbzBSEUdQ-kS60IMzTC8fsfQkLhjqllBettbK9qEy84tHt3XvivqzILQ7uSqdOkjdCso/exec',
   
   // Storage keys
   STORAGE_KEY: 'tapTapWarUser',
