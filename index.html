@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>⚡ BLITZ CLICKER</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#00fff7;--pink:#ff006e;--yellow:#ffe600;--green:#00ff88;--purple:#b44bff;--dark:#060810;--dark2:#090c18;--card:#0d1424;--card2:#111827;--border:rgba(0,255,247,0.12);--border2:rgba(255,255,255,0.07);}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{background:var(--dark);color:#e0e0e0;font-family:'Share Tech Mono',monospace;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,247,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,247,0.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;opacity:0;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh);opacity:0;}10%{opacity:.5;}90%{opacity:.2;}100%{transform:translateY(-10vh);opacity:0;}}
+body.vip-active::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(180,75,255,.15),transparent 70%);pointer-events:none;z-index:1;animation:vipPulse 3s ease-in-out infinite;}
+@keyframes vipPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+.vip-badge{display:none;background:linear-gradient(135deg,#b44bff,#ff006e);color:#fff;font-size:9px;letter-spacing:2px;padding:2px 8px;border-radius:20px;font-family:'Orbitron',sans-serif;font-weight:700;}
+.vip-active .vip-badge{display:inline-block;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--dark);}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px;}
+.wrapper{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:0 14px 100px;}
+.nav{position:sticky;top:0;z-index:50;background:rgba(6,8,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 10px;}
+.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:54px;gap:8px;}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;flex:1;justify-content:center;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{background:transparent;border:none;color:rgba(255,255,255,.4);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:6px 10px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.nav-tab:hover{color:#fff;background:rgba(255,255,255,.06);}
+.nav-tab.active{color:var(--cyan);background:rgba(0,255,247,.08);border:1px solid rgba(0,255,247,.2);}
+.nav-tab.has-notif{position:relative;}
+.nav-tab.has-notif::after{content:'';position:absolute;top:4px;right:4px;width:6px;height:6px;background:var(--pink);border-radius:50%;animation:blink 1s infinite;}
+.nav-user{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid transparent;transition:all .2s;}
+.vip-active .nav-avatar{border-color:var(--purple);box-shadow:0 0 12px rgba(180,75,255,.5);}
+.nav-coins{font-size:11px;color:var(--yellow);letter-spacing:1px;white-space:nowrap;}
+.page{display:none;animation:fadeUp .4s ease both;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.auth-wrap{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 0;}
+.auth-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:40px 32px;width:100%;max-width:420px;position:relative;overflow:hidden;}
+.auth-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--pink));}
+.auth-logo{text-align:center;margin-bottom:28px;}
+.auth-logo h1{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.auth-logo p{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:3px;margin-top:4px;}
+.auth-tabs{display:flex;margin-bottom:22px;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.auth-tab{flex:1;background:transparent;border:none;color:rgba(255,255,255,.4);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;padding:10px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.auth-tab.active{background:rgba(0,255,247,.1);color:var(--cyan);}
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:5px;}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;padding:12px 13px;font-family:'Share Tech Mono',monospace;font-size:14px;border-radius:4px;outline:none;transition:all .2s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,255,247,.1);}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.2);}
+.field select option{background:var(--dark2);}
+.field textarea{resize:vertical;min-height:70px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;padding:12px 18px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:all .2s;touch-action:manipulation;}
+.btn-full{width:100%;}
+.btn-cyan{background:transparent;border:2px solid var(--cyan);color:var(--cyan);}
+.btn-cyan:hover:not(:disabled),.btn-cyan:active:not(:disabled){background:var(--cyan);color:#000;box-shadow:0 0 25px rgba(0,255,247,.4);transform:translateY(-1px);}
+.btn-pink{background:var(--pink);color:#fff;border:2px solid var(--pink);}
+.btn-pink:hover:not(:disabled),.btn-pink:active:not(:disabled){background:#ff2d85;box-shadow:0 0 25px rgba(255,0,110,.4);transform:translateY(-1px);}
+.btn-yellow{background:var(--yellow);color:#000;border:2px solid var(--yellow);}
+.btn-yellow:hover:not(:disabled),.btn-yellow:active:not(:disabled){background:#fff176;transform:translateY(-1px);}
+.btn-green{background:var(--green);color:#000;border:2px solid var(--green);}
+.btn-green:hover:not(:disabled),.btn-green:active:not(:disabled){background:#33ffaa;transform:translateY(-1px);}
+.btn-purple{background:var(--purple);color:#fff;border:2px solid var(--purple);}
+.btn-purple:hover:not(:disabled),.btn-purple:active:not(:disabled){background:#c96bff;transform:translateY(-1px);}
+.btn-dark{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid var(--border2);}
+.btn-dark:hover:not(:disabled),.btn-dark:active:not(:disabled){background:rgba(255,255,255,.1);color:#fff;}
+.btn-sm{padding:8px 12px;font-size:10px;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative;overflow:hidden;margin-bottom:14px;}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),transparent 70%);}
+.panel-title{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:16px;opacity:.8;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.section-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--yellow);text-transform:uppercase;}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+@media(max-width:480px){.stats-grid{grid-template-columns:repeat(3,1fr);gap:6px;}.stat-card{padding:10px 6px;}.stat-val{font-size:1rem !important;}}
+.stat-card{background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:13px;text-align:center;}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;color:var(--cyan);}
+.stat-lbl{font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:4px;text-transform:uppercase;}
+/* GAME */
+.game-layout{display:grid;grid-template-columns:1fr 280px;gap:14px;}
+@media(max-width:760px){.game-layout{grid-template-columns:1fr;}.nav-inner{flex-wrap:wrap;height:auto;padding:8px 0;}.nav-logo{width:100%;text-align:center;margin-bottom:4px;}.nav-tabs{width:100%;justify-content:flex-start;padding-bottom:4px;}.nav-user{position:absolute;top:8px;right:10px;}}
+.score-big{font-family:'Orbitron',sans-serif;font-size:3.5rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px rgba(0,255,247,.5);line-height:1;text-align:center;transition:transform .08s;}
+.score-big.pop{transform:scale(1.2);color:var(--yellow);}
+.timer-track{background:rgba(255,255,255,.07);border-radius:3px;height:8px;overflow:hidden;margin:8px 0 14px;}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:3px;transition:width .1s linear;}
+/* Game states */
+.game-ready-state,.game-active-state,.game-waiting-state{text-align:center;}
+.click-btn{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,247,.2),rgba(0,255,247,.04));border:3px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:3rem;cursor:pointer;transition:all .08s;box-shadow:0 0 30px rgba(0,255,247,.15),inset 0 0 20px rgba(0,255,247,.06);user-select:none;position:relative;overflow:hidden;margin:0 auto;touch-action:manipulation;-webkit-touch-callout:none;}
+.click-btn:active{transform:scale(.88);box-shadow:0 0 60px rgba(0,255,247,.5);}
+.click-btn.vip-btn{border-color:var(--purple);box-shadow:0 0 30px rgba(180,75,255,.4),inset 0 0 20px rgba(180,75,255,.1);}
+.click-btn.disabled{opacity:.25;pointer-events:none;}
+.start-btn-big{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,136,.2),rgba(0,255,136,.04));border:3px solid var(--green);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:all .15s;box-shadow:0 0 30px rgba(0,255,136,.2),inset 0 0 20px rgba(0,255,136,.06);user-select:none;margin:0 auto;color:var(--green);font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:2px;gap:4px;touch-action:manipulation;-webkit-touch-callout:none;}
+.start-btn-big:hover,.start-btn-big:active{transform:scale(1.05);box-shadow:0 0 50px rgba(0,255,136,.4);}
+.start-btn-big span{font-size:2.5rem;}
+.float-txt{position:absolute;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--yellow);pointer-events:none;animation:floatTxt .8s ease-out forwards;z-index:99;}
+@keyframes floatTxt{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.4);}}
+/* LB */
+.lb-item{background:var(--card2);border:1px solid var(--border2);border-radius:5px;padding:10px 14px;display:flex;align-items:center;gap:11px;margin-bottom:7px;position:relative;overflow:hidden;cursor:pointer;transition:all .2s;}
+.lb-item:hover{border-color:rgba(0,255,247,.3);background:rgba(0,255,247,.03);}
+.lb-item.rank-1{border-color:rgba(255,230,0,.5);background:linear-gradient(135deg,rgba(255,230,0,.12),var(--card2));animation:championGlow 2s ease-in-out infinite;}
+.lb-item.rank-2{border-color:rgba(192,192,192,.3);background:linear-gradient(135deg,rgba(192,192,192,.06),var(--card2));}
+.lb-item.rank-3{border-color:rgba(205,127,50,.3);background:linear-gradient(135deg,rgba(205,127,50,.06),var(--card2));}
+.lb-item.is-me::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.lb-item.is-vip::after{content:'VIP';position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:8px;letter-spacing:2px;color:var(--purple);font-family:'Orbitron',sans-serif;font-weight:700;opacity:.6;}
+@keyframes championGlow{0%,100%{box-shadow:0 0 20px rgba(255,230,0,.3),inset 0 0 20px rgba(255,230,0,.05);}50%{box-shadow:0 0 40px rgba(255,230,0,.6),inset 0 0 30px rgba(255,230,0,.1);}}
+.rank-num{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;width:26px;text-align:center;flex-shrink:0;}
+.rank-1 .rank-num{color:var(--yellow);font-size:16px;animation:crownPulse 1.5s ease-in-out infinite;}
+.rank-2 .rank-num{color:#c0c0c0;}
+.rank-3 .rank-num{color:#cd7f32;}
+@keyframes crownPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
+.lb-name{flex:1;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-score{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--cyan);flex-shrink:0;}
+.lb-empty{text-align:center;padding:24px;color:rgba(255,255,255,.2);font-size:11px;letter-spacing:2px;border:1px dashed var(--border2);border-radius:5px;}
+.lb-loading{text-align:center;padding:20px;color:var(--cyan);font-size:11px;letter-spacing:3px;animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+/* Champion celebration overlay */
+.champion-overlay{position:fixed;inset:0;background:rgba(6,8,16,.95);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:20px;}
+.champion-overlay.show{display:flex;}
+.champion-box{background:linear-gradient(135deg,var(--card),rgba(255,230,0,.05));border:2px solid rgba(255,230,0,.5);border-radius:16px;padding:40px 30px;text-align:center;max-width:400px;width:100%;position:relative;animation:championPop 1s cubic-bezier(.34,1.56,.64,1) both;box-shadow:0 0 60px rgba(255,230,0,.3);}
+@keyframes championPop{0%{opacity:0;transform:scale(.5) rotate(-10deg);}70%{transform:scale(1.1) rotate(3deg);}100%{opacity:1;transform:scale(1) rotate(0);}}
+.champion-crown{font-size:5rem;margin-bottom:10px;animation:crownBounce 1s ease-in-out infinite;}
+@keyframes crownBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-15px);}}
+.champion-title{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;color:var(--yellow);letter-spacing:3px;margin-bottom:8px;text-shadow:0 0 30px rgba(255,230,0,.5);}
+.champion-name{font-size:1.1rem;color:#fff;margin-bottom:5px;}
+.champion-score{font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:900;color:var(--cyan);margin-bottom:5px;}
+.champion-text{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-bottom:20px;}
+/* SHOP */
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;}
+@media(max-width:480px){.shop-grid{grid-template-columns:repeat(2,1fr);gap:8px;}.shop-card{padding:12px 8px !important;}.shop-icon{font-size:1.8rem !important;}.shop-name{font-size:9px !important;}.shop-desc{font-size:9px !important;}}
+.shop-card{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:16px;text-align:center;transition:all .2s;position:relative;overflow:hidden;}
+.shop-card:hover{border-color:rgba(0,255,247,.3);transform:translateY(-2px);}
+.shop-card.vip-card{border-color:rgba(180,75,255,.3);background:linear-gradient(135deg,rgba(180,75,255,.08),var(--card2));}
+.shop-card.vip-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--pink));}
+.shop-card.new-item::after{content:'NEW';position:absolute;top:6px;right:-20px;background:var(--pink);color:#fff;font-size:8px;letter-spacing:1px;padding:2px 25px;transform:rotate(45deg);}
+.shop-card.hot-item::after{content:'HOT';position:absolute;top:6px;right:-20px;background:var(--yellow);color:#000;font-size:8px;letter-spacing:1px;padding:2px 25px;transform:rotate(45deg);}
+.shop-icon{font-size:2.2rem;margin-bottom:8px;}
+.shop-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:#fff;margin-bottom:5px;}
+.shop-desc{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:12px;line-height:1.5;letter-spacing:.5px;}
+.shop-price{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:10px;}
+.shop-duration{font-size:9px;color:var(--green);letter-spacing:1px;margin-bottom:8px;}
+.owned-badge{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);color:var(--green);font-size:9px;letter-spacing:2px;padding:3px 9px;border-radius:20px;display:inline-block;}
+/* TOPUP - Dana/OVO System */
+.topup-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+@media(max-width:480px){.topup-grid{grid-template-columns:repeat(2,1fr);gap:8px;}.topup-card{padding:12px 8px !important;}.topup-amount{font-size:1rem !important;}}
+.topup-card{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .2s;}
+.topup-card:hover{border-color:rgba(255,230,0,.4);transform:translateY(-2px);}
+.topup-card.selected{border-color:var(--yellow);background:rgba(255,230,0,.08);}
+.topup-amount{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;color:var(--yellow);}
+.topup-coins{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:2px;margin-top:3px;}
+.topup-price{font-size:11px;color:var(--green);margin-top:7px;font-weight:700;}
+.topup-bonus{font-size:8px;color:var(--pink);letter-spacing:1px;margin-top:2px;}
+/* Payment methods */
+.pay-methods{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.pay-method{flex:1;min-width:120px;background:var(--card2);border:2px solid var(--border2);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:all .2s;}
+.pay-method:hover{border-color:rgba(0,255,247,.3);}
+.pay-method.selected{border-color:var(--cyan);background:rgba(0,255,247,.08);}
+.pay-method img{width:40px;height:40px;margin-bottom:6px;}
+.pay-method-name{font-size:11px;font-weight:700;color:#fff;}
+.pay-method-num{font-size:10px;color:var(--cyan);margin-top:2px;}
+/* Request status */
+.req-status{display:inline-block;font-size:9px;letter-spacing:2px;padding:3px 8px;border-radius:3px;font-family:'Orbitron',sans-serif;font-weight:700;}
+.req-pending{background:rgba(255,230,0,.1);color:var(--yellow);border:1px solid rgba(255,230,0,.3);}
+.req-approved{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.3);}
+.req-rejected{background:rgba(255,0,110,.1);color:var(--pink);border:1px solid rgba(255,0,110,.3);}
+/* Payment instruction box */
+.pay-box{background:rgba(255,230,0,.05);border:1px solid rgba(255,230,0,.2);border-radius:8px;padding:16px;margin-top:14px;}
+.pay-box h4{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--yellow);margin-bottom:10px;}
+.pay-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:11px;color:rgba(255,255,255,.7);line-height:1.5;}
+.pay-num{width:22px;height:22px;border-radius:50%;background:var(--yellow);color:#000;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.pay-wa-box{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.3);border-radius:8px;padding:14px;margin-top:14px;text-align:center;}
+.pay-wa-box h4{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--green);margin-bottom:8px;}
+.pay-wa-num{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:6px;}
+.pay-wa-note{font-size:10px;color:rgba(255,255,255,.5);}
+/* PROFILE */
+.profile-header{display:flex;align-items:center;gap:18px;margin-bottom:20px;padding:18px;background:var(--card2);border:1px solid var(--border2);border-radius:8px;}
+@media(max-width:480px){.profile-header{flex-direction:column;text-align:center;gap:12px;}.profile-av{width:60px !important;height:60px !important;font-size:22px !important;}}
+.profile-av{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:26px;border:3px solid transparent;flex-shrink:0;}
+.vip-active .profile-av{border-color:var(--purple);box-shadow:0 0 20px rgba(180,75,255,.5);}
+/* CHAT */
+.chat-wrap{height:320px;overflow-y:auto;padding:12px;background:rgba(0,0,0,.2);border-radius:6px;margin-bottom:10px;border:1px solid var(--border2);scroll-behavior:smooth;}
+.chat-msg{margin-bottom:9px;animation:fadeUp .3s ease;}
+.chat-meta{font-size:10px;margin-bottom:2px;display:flex;align-items:center;gap:6px;}
+.chat-sender{color:var(--cyan);letter-spacing:1px;}
+.chat-sender.is-vip{color:var(--purple);}
+.chat-sender.is-system{color:var(--pink);font-weight:700;}
+.chat-time{color:rgba(255,255,255,.25);}
+.chat-text{font-size:11px;color:rgba(255,255,255,.8);line-height:1.5;padding-left:4px;letter-spacing:.4px;word-break:break-word;}
+.chat-msg.is-broadcast .chat-text{color:var(--yellow);background:rgba(255,0,110,.05);border-left:2px solid var(--pink);padding:6px 8px;border-radius:2px;}
+.chat-row{display:flex;gap:8px;}
+.chat-row input{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border2);color:#fff;padding:10px 12px;font-family:'Share Tech Mono',monospace;font-size:13px;border-radius:4px;outline:none;transition:border-color .2s;}
+.chat-row input:focus{border-color:var(--cyan);}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(6,8,16,.92);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px 22px;max-width:420px;width:100%;position:relative;animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;max-height:90vh;overflow-y:auto;}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:12px 12px 0 0;}
+@keyframes popIn{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:scale(1);}}
+.modal-close{position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:2px;color:var(--yellow);margin-bottom:4px;}
+.modal-sub{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:2px;margin-bottom:20px;}
+/* Player Profile Modal */
+.player-profile-modal{max-width:380px;}
+.player-profile-header{text-align:center;padding:20px 0;border-bottom:1px solid var(--border2);margin-bottom:20px;}
+.player-profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 12px;border:3px solid transparent;}
+.player-profile-avatar.vip{border-color:var(--purple);box-shadow:0 0 20px rgba(180,75,255,.5);}
+.player-profile-name{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:1px;margin-bottom:5px;}
+.player-profile-bio{font-size:11px;color:rgba(255,255,255,.5);max-width:280px;margin:0 auto;}
+.player-profile-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+.player-stat-card{background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:12px;text-align:center;}
+.player-stat-val{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;color:var(--cyan);}
+.player-stat-lbl{font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:3px;text-transform:uppercase;}
+.player-profile-badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:15px;}
+.player-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;letter-spacing:1px;padding:4px 10px;border-radius:20px;font-family:'Orbitron',sans-serif;font-weight:700;}
+.player-badge.vip{background:rgba(180,75,255,.15);color:var(--purple);border:1px solid rgba(180,75,255,.3);}
+.player-badge.top1{background:rgba(255,230,0,.15);color:var(--yellow);border:1px solid rgba(255,230,0,.3);}
+.player-badge.legend{background:rgba(255,0,110,.15);color:var(--pink);border:1px solid rgba(255,0,110,.3);}
+/* RESULT OVERLAY */
+.result-overlay{position:fixed;inset:0;background:rgba(6,8,16,.95);z-index:150;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:20px;}
+.result-overlay.show{display:flex;}
+.result-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px 24px;text-align:center;max-width:360px;width:100%;position:relative;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
+.result-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:12px 12px 0 0;}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--card);border:1px solid var(--border);color:#fff;padding:12px 24px;border-radius:30px;font-size:12px;letter-spacing:1px;z-index:300;transition:transform .3s ease;white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{border-color:var(--green);color:var(--green);}
+.toast.error{border-color:var(--pink);color:var(--pink);}
+.toast.info{border-color:var(--yellow);color:var(--yellow);}
+.status-msg{text-align:center;padding:10px;font-size:11px;border-radius:4px;margin-top:10px;display:none;letter-spacing:1px;}
+.status-msg.error{display:block;background:rgba(255,0,110,.08);border:1px solid rgba(255,0,110,.3);color:var(--pink);}
+.status-msg.success{display:block;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.3);color:var(--green);}
+.loading-screen{position:fixed;inset:0;background:var(--dark);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.loading-logo{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:blink 1.5s infinite;}
+.loading-bar{width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.loading-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:2px;animation:lf 1.5s ease-in-out infinite;}
+@keyframes lf{0%{width:0;}100%{width:100%;}}
+.divider{height:1px;background:var(--border2);margin:14px 0;}
+.live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 1.2s infinite;box-shadow:0 0 8px var(--green);display:inline-block;}
+.text-muted{color:rgba(255,255,255,.3);font-size:11px;}
+.text-yellow{color:var(--yellow);}
+.text-cyan{color:var(--cyan);}
+.text-green{color:var(--green);}
+.tag{display:inline-block;font-size:9px;letter-spacing:2px;padding:2px 7px;border-radius:3px;font-family:'Orbitron',sans-serif;font-weight:700;}
+.tag-cyan{background:rgba(0,255,247,.1);color:var(--cyan);border:1px solid rgba(0,255,247,.2);}
+.tag-yellow{background:rgba(255,230,0,.1);color:var(--yellow);border:1px solid rgba(255,230,0,.2);}
+.tag-purple{background:rgba(180,75,255,.1);color:var(--purple);border:1px solid rgba(180,75,255,.2);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:460px){.grid-2{grid-template-columns:1fr;}}
+.mt-12{margin-top:12px;}
+.coins-display{display:inline-flex;align-items:center;gap:6px;font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:var(--yellow);}
+/* Broadcast banner */
+.broadcast-banner{background:linear-gradient(135deg,rgba(255,0,110,.12),rgba(180,75,255,.08));border:1px solid rgba(255,0,110,.3);border-radius:8px;padding:12px 16px;margin-bottom:14px;display:none;animation:fadeUp .4s ease;}
+.broadcast-banner.show{display:flex;align-items:center;gap:10px;}
+.bc-icon{font-size:1.4rem;flex-shrink:0;}
+.bc-text{flex:1;font-size:12px;color:rgba(255,255,255,.9);line-height:1.5;}
+.bc-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:16px;padding:2px;}
+/* Copy button */
+.copy-btn{background:var(--cyan);color:#000;border:none;padding:4px 10px;font-size:10px;font-weight:700;border-radius:4px;cursor:pointer;margin-left:8px;}
+.copy-btn:hover{background:#fff;}
+/* E-wallet icons */
+.ewallet-icon{font-size:2rem;margin-bottom:4px;}
+/* Active items display */
+.active-items{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;justify-content:center;}
+.active-item{display:inline-flex;align-items:center;gap:4px;font-size:9px;letter-spacing:1px;padding:4px 10px;border-radius:20px;background:rgba(0,255,247,.1);color:var(--cyan);border:1px solid rgba(0,255,247,.2);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.7;}}
+/* Combo display */
+.combo-display{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--pink);opacity:0;transition:all .3s;}
+.combo-display.show{opacity:1;top:-45px;}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo">⚡ BLITZ</div>
+  <div class="loading-bar"><div class="loading-fill"></div></div>
+  <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.3);">MENGHUBUNGKAN DATABASE...</div>
+</div>
+
+<div class="particles" id="particles"></div>
+<div class="toast" id="toast"></div>
+
+<!-- CHAMPION CELEBRATION OVERLAY -->
+<div class="champion-overlay" id="champion-overlay">
+  <div class="champion-box">
+    <div class="champion-crown">👑</div>
+    <div class="champion-title">CHAMPION!</div>
+    <div class="champion-name" id="champion-name">Player</div>
+    <div class="champion-score" id="champion-score">0</div>
+    <div class="champion-text">SKOR TERTINGGI BARU!</div>
+    <button class="btn btn-yellow btn-full" onclick="closeChampionOverlay()">🎉 KEREN!</button>
+  </div>
+</div>
+
+<!-- BROADCAST BANNER (global, always visible on top) -->
+<div class="broadcast-banner" id="broadcast-banner">
+  <div class="bc-icon">📢</div>
+  <div class="bc-text" id="bc-text"></div>
+  <button class="bc-close" id="bc-close-btn">✕</button>
+</div>
+
+<!-- RESULT OVERLAY -->
+<div class="result-overlay" id="result-overlay">
+  <div class="result-box">
+    <div style="font-size:2.8rem;margin-bottom:8px;" id="res-emoji">🏆</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;color:var(--yellow);letter-spacing:2px;margin-bottom:4px;">GAME OVER!</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:2px;margin-bottom:14px;" id="res-name"></div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:3.2rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px rgba(0,255,247,.5);line-height:1;" id="res-score">0</div>
+    <div style="font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.3);margin:4px 0 8px;">KLIK TOTAL</div>
+    <div style="font-size:12px;color:var(--yellow);letter-spacing:2px;margin-bottom:5px;" id="res-coins"></div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;margin-bottom:22px;" id="res-rank"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-cyan" style="flex:1;min-width:100px;" id="btn-play-again">▶ MAIN LAGI</button>
+      <button class="btn btn-dark" style="flex:1;min-width:100px;" id="btn-to-lb">🏆 SKOR</button>
+      <button class="btn btn-dark" style="flex:1;min-width:100px;" id="btn-close-result">✕ TUTUP</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: BUY CONFIRM -->
+<div class="modal-overlay" id="modal-buy-confirm">
+  <div class="modal-box">
+    <button class="modal-close" id="mc-buy">✕</button>
+    <div class="modal-title" id="buy-title">BELI ITEM</div>
+    <div class="modal-sub">KONFIRMASI PEMBELIAN</div>
+    <div style="text-align:center;padding:14px 0;">
+      <div style="font-size:2.5rem;margin-bottom:8px;" id="buy-icon"></div>
+      <div style="font-size:12px;color:rgba(255,255,255,.7);margin-bottom:6px;" id="buy-desc"></div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;color:var(--yellow);" id="buy-price-display"></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-dark" style="flex:1" id="mc-buy-cancel">BATAL</button>
+      <button class="btn btn-yellow" style="flex:1" id="btn-confirm-buy">✓ BELI</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT PROFIL -->
+<div class="modal-overlay" id="modal-profile-edit">
+  <div class="modal-box">
+    <button class="modal-close" id="mc-profile">✕</button>
+    <div class="modal-title">EDIT PROFIL</div>
+    <div class="modal-sub">UBAH DATA AKUNMU</div>
+    <div class="field"><label>Username</label><input type="text" id="edit-username" maxlength="20" placeholder="Username..."></div>
+    <div class="field"><label>Bio</label><textarea id="edit-bio" maxlength="100" placeholder="Ceritakan dirimu..."></textarea></div>
+    <div class="field">
+      <label>Pilih Avatar</label>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;justify-content:center;" id="avatar-picker"></div>
+    </div>
+    <div class="field"><label>Password Baru (kosongkan jika tidak)</label><input type="password" id="edit-password" placeholder="Password baru..."></div>
+    <div class="status-msg" id="edit-status"></div>
+    <button class="btn btn-cyan btn-full mt-12" id="btn-save-profile">💾 SIMPAN</button>
+  </div>
+</div>
+
+<!-- MODAL: PLAYER PROFILE (View other players) -->
+<div class="modal-overlay" id="modal-player-profile">
+  <div class="modal-box player-profile-modal">
+    <button class="modal-close" onclick="closeModal('modal-player-profile')">✕</button>
+    <div class="player-profile-header">
+      <div class="player-profile-avatar" id="pp-avatar">😎</div>
+      <div class="player-profile-name" id="pp-name">Username</div>
+      <div class="player-profile-bio" id="pp-bio">Bio pemain...</div>
+      <div class="player-profile-badges" id="pp-badges"></div>
+    </div>
+    <div class="player-profile-stats">
+      <div class="player-stat-card">
+        <div class="player-stat-val text-cyan" id="pp-best">0</div>
+        <div class="player-stat-lbl">Best Score</div>
+      </div>
+      <div class="player-stat-card">
+        <div class="player-stat-val" id="pp-games">0</div>
+        <div class="player-stat-lbl">Total Game</div>
+      </div>
+      <div class="player-stat-card">
+        <div class="player-stat-val text-yellow" id="pp-coins">0</div>
+        <div class="player-stat-lbl">Koin</div>
+      </div>
+      <div class="player-stat-card">
+        <div class="player-stat-val text-purple" id="pp-rank">—</div>
+        <div class="player-stat-lbl">Global Rank</div>
+      </div>
+    </div>
+    <button class="btn btn-cyan btn-full" onclick="closeModal('modal-player-profile')">TUTUP</button>
+  </div>
+</div>
+
+<!-- MODAL: TOPUP REQUEST -->
+<div class="modal-overlay" id="modal-topup-req">
+  <div class="modal-box">
+    <button class="modal-close" id="mc-topup">✕</button>
+    <div class="modal-title">AJUKAN TOP UP</div>
+    <div class="modal-sub" id="topup-req-sub">KONFIRMASI PAKET</div>
+    <div style="text-align:center;padding:10px 0 16px;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--yellow);" id="tr-coins"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;margin-top:2px;">KOIN</div>
+      <div style="font-size:13px;color:var(--green);margin-top:6px;font-weight:700;" id="tr-price"></div>
+      <div style="font-size:10px;color:var(--pink);margin-top:2px;" id="tr-bonus"></div>
+    </div>
+    
+    <!-- Payment Method Selection -->
+    <div class="pay-methods" id="pay-methods">
+      <div class="pay-method selected" data-method="dana">
+        <div class="ewallet-icon">💙</div>
+        <div class="pay-method-name">DANA</div>
+        <div class="pay-method-num">085119654305</div>
+      </div>
+      <div class="pay-method" data-method="ovo">
+        <div class="ewallet-icon">💜</div>
+        <div class="pay-method-name">OVO</div>
+        <div class="pay-method-num">085119654305</div>
+      </div>
+    </div>
+    
+    <div class="pay-box">
+      <h4>📋 CARA PEMBAYARAN</h4>
+      <div class="pay-step"><div class="pay-num">1</div><div>Buka aplikasi <strong id="pay-app-name" style="color:var(--cyan);">DANA</strong> di HP kamu</div></div>
+      <div class="pay-step"><div class="pay-num">2</div><div>Kirim ke nomor: <strong style="color:var(--yellow);">085119654305</strong> <button class="copy-btn" onclick="copyNumber()">SALIN</button></div></div>
+      <div class="pay-step"><div class="pay-num">3</div><div>Nominal sesuai paket. Tulis username <strong id="pay-username" style="color:var(--cyan);"></strong> di keterangan.</div></div>
+      <div class="pay-step"><div class="pay-num">4</div><div>Klik <strong style="color:var(--green);">"Kirim Permintaan"</strong>. Admin akan verifikasi & koin masuk otomatis.</div></div>
+    </div>
+    
+    <div class="pay-wa-box">
+      <h4>💬 KONFIRMASI VIA WHATSAPP</h4>
+      <div class="pay-wa-num">085119654305</div>
+      <div class="pay-wa-note">Kirim bukti transfer untuk proses lebih cepat</div>
+      <button class="btn btn-green btn-full mt-12" style="margin-top:10px;" onclick="openWhatsApp()">📱 CHAT WHATSAPP</button>
+    </div>
+    
+    <div class="field mt-12"><label>Catatan (opsional)</label><input type="text" id="tr-note" placeholder="Contoh: sudah transfer tadi..."></div>
+    <div class="status-msg" id="tr-status"></div>
+    <button class="btn btn-green btn-full mt-12" id="btn-send-topup-req">📨 KIRIM PERMINTAAN</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav" style="display:none;">
+  <div class="nav-inner">
+    <div class="nav-logo">⚡ BLITZ</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-page="game">🎮 GAME</button>
+      <button class="nav-tab" data-page="leaderboard">🏆 TOP</button>
+      <button class="nav-tab" data-page="shop">🛒 SHOP</button>
+      <button class="nav-tab" data-page="topup">💰 TOP UP</button>
+      <button class="nav-tab" data-page="chat">💬 CHAT</button>
+      <button class="nav-tab" data-page="profile">👤 PROFIL</button>
+    </div>
+    <div class="nav-user">
+      <div class="nav-coins" id="nav-coins-display">🪙 0</div>
+      <div class="nav-avatar" id="nav-avatar">?</div>
+    </div>
+  </div>
+</nav>
+
+<div class="wrapper">
+
+<!-- AUTH -->
+<div class="page active" id="page-auth">
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div class="auth-logo"><h1>⚡ BLITZ CLICKER</h1><p>REALTIME MULTIPLAYER GAME</p></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuth('login')">MASUK</button>
+        <button class="auth-tab" id="tab-register" onclick="switchAuth('register')">DAFTAR</button>
+      </div>
+      <div id="auth-login-form">
+        <div class="field"><label>Username</label><input type="text" id="login-user" placeholder="Username..." maxlength="20" autocomplete="username"></div>
+        <div class="field"><label>Password</label><input type="password" id="login-pass" placeholder="Password..." autocomplete="current-password"></div>
+        <div class="status-msg" id="login-status"></div>
+        <button class="btn btn-cyan btn-full mt-12" id="btn-login">⚡ MASUK</button>
+      </div>
+      <div id="auth-register-form" style="display:none;">
+        <div class="field"><label>Username</label><input type="text" id="reg-user" placeholder="Huruf kecil, angka, underscore..." maxlength="20" autocomplete="username"></div>
+        <div class="field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min 6 karakter..." autocomplete="new-password"></div>
+        <div class="field"><label>Konfirmasi Password</label><input type="password" id="reg-pass2" placeholder="Ulangi..." autocomplete="new-password"></div>
+        <div class="status-msg" id="reg-status"></div>
+        <button class="btn btn-pink btn-full mt-12" id="btn-register">🚀 DAFTAR SEKARANG</button>
+        <div style="text-align:center;margin-top:10px;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:1px;">🎁 Bonus 500 koin untuk pemain baru!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div class="page" id="page-game">
+  <div style="padding-top:18px;">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val" id="stat-best">0</div><div class="stat-lbl">Best Score</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-games">0</div><div class="stat-lbl">Total Main</div></div>
+      <div class="stat-card"><div class="stat-val text-yellow" id="stat-coins-game">0</div><div class="stat-lbl">🪙 Koin</div></div>
+    </div>
+    <div class="game-layout">
+      <div class="panel">
+        <div class="panel-title">▸ <span id="game-player-name">PLAYER</span> <span class="vip-badge">👑 VIP</span></div>
+        
+        <!-- Active Items Display -->
+        <div class="active-items" id="active-items"></div>
+        
+        <div style="text-align:center;margin-bottom:12px;position:relative;">
+          <div class="combo-display" id="combo-display">🔥 COMBO x2!</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:3.5rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px rgba(0,255,247,.5);line-height:1;transition:transform .08s;" id="score-display">0</div>
+          <div style="font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-top:3px;">KLIK</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);margin-bottom:5px;"><span>WAKTU</span><span id="timer-txt">10.0s</span></div>
+        <div class="timer-track"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+        <div style="text-align:center;" id="game-center">
+          <!-- READY STATE -->
+          <div id="state-ready">
+            <div class="start-btn-big" id="start-btn-el"><span>▶</span>MULAI</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.25);letter-spacing:2px;margin-top:10px;">TEKAN UNTUK MEMULAI GAME</div>
+          </div>
+          <!-- ACTIVE STATE -->
+          <div id="state-active" style="display:none;">
+            <div class="click-btn" id="click-btn">⚡</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.25);letter-spacing:2px;margin-top:10px;" id="game-hint">TAP SECEPAT MUNGKIN!</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="panel" style="margin-bottom:0;">
+          <div class="panel-title">▸ TOP 5 LIVE <span class="live-dot" style="margin-left:5px;"></span></div>
+          <div id="mini-lb"><div class="lb-loading">MEMUAT...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="page" id="page-leaderboard">
+  <div style="padding-top:18px;">
+    <div class="section-header">
+      <div class="section-title">🏆 Hall of Fame</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:rgba(255,255,255,.3);"><span class="live-dot"></span><span id="lb-total">—</span></div>
+    </div>
+    
+    <!-- Champion Banner -->
+    <div class="panel" id="champion-banner" style="display:none;background:linear-gradient(135deg,rgba(255,230,0,.1),var(--card));border-color:rgba(255,230,0,.3);">
+      <div style="display:flex;align-items:center;gap:15px;">
+        <div style="font-size:3rem;animation:crownBounce 1s infinite;">👑</div>
+        <div style="flex:1;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--yellow);">CHAMPION SAAT INI</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;" id="champion-banner-name">—</div>
+          <div style="font-size:11px;color:var(--cyan);" id="champion-banner-score">0 klik</div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="lb-full-list"><div class="lb-loading">MEMUAT DATA...</div></div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="page" id="page-shop">
+  <div style="padding-top:18px;">
+    <div class="section-header">
+      <div class="section-title">🛒 Item Shop</div>
+      <div class="coins-display">🪙 <span id="shop-coins">0</span></div>
+    </div>
+    
+    <!-- Shop Categories -->
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <button class="btn btn-cyan btn-sm" onclick="filterShop('all')" id="shop-filter-all">SEMUA</button>
+      <button class="btn btn-dark btn-sm" onclick="filterShop('boost')" id="shop-filter-boost">⚡ BOOST</button>
+      <button class="btn btn-dark btn-sm" onclick="filterShop('cosmetic')" id="shop-filter-cosmetic">✨ KOSMETIK</button>
+      <button class="btn btn-dark btn-sm" onclick="filterShop('vip')" id="shop-filter-vip">👑 VIP</button>
+    </div>
+    
+    <div class="shop-grid" id="shop-grid"></div>
+  </div>
+</div>
+
+<!-- TOPUP -->
+<div class="page" id="page-topup">
+  <div style="padding-top:18px;">
+    <div class="section-header">
+      <div class="section-title">💰 Top Up Koin</div>
+      <div class="coins-display">🪙 <span id="topup-coins-display">0</span></div>
+    </div>
+    
+    <!-- Payment Info Banner -->
+    <div class="panel" style="background:linear-gradient(135deg,rgba(0,255,136,.08),rgba(0,255,247,.05));">
+      <div class="panel-title" style="color:var(--green);">▸ INFO PEMBAYARAN</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;text-align:center;">
+        <div>
+          <div style="font-size:2rem;">💙</div>
+          <div style="font-size:11px;color:#fff;font-weight:700;">DANA</div>
+          <div style="font-size:12px;color:var(--cyan);font-family:'Orbitron',sans-serif;">085119654305</div>
+        </div>
+        <div>
+          <div style="font-size:2rem;">💜</div>
+          <div style="font-size:11px;color:#fff;font-weight:700;">OVO</div>
+          <div style="font-size:12px;color:var(--cyan);font-family:'Orbitron',sans-serif;">085119654305</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:10px;font-size:10px;color:rgba(255,255,255,.4);">Atas Nama: <strong style="color:var(--yellow);">BLITZ GAME</strong></div>
+    </div>
+    
+    <div class="panel">
+      <div class="panel-title">▸ Pilih Paket — Klik untuk Ajukan</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:14px;line-height:1.6;">Pilih paket → transfer ke DANA/OVO → kirim bukti → admin verifikasi & koin masuk. <span style="color:var(--yellow);">Proses 5-30 menit.</span></div>
+      <div class="topup-grid" id="topup-grid-main"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">▸ Riwayat Permintaan Top Up</div>
+      <div id="tx-history"><div class="text-muted" style="text-align:center;padding:18px;">Belum ada permintaan</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div class="page" id="page-chat">
+  <div style="padding-top:18px;">
+    <div class="section-header">
+      <div class="section-title">💬 Chat Global</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:2px;display:flex;align-items:center;gap:6px;"><span class="live-dot"></span>REALTIME</div>
+    </div>
+    <div class="panel" style="padding:14px;">
+      <div class="chat-wrap" id="chat-wrap"></div>
+      <div class="chat-row">
+        <input type="text" id="chat-input" placeholder="Ketik pesan..." maxlength="200">
+        <button class="btn btn-cyan btn-sm" id="btn-send-chat">KIRIM</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <div style="padding-top:18px;">
+    <div class="profile-header">
+      <div class="profile-av" id="profile-av">?</div>
+      <div style="flex:1;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:2px;color:#fff;" id="profile-username">—</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:5px;max-width:220px;" id="profile-bio"></div>
+        <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;justify-content:center;">
+          <span class="tag tag-cyan" id="profile-role-tag">PLAYER</span>
+          <span class="vip-badge">👑 VIP</span>
+        </div>
+      </div>
+      <button class="btn btn-dark btn-sm" style="align-self:flex-start;" id="btn-open-edit">✏️ EDIT</button>
+    </div>
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="stat-card"><div class="stat-val text-cyan" id="pstat-best">0</div><div class="stat-lbl">Best Score</div></div>
+      <div class="stat-card"><div class="stat-val" id="pstat-games">0</div><div class="stat-lbl">Total Game</div></div>
+      <div class="stat-card"><div class="stat-val text-yellow" id="pstat-coins">0</div><div class="stat-lbl">🪙 Koin</div></div>
+      <div class="stat-card"><div class="stat-val text-purple" id="pstat-rank">—</div><div class="stat-lbl">Global Rank</div></div>
+      <div class="stat-card"><div class="stat-val text-green" id="pstat-items">0</div><div class="stat-lbl">Item Dimiliki</div></div>
+      <div class="stat-card"><div class="stat-val" style="font-size:.9rem;color:rgba(255,255,255,.6);" id="pstat-joined">—</div><div class="stat-lbl">Bergabung</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">▸ Item Dimiliki</div>
+      <div id="owned-items-list"><div class="text-muted" style="text-align:center;padding:14px;">Belum ada item. Beli di Shop!</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">▸ Riwayat Pembelian</div>
+      <div id="purchase-history"><div class="text-muted" style="text-align:center;padding:14px;">Belum ada pembelian</div></div>
+    </div>
+    <button class="btn btn-dark btn-full" style="margin-top:6px;" id="btn-logout">🚪 LOGOUT</button>
+  </div>
+</div>
+
+</div><!-- /wrapper -->
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase,ref,push,set,get,update,onValue,query,orderByChild,limitToLast,serverTimestamp,remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app = initializeApp({ databaseURL:"https://game-9b3b9-default-rtdb.asia-southeast1.firebasedatabase.app/" });
+const db = getDatabase(app);
+
+const SHOP_ITEMS = [
+  // VIP Items
+  {id:'vip',name:'VIP PASS',icon:'👑',desc:'Aura ungu eksklusif, crown di nama, bonus koin +50% setiap game!',price:2000,type:'vip',category:'vip',color:'vip-card'},
+  
+  // Boost Items
+  {id:'boost_2x',name:'BOOST 2X',icon:'🚀',desc:'Koin 2x lipat untuk 5 game berikutnya.',price:500,type:'consumable',category:'boost',uses:5},
+  {id:'auto_clicker',name:'AUTO CLICKER',icon:'🤖',desc:'Klik otomatis 5x/detik selama 10 detik! Aktif saat game.',price:800,type:'consumable',category:'boost',uses:3},
+  {id:'time_freeze',name:'TIME FREEZE',icon:'❄️',desc:'Bekukan waktu selama 3 detik! Waktu tidak berjalan.',price:600,type:'consumable',category:'boost',uses:3},
+  {id:'combo_master',name:'COMBO MASTER',icon:'🔥',desc:'Setiap 10 klik berturut-turut = +5 bonus klik!',price:700,type:'consumable',category:'boost',uses:5},
+  {id:'lucky_charm',name:'LUCKY CHARM',icon:'🍀',desc:'25% chance dapat +10 koin bonus setiap game!',price:450,type:'consumable',category:'boost',uses:10},
+  {id:'mega_boost',name:'MEGA BOOST',icon:'⚡',desc:'Koin 3x lipat + waktu +5 detik untuk 3 game!',price:1500,type:'consumable',category:'boost',uses:3},
+  
+  // Utility Items
+  {id:'extra_time',name:'EXTRA TIME',icon:'⏱️',desc:'Tambah 3 detik waktu untuk 3 game.',price:400,type:'consumable',category:'boost',uses:3},
+  {id:'shield',name:'LUCKY SHIELD',icon:'🛡️',desc:'Skor minimum 20 klik dijamin untuk 3 game.',price:350,type:'consumable',category:'boost',uses:3},
+  {id:'second_chance',name:'SECOND CHANCE',icon:'🔄',desc:'Main ulang 1x tanpa pengurangan jika skor rendah!',price:550,type:'consumable',category:'boost',uses:2},
+  
+  // Cosmetic Items
+  {id:'avatar_fire',name:'AVATAR API',icon:'🔥',desc:'Avatar eksklusif api berkobar.',price:300,type:'cosmetic',category:'cosmetic'},
+  {id:'avatar_star',name:'AVATAR BINTANG',icon:'⭐',desc:'Avatar bintang berkilauan.',price:300,type:'cosmetic',category:'cosmetic'},
+  {id:'avatar_dragon',name:'AVATAR NAGA',icon:'🐉',desc:'Avatar naga legendaris.',price:800,type:'cosmetic',category:'cosmetic'},
+  {id:'avatar_angel',name:'AVATAR ANGEL',icon:'👼',desc:'Avatar malaikat suci.',price:600,type:'cosmetic',category:'cosmetic'},
+  {id:'avatar_demon',name:'AVATAR DEMON',icon:'😈',desc:'Avatar iblis kekar.',price:600,type:'cosmetic',category:'cosmetic'},
+  {id:'title_legend',name:'GELAR: LEGEND',icon:'🏅',desc:'Gelar LEGEND di bawah namamu.',price:1500,type:'cosmetic',category:'cosmetic'},
+  {id:'title_master',name:'GELAR: MASTER',icon:'🎖️',desc:'Gelar MASTER yang ditakuti.',price:1000,type:'cosmetic',category:'cosmetic'},
+  {id:'title_king',name:'GELAR: KING',icon:'👑',desc:'Gelar KING untuk pemenang.',price:1200,type:'cosmetic',category:'cosmetic'},
+  {id:'effect_rainbow',name:'EFFECT RAINBOW',icon:'🌈',desc:'Efek klik berwarna-warni!',price:500,type:'cosmetic',category:'cosmetic'},
+];
+
+const TOPUP_PACKAGES = [
+  {id:'tp1',coins:100,price:'Rp 1.000',bonus:0,label:'STARTER'},
+  {id:'tp2',coins:300,price:'Rp 2.500',bonus:50,label:'BASIC'},
+  {id:'tp3',coins:700,price:'Rp 5.000',bonus:100,label:'PRO'},
+  {id:'tp4',coins:1500,price:'Rp 10.000',bonus:300,label:'ELITE'},
+  {id:'tp5',coins:3500,price:'Rp 20.000',bonus:1000,label:'MEGA'},
+  {id:'tp6',coins:8000,price:'Rp 50.000',bonus:3000,label:'ULTRA'},
+];
+
+const AVATARS=['😎','🤖','👾','🦊','🐺','🔥','⚡','🎯','💎','🦁','🐉','🌟','👻','🎮','🦅','👼','😈'];
+const DEV_PHONE = '085119654305';
+
+let currentUser=null, userData=null, gameActive=false, gameStarted=false;
+let score=0, timeLeft=10, timerInterval=null, allScores=[], pendingBuy=null, pendingTopup=null;
+let selectedPaymentMethod = 'dana';
+let maxTime = 10;
+let shopFilter = 'all';
+let previousChampion = null;
+let comboCount = 0;
+let lastClickTime = 0;
+let autoClickerInterval = null;
+let isTimeFrozen = false;
+
+// ── PARTICLES
+const pw=document.getElementById('particles');
+for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';p.style.cssText=`left:${Math.random()*100}%;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;animation-duration:${6+Math.random()*12}s;animation-delay:${Math.random()*12}s;background:${['#00fff7','#ff006e','#b44bff'][Math.floor(Math.random()*3)]};`;pw.appendChild(p);}
+
+// ── HELPERS
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type;void t.offsetWidth;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function setStatus(id,msg,type){const el=document.getElementById(id);el.textContent=msg;el.className='status-msg '+type;}
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+function timeAgo(ts){if(!ts)return '';const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'d lalu';if(s<3600)return Math.floor(s/60)+'m lalu';return Math.floor(s/3600)+'j lalu';}
+function hashPass(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}return h.toString(36);}
+
+// ── Copy number function
+window.copyNumber = function() {
+  navigator.clipboard.writeText(DEV_PHONE).then(() => {
+    showToast('📋 Nomor disalin!', 'success');
+  }).catch(() => {
+    const input = document.createElement('input');
+    input.value = DEV_PHONE;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    showToast('📋 Nomor disalin!', 'success');
+  });
+};
+
+// ── Open WhatsApp
+window.openWhatsApp = function() {
+  const msg = encodeURIComponent(`Halo Admin BLITZ! Saya ${currentUser} ingin konfirmasi top up.`);
+  window.open(`https://wa.me/62${DEV_PHONE.substring(1)}?text=${msg}`, '_blank');
+};
+
+// ── MODAL close buttons
+document.getElementById('mc-buy').onclick=()=>closeModal('modal-buy-confirm');
+document.getElementById('mc-buy-cancel').onclick=()=>closeModal('modal-buy-confirm');
+document.getElementById('mc-profile').onclick=()=>closeModal('modal-profile-edit');
+document.getElementById('mc-topup').onclick=()=>closeModal('modal-topup-req');
+
+// ── Payment method selection
+document.querySelectorAll('.pay-method').forEach(el => {
+  el.addEventListener('click', function() {
+    document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+    this.classList.add('selected');
+    selectedPaymentMethod = this.dataset.method;
+    document.getElementById('pay-app-name').textContent = selectedPaymentMethod.toUpperCase();
+  });
+});
+
+// ── AUTH
+window.switchAuth=function(tab){
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-register').classList.toggle('active',tab==='register');
+  document.getElementById('auth-login-form').style.display=tab==='login'?'block':'none';
+  document.getElementById('auth-register-form').style.display=tab==='register'?'block':'none';
+  document.getElementById('login-status').className='status-msg';
+  document.getElementById('login-status').textContent='';
+  document.getElementById('reg-status').className='status-msg';
+  document.getElementById('reg-status').textContent='';
+};
+
+async function doLogin(){
+  const user=document.getElementById('login-user').value.trim().toLowerCase();
+  const pass=document.getElementById('login-pass').value;
+  if(!user||!pass){setStatus('login-status','Isi semua kolom!','error');return;}
+  setStatus('login-status','Memeriksa...','success');
+  try{
+    const snap=await get(ref(db,`users/${user}`));
+    if(!snap.exists()){setStatus('login-status','Akun tidak ditemukan!','error');return;}
+    const data=snap.val();
+    if(data.passwordHash!==hashPass(pass)){setStatus('login-status','Password salah!','error');return;}
+    if(data.banned){setStatus('login-status','Akun kamu dibanned!','error');return;}
+    await update(ref(db,`users/${user}`),{lastLogin:serverTimestamp()});
+    currentUser=user;userData=data;
+    localStorage.setItem('blitz_user',user);
+    initApp();
+  }catch(e){setStatus('login-status','Error: '+e.message,'error');}
+}
+
+async function doRegister(){
+  const user=document.getElementById('reg-user').value.trim().toLowerCase();
+  const pass=document.getElementById('reg-pass').value;
+  const pass2=document.getElementById('reg-pass2').value;
+  if(!user||!pass||!pass2){setStatus('reg-status','Isi semua kolom!','error');return;}
+  if(user.length<3){setStatus('reg-status','Username min 3 karakter!','error');return;}
+  if(!/^[a-z0-9_]+$/.test(user)){setStatus('reg-status','Username hanya huruf kecil, angka, underscore!','error');return;}
+  if(pass.length<6){setStatus('reg-status','Password min 6 karakter!','error');return;}
+  if(pass!==pass2){setStatus('reg-status','Password tidak cocok!','error');return;}
+  setStatus('reg-status','Membuat akun...','success');
+  try{
+    const snap=await get(ref(db,`users/${user}`));
+    if(snap.exists()){setStatus('reg-status','Username sudah dipakai!','error');return;}
+    const nu={username:user,passwordHash:hashPass(pass),coins:500,bestScore:0,totalGames:0,avatar:'😎',bio:'',isVip:false,items:{},role:'player',joinedAt:serverTimestamp(),lastLogin:serverTimestamp()};
+    await set(ref(db,`users/${user}`),nu);
+    currentUser=user;userData=nu;
+    localStorage.setItem('blitz_user',user);
+    initApp();
+  }catch(e){setStatus('reg-status','Error: '+e.message,'error');}
+}
+
+async function autoLogin(){
+  const saved=localStorage.getItem('blitz_user');
+  if(saved){
+    try{
+      const snap=await get(ref(db,`users/${saved}`));
+      if(snap.exists()&&!snap.val().banned){currentUser=saved;userData=snap.val();initApp();return;}
+    }catch(e){}
+  }
+  document.getElementById('loading-screen').style.display='none';
+  showPage('auth');
+  document.getElementById('main-nav').style.display='none';
+}
+
+// ── INIT
+function initApp(){
+  document.getElementById('loading-screen').style.display='none';
+  document.getElementById('main-nav').style.display='block';
+  document.getElementById('page-auth').classList.remove('active');
+  applyVip();updateNav();showPage('game');
+  listenScores();listenUserData();listenBroadcast();
+  renderShop();renderTopup();buildAvatarPicker();setupChat();listenTopupRequests();
+  resetGameState();
+}
+
+function listenUserData(){
+  onValue(ref(db,`users/${currentUser}`),snap=>{
+    if(!snap.exists())return;
+    userData=snap.val();applyVip();updateNav();updateProfilePage();updateGameStats();renderShop();updateActiveItems();
+  });
+}
+
+function updateNav(){
+  if(!userData)return;
+  document.getElementById('nav-coins-display').textContent='🪙 '+(userData.coins||0).toLocaleString();
+  document.getElementById('nav-avatar').textContent=userData.avatar||'😎';
+  document.getElementById('shop-coins').textContent=(userData.coins||0).toLocaleString();
+  document.getElementById('topup-coins-display').textContent=(userData.coins||0).toLocaleString();
+}
+
+function applyVip(){
+  const clickBtn = document.getElementById('click-btn');
+  if(userData?.isVip){
+    document.body.classList.add('vip-active');
+    if(clickBtn) clickBtn.classList.add('vip-btn');
+  } else {
+    document.body.classList.remove('vip-active');
+    if(clickBtn) clickBtn.classList.remove('vip-btn');
+  }
+}
+
+// ── NAV
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.page===name));
+  if(name==='profile')updateProfilePage();
+  if(name==='topup')renderTxHistory();
+  if(name!=='game' && gameActive){
+    resetGameState();
+  }
+}
+
+document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>showPage(t.dataset.page)));
+
+// ── GAME
+const GAME_DURATION=10;
+
+function updateGameStats(){
+  if(!userData)return;
+  document.getElementById('stat-best').textContent=userData.bestScore||0;
+  document.getElementById('stat-games').textContent=userData.totalGames||0;
+  document.getElementById('stat-coins-game').textContent=(userData.coins||0).toLocaleString();
+  document.getElementById('game-player-name').textContent=(userData.username||'PLAYER').toUpperCase();
+}
+
+function updateActiveItems(){
+  const container = document.getElementById('active-items');
+  if(!userData?.items){container.innerHTML='';return;}
+  
+  const activeItems = [];
+  const items = userData.items;
+  
+  if(items.boost_2x?.uses > 0) activeItems.push(`🚀 2x Boost (${items.boost_2x.uses}x)`);
+  if(items.auto_clicker?.uses > 0) activeItems.push(`🤖 Auto (${items.auto_clicker.uses}x)`);
+  if(items.time_freeze?.uses > 0) activeItems.push(`❄️ Freeze (${items.time_freeze.uses}x)`);
+  if(items.combo_master?.uses > 0) activeItems.push(`🔥 Combo (${items.combo_master.uses}x)`);
+  if(items.mega_boost?.uses > 0) activeItems.push(`⚡ Mega (${items.mega_boost.uses}x)`);
+  if(items.extra_time?.uses > 0) activeItems.push(`⏱️ +Time (${items.extra_time.uses}x)`);
+  if(items.shield?.uses > 0) activeItems.push(`🛡️ Shield (${items.shield.uses}x)`);
+  if(items.second_chance?.uses > 0) activeItems.push(`🔄 Retry (${items.second_chance.uses}x)`);
+  if(items.lucky_charm?.uses > 0) activeItems.push(`🍀 Lucky (${items.lucky_charm.uses}x)`);
+  
+  container.innerHTML = activeItems.map(item => `<span class="active-item">${item}</span>`).join('');
+}
+
+function resetGameState(){
+  gameStarted=false;gameActive=false;clearInterval(timerInterval);clearInterval(autoClickerInterval);
+  score=0;maxTime=GAME_DURATION;comboCount=0;isTimeFrozen=false;
+  document.getElementById('score-display').textContent='0';
+  document.getElementById('timer-fill').style.width='100%';
+  document.getElementById('timer-fill').style.background='linear-gradient(90deg,var(--cyan),var(--pink))';
+  document.getElementById('timer-txt').textContent=GAME_DURATION+'.0s';
+  document.getElementById('state-ready').style.display='block';
+  document.getElementById('state-active').style.display='none';
+  document.getElementById('game-hint').textContent='TAP SECEPAT MUNGKIN!';
+  document.getElementById('click-btn').classList.remove('disabled');
+  document.getElementById('combo-display').classList.remove('show');
+}
+
+function startGame(){
+  if(gameActive)return;
+  score=0;gameActive=true;gameStarted=true;comboCount=0;isTimeFrozen=false;
+  const items=userData?.items||{};
+  let extra=0;
+  let megaBoostActive = false;
+  
+  if(items.extra_time && items.extra_time.uses > 0){extra+=3;useConsumable('extra_time');}
+  if(items.mega_boost && items.mega_boost.uses > 0){extra+=5;megaBoostActive=true;useConsumable('mega_boost');}
+  
+  timeLeft=GAME_DURATION+extra;
+  maxTime=timeLeft;
+  document.getElementById('score-display').textContent='0';
+  document.getElementById('state-ready').style.display='none';
+  document.getElementById('state-active').style.display='block';
+  document.getElementById('game-hint').textContent=extra?'⏱️ +'+extra+' DETIK AKTIF!':'TAP SECEPAT MUNGKIN!';
+  document.getElementById('click-btn').classList.remove('disabled');
+  updateTimerBar();
+  clearInterval(timerInterval);
+  
+  // Auto Clicker
+  if(items.auto_clicker && items.auto_clicker.uses > 0){
+    useConsumable('auto_clicker');
+    let autoClicks = 0;
+    autoClickerInterval = setInterval(()=>{
+      if(!gameActive || autoClicks >= 50) {clearInterval(autoClickerInterval);return;}
+      doClick();
+      autoClicks++;
+    },200);
+    document.getElementById('game-hint').textContent='🤖 AUTO CLICKER AKTIF!';
+  }
+  
+  timerInterval=setInterval(()=>{
+    if(isTimeFrozen) return;
+    timeLeft=Math.max(0,timeLeft-0.1);
+    updateTimerBar();
+    if(timeLeft<=0)endGame();
+  },100);
+}
+
+function updateTimerBar(){
+  const pct=(timeLeft/maxTime)*100;
+  document.getElementById('timer-fill').style.width=Math.min(100,pct)+'%';
+  document.getElementById('timer-txt').textContent=timeLeft.toFixed(1)+'s';
+  const fill=document.getElementById('timer-fill');
+  if(pct<20) fill.style.background='linear-gradient(90deg,#ff006e,#f44)';
+  else if(pct<50) fill.style.background='linear-gradient(90deg,#ffe600,#ff006e)';
+  else fill.style.background='linear-gradient(90deg,#00fff7,#ff006e)';
+}
+
+document.getElementById('start-btn-el').addEventListener('click',startGame);
+
+function doClick(){
+  score++;
+  
+  // Combo Master
+  const items = userData?.items||{};
+  const now = Date.now();
+  if(items.combo_master && items.combo_master.uses > 0){
+    if(now - lastClickTime < 500){
+      comboCount++;
+      if(comboCount >= 10){
+        score += 5;
+        comboCount = 0;
+        showComboEffect();
+      }
+    } else {
+      comboCount = 1;
+    }
+  }
+  lastClickTime = now;
+  
+  const el=document.getElementById('score-display');
+  el.textContent=score;
+  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
+  setTimeout(()=>el.classList.remove('pop'),80);
+  
+  const clickBtn = document.getElementById('click-btn');
+  const ft=document.createElement('div');ft.className='float-txt';ft.textContent='+1';
+  const r=clickBtn.getBoundingClientRect();
+  ft.style.left=(r.width/2)+'px';
+  ft.style.top=(r.height/2-10)+'px';
+  clickBtn.appendChild(ft);
+  setTimeout(()=>{if(ft.parentNode)ft.remove();},800);
+}
+
+function showComboEffect(){
+  const combo = document.getElementById('combo-display');
+  combo.textContent = '🔥 COMBO +5!';
+  combo.classList.add('show');
+  setTimeout(()=>combo.classList.remove('show'),1000);
+}
+
+document.getElementById('click-btn').addEventListener('click',function(e){
+  if(!gameActive)return;
+  const now = Date.now();
+  if(now - lastClickTime < 30) return;
+  doClick();
+});
+
+document.getElementById('click-btn').addEventListener('touchstart',function(e){
+  e.preventDefault();
+  if(!gameActive)return;
+  const now = Date.now();
+  if(now - lastClickTime < 30) return;
+  doClick();
+},{passive:false});
+
+async function endGame(){
+  clearInterval(timerInterval);clearInterval(autoClickerInterval);gameActive=false;
+  document.getElementById('click-btn').classList.add('disabled');
+  document.getElementById('game-hint').textContent='Menyimpan skor...';
+  
+  const items=userData?.items||{};
+  let mult=1;
+  if(userData?.isVip)mult*=1.5;
+  if(items.boost_2x && items.boost_2x.uses > 0){mult*=2;useConsumable('boost_2x');}
+  if(items.mega_boost && items.mega_boost.uses > 0){mult*=3;}
+  
+  let finalScore=score;
+  if(items.shield && items.shield.uses > 0 && score < 20){finalScore=20;useConsumable('shield');}
+  
+  // Lucky Charm
+  let luckyBonus = 0;
+  if(items.lucky_charm && items.lucky_charm.uses > 0){
+    if(Math.random() < 0.25){
+      luckyBonus = 10;
+      useConsumable('lucky_charm');
+      showToast('🍀 Lucky Charm! +10 koin!', 'success');
+    }
+  }
+  
+  const earned=Math.floor(finalScore*mult) + luckyBonus;
+  const newBest=Math.max(userData?.bestScore||0,finalScore);
+  
+  try{
+    await push(ref(db,'scores'),{uid:currentUser,name:userData?.username||currentUser,score:finalScore,isVip:userData?.isVip||false,timestamp:serverTimestamp()});
+    await update(ref(db,`users/${currentUser}`),{bestScore:newBest,coins:(userData?.coins||0)+earned,totalGames:(userData?.totalGames||0)+1});
+    showResult(finalScore,earned,mult);
+  }catch(e){
+    document.getElementById('game-hint').textContent='❌ Error menyimpan!';
+    setTimeout(()=>resetGameState(),2000);
+  }
+}
+
+function showResult(finalScore,coins,mult){
+  const sorted=[...allScores].sort((a,b)=>b.score-a.score);
+  const rank=sorted.findIndex(s=>s.uid===currentUser)+1;
+  document.getElementById('res-name').textContent=(userData?.username||currentUser).toUpperCase();
+  document.getElementById('res-score').textContent=finalScore;
+  document.getElementById('res-coins').textContent=`+🪙 ${coins.toLocaleString()} koin${mult>1?' ('+mult+'x!)':''}`;
+  document.getElementById('res-emoji').textContent=rank===1?'🥇':rank<=3?'🏆':finalScore>=50?'🔥':'⚡';
+  document.getElementById('res-rank').innerHTML=rank===1?'🥇 NOMOR 1 GLOBAL!':rank<=3?`🥉 TOP ${rank} DARI ${sorted.length}`:rank>0?`PERINGKAT #<span style="color:var(--yellow)">${rank}</span> DARI ${sorted.length}`:'';
+  document.getElementById('result-overlay').classList.add('show');
+}
+
+document.getElementById('btn-play-again').addEventListener('click',()=>{
+  document.getElementById('result-overlay').classList.remove('show');
+  resetGameState();setTimeout(startGame,300);
+});
+
+document.getElementById('btn-to-lb').addEventListener('click',()=>{
+  document.getElementById('result-overlay').classList.remove('show');
+  resetGameState();showPage('leaderboard');
+});
+
+document.getElementById('btn-close-result').addEventListener('click',()=>{
+  document.getElementById('result-overlay').classList.remove('show');
+  resetGameState();
+});
+
+// ── LEADERBOARD
+function listenScores(){
+  onValue(query(ref(db,'scores'),orderByChild('score'),limitToLast(100)),snap=>{
+    const data=snap.val();
+    if(!data){allScores=[];renderLB([]);return;}
+    const best={};
+    Object.values(data).forEach(v=>{if(!best[v.uid]||v.score>best[v.uid].score)best[v.uid]=v;});
+    const newScores=Object.values(best).sort((a,b)=>b.score-a.score);
+    
+    // Check for new champion
+    if(newScores.length > 0 && previousChampion && newScores[0].uid !== previousChampion.uid && newScores[0].uid === currentUser){
+      showChampionCelebration(newScores[0]);
+    }
+    previousChampion = newScores.length > 0 ? newScores[0] : null;
+    
+    allScores=newScores;
+    renderLB(allScores);
+    document.getElementById('lb-total').textContent=allScores.length+' pemain';
+    updateChampionBanner();
+  });
+}
+
+function updateChampionBanner(){
+  if(allScores.length > 0){
+    const champ = allScores[0];
+    document.getElementById('champion-banner').style.display = 'block';
+    document.getElementById('champion-banner-name').textContent = (champ.name || champ.uid).toUpperCase();
+    document.getElementById('champion-banner-score').textContent = champ.score.toLocaleString() + ' klik';
+  }
+}
+
+function showChampionCelebration(champion){
+  document.getElementById('champion-name').textContent = (champion.name || champion.uid).toUpperCase();
+  document.getElementById('champion-score').textContent = champion.score;
+  document.getElementById('champion-overlay').classList.add('show');
+  
+  // Create confetti effect
+  createConfetti();
+}
+
+window.closeChampionOverlay = function(){
+  document.getElementById('champion-overlay').classList.remove('show');
+}
+
+function createConfetti(){
+  for(let i=0;i<50;i++){
+    const confetti = document.createElement('div');
+    confetti.style.cssText = `
+      position:fixed;
+      width:10px;height:10px;
+      background:${['#ffe600','#00fff7','#ff006e','#b44bff'][Math.floor(Math.random()*4)]};
+      left:${Math.random()*100}vw;
+      top:-10px;
+      z-index:500;
+      animation:confettiFall ${2+Math.random()*3}s linear forwards;
+    `;
+    document.body.appendChild(confetti);
+    setTimeout(()=>confetti.remove(),5000);
+  }
+}
+
+// Add confetti animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes confettiFall{
+    0%{transform:translateY(0) rotate(0deg);opacity:1;}
+    100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+  }
+`;
+document.head.appendChild(style);
+
+function renderLB(arr){
+  const medals=['🥇','🥈','🥉'];
+  const build=(item,rank)=>{
+    const isMe=item.uid===currentUser;
+    return `<div class="lb-item ${rank<=3?'rank-'+rank:''} ${isMe?'is-me':''} ${item.isVip?'is-vip':''}" onclick="viewPlayerProfile('${item.uid}')">
+      <div class="rank-num">${rank<=3?medals[rank-1]:'#'+rank}</div>
+      <div class="lb-name">${esc(item.name)}${isMe?' <span style="font-size:8px;color:var(--cyan);margin-left:4px;">◀YOU</span>':''}</div>
+      <div class="lb-score">${item.score.toLocaleString()}</div>
+    </div>`;
+  };
+  const empty='<div class="lb-empty">Belum ada data. Main dulu! 🚀</div>';
+  document.getElementById('mini-lb').innerHTML=arr.length?arr.slice(0,5).map((x,i)=>build(x,i+1)).join(''):empty;
+  document.getElementById('lb-full-list').innerHTML=arr.length?arr.map((x,i)=>build(x,i+1)).join(''):empty;
+}
+
+// ── VIEW PLAYER PROFILE
+window.viewPlayerProfile = async function(uid){
+  if(uid === currentUser){
+    showPage('profile');
+    return;
+  }
+  
+  try{
+    const snap = await get(ref(db,`users/${uid}`));
+    if(!snap.exists()){
+      showToast('Profil tidak ditemukan','error');
+      return;
+    }
+    
+    const player = snap.val();
+    const rank = allScores.findIndex(s=>s.uid===uid)+1;
+    
+    document.getElementById('pp-avatar').textContent = player.avatar || '😎';
+    document.getElementById('pp-avatar').className = 'player-profile-avatar' + (player.isVip?' vip':'');
+    document.getElementById('pp-name').textContent = (player.username || uid).toUpperCase();
+    document.getElementById('pp-bio').textContent = player.bio || 'Tidak ada bio';
+    document.getElementById('pp-best').textContent = player.bestScore || 0;
+    document.getElementById('pp-games').textContent = player.totalGames || 0;
+    document.getElementById('pp-coins').textContent = (player.coins || 0).toLocaleString();
+    document.getElementById('pp-rank').textContent = rank > 0 ? '#' + rank : '—';
+    
+    // Badges
+    const badges = [];
+    if(player.isVip) badges.push('<span class="player-badge vip">👑 VIP</span>');
+    if(rank === 1) badges.push('<span class="player-badge top1">🥇 CHAMPION</span>');
+    if((player.bestScore || 0) >= 100) badges.push('<span class="player-badge legend">🏅 LEGEND</span>');
+    document.getElementById('pp-badges').innerHTML = badges.join('');
+    
+    openModal('modal-player-profile');
+  }catch(e){
+    showToast('Error memuat profil','error');
+  }
+};
+
+// ── SHOP
+window.filterShop = function(category){
+  shopFilter = category;
+  ['all','boost','cosmetic','vip'].forEach(c=>{
+    const btn = document.getElementById('shop-filter-'+c);
+    if(btn) btn.className = 'btn ' + (c===category?'btn-cyan':'btn-dark') + ' btn-sm';
+  });
+  renderShop();
+};
+
+function renderShop(){
+  const filtered = shopFilter === 'all' ? SHOP_ITEMS : SHOP_ITEMS.filter(i=>i.category===shopFilter);
+  
+  document.getElementById('shop-grid').innerHTML=filtered.map(item=>{
+    const owned=userData?.items?.[item.id];
+    const isOwned=owned&&(item.type==='vip'||item.type==='cosmetic');
+    const uses=owned?.uses||0;
+    const isNew = ['auto_clicker','time_freeze','combo_master','mega_boost','lucky_charm','second_chance','avatar_angel','avatar_demon','title_master','title_king','effect_rainbow'].includes(item.id);
+    const isHot = ['vip','mega_boost','auto_clicker'].includes(item.id);
+    return `<div class="shop-card ${item.color||''} ${isNew?'new-item':''} ${isHot&&!isNew?'hot-item':''}">
+      <div class="shop-icon">${item.icon}</div>
+      <div class="shop-name">${item.name}</div>
+      <div class="shop-desc">${item.desc}</div>
+      ${item.uses?`<div style="font-size:9px;color:var(--cyan);letter-spacing:1px;margin-bottom:7px;">${uses>0?'Sisa: '+uses+'x':'Habis — beli lagi'}</div>`:''}
+      <div class="shop-price">🪙 ${item.price.toLocaleString()}</div>
+      ${isOwned&&item.type!=='consumable'?`<span class="owned-badge">✓ DIMILIKI</span>`:`<button class="btn btn-yellow btn-sm btn-full" onclick="initBuy('${item.id}')">BELI</button>`}
+    </div>`;
+  }).join('');
+}
+
+window.initBuy=function(itemId){
+  const item=SHOP_ITEMS.find(i=>i.id===itemId);
+  if(!item)return;
+  if((userData?.coins||0)<item.price){showToast('Koin tidak cukup! Top up dulu.','error');return;}
+  pendingBuy=item;
+  document.getElementById('buy-title').textContent='BELI '+item.name;
+  document.getElementById('buy-icon').textContent=item.icon;
+  document.getElementById('buy-desc').textContent=item.desc;
+  document.getElementById('buy-price-display').textContent='🪙 '+item.price.toLocaleString();
+  openModal('modal-buy-confirm');
+};
+
+document.getElementById('btn-confirm-buy').addEventListener('click',async()=>{
+  if(!pendingBuy)return;
+  const item=pendingBuy;
+  const newCoins=(userData?.coins||0)-item.price;
+  if(newCoins<0){showToast('Koin tidak cukup!','error');return;}
+  const updates={coins:newCoins};
+  if(item.type==='vip')updates.isVip=true;
+  const curUses=userData?.items?.[item.id]?.uses||0;
+  if(item.uses)updates[`items/${item.id}`]={uses:curUses+item.uses,type:item.type};
+  else updates[`items/${item.id}`]={type:item.type,ownedAt:Date.now()};
+  
+  try{
+    await push(ref(db,`users/${currentUser}/purchases`),{itemId:item.id,itemName:item.name,icon:item.icon,price:item.price,timestamp:serverTimestamp()});
+    await update(ref(db,`users/${currentUser}`),updates);
+    closeModal('modal-buy-confirm');renderShop();
+    showToast(`${item.icon} ${item.name} berhasil dibeli!`);pendingBuy=null;
+    if(item.type==='vip') applyVip();
+  }catch(e){
+    showToast('Error: '+e.message,'error');
+  }
+});
+
+async function useConsumable(itemId){
+  const cur=userData?.items?.[itemId]?.uses||0;
+  if(cur<=0)return;
+  try{
+    await update(ref(db,`users/${currentUser}/items/${itemId}`),{uses:cur-1});
+  }catch(e){console.error('useConsumable error:',e);}
+}
+
+function renderTopup(){
+  document.getElementById('topup-grid-main').innerHTML=TOPUP_PACKAGES.map(pkg=>`
+    <div class="topup-card" onclick="openTopupReq('${pkg.id}')">
+      <div style="font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:4px;">${pkg.label}</div>
+      <div class="topup-amount">🪙 ${pkg.coins.toLocaleString()}</div>
+      <div class="topup-coins">KOIN</div>
+      <div class="topup-price">${pkg.price}</div>
+      ${pkg.bonus?`<div class="topup-bonus">+${pkg.bonus} BONUS</div>`:''}
+    </div>`).join('');
+}
+
+window.openTopupReq=function(pkgId){
+  const pkg=TOPUP_PACKAGES.find(p=>p.id===pkgId);
+  if(!pkg)return;
+  pendingTopup=pkg;
+  document.getElementById('tr-coins').textContent='🪙 '+pkg.coins.toLocaleString()+(pkg.bonus?` +${pkg.bonus}`:'');
+  document.getElementById('tr-price').textContent=pkg.price;
+  document.getElementById('tr-bonus').textContent=pkg.bonus?`+${pkg.bonus} koin bonus!`:'';
+  document.getElementById('pay-username').textContent=currentUser;
+  document.getElementById('tr-note').value='';
+  document.getElementById('tr-status').className='status-msg';
+  document.getElementById('tr-status').textContent='';
+  openModal('modal-topup-req');
+};
+
+document.getElementById('btn-send-topup-req').addEventListener('click',async()=>{
+  if(!pendingTopup)return;
+  const note=document.getElementById('tr-note').value.trim();
+  const req={uid:currentUser,username:userData?.username||currentUser,pkgId:pendingTopup.id,pkgLabel:pendingTopup.label,coins:pendingTopup.coins+(pendingTopup.bonus||0),price:pendingTopup.price,status:'pending',paymentMethod:selectedPaymentMethod,note:note,requestedAt:serverTimestamp()};
+  try{
+    await push(ref(db,'topup_requests'),req);
+    await push(ref(db,`users/${currentUser}/transactions`),{type:'topup_request',pkg:pendingTopup.label,coins:pendingTopup.coins,status:'pending',timestamp:serverTimestamp()});
+    closeModal('modal-topup-req');
+    showToast('📨 Permintaan terkirim! Tunggu verifikasi admin.');
+    pendingTopup=null;
+  }catch(e){setStatus('tr-status','Error: '+e.message,'error');}
+});
+
+function listenTopupRequests(){
+  onValue(ref(db,`users/${currentUser}/transactions`),snap=>{
+    const data=snap.val();
+    if(!data){document.getElementById('tx-history').innerHTML='<div class="text-muted" style="text-align:center;padding:18px;">Belum ada permintaan</div>';return;}
+    const items=Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0)).slice(0,10);
+    document.getElementById('tx-history').innerHTML=items.map(([id,t])=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border2);">
+        <div>
+          <div style="font-size:11px;color:#fff;">${t.type==='topup_request'?'💰 Top Up':'🛒 '+t.itemName}</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);">${timeAgo(t.timestamp)}</div>
+        </div>
+        <span class="req-status req-${t.status}">${t.status==='pending'?'⏳':t.status==='approved'?'✅':'❌'}</span>
+      </div>`).join('');
+  });
+}
+
+function renderTxHistory(){}
+
+// ── CHAT
+function setupChat(){
+  const send=async()=>{
+    const input=document.getElementById('chat-input');
+    const text=input.value.trim();
+    if(!text)return;
+    if(text.length>200){showToast('Pesan terlalu panjang!','error');return;}
+    input.value='';
+    try{
+      await push(ref(db,'chat'),{name:userData?.username||currentUser,text:text,isVip:userData?.isVip||false,uid:currentUser,timestamp:serverTimestamp()});
+    }catch(e){showToast('Error kirim chat','error');}
+  };
+  document.getElementById('btn-send-chat').addEventListener('click',send);
+  document.getElementById('chat-input').addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+  
+  onValue(query(ref(db,'chat'),orderByChild('timestamp'),limitToLast(50)),snap=>{
+    const data=snap.val();
+    const wrap=document.getElementById('chat-wrap');
+    if(!data){wrap.innerHTML='<div class="text-muted" style="text-align:center;padding:20px;">Belum ada pesan. Mulai chat!</div>';return;}
+    const msgs=Object.entries(data).sort((a,b)=>(a[1].timestamp||0)-(b[1].timestamp||0));
+    wrap.innerHTML=msgs.map(([id,m])=>{
+      const isMe=m.uid===currentUser;
+      const isSystem=m.isSystem;
+      return `<div class="chat-msg ${m.isBroadcast?'is-broadcast':''}">
+        <div class="chat-meta">
+          <span class="chat-sender ${m.isVip?'is-vip':''} ${isSystem?'is-system':''}">${isSystem?'📢 ':''}${esc(m.name)}</span>
+          <span class="chat-time">${timeAgo(m.timestamp)}</span>
+        </div>
+        <div class="chat-text">${esc(m.text)}</div>
+      </div>`;
+    }).join('');
+    wrap.scrollTop=wrap.scrollHeight;
+  });
+}
+
+// ── PROFILE
+function updateProfilePage(){
+  if(!userData)return;
+  document.getElementById('profile-av').textContent=userData.avatar||'😎';
+  document.getElementById('profile-username').textContent=(userData.username||currentUser).toUpperCase();
+  document.getElementById('profile-bio').textContent=userData.bio||'Belum ada bio. Edit profil untuk menambahkan!';
+  document.getElementById('profile-role-tag').textContent=userData.role==='admin'?'ADMIN':'PLAYER';
+  document.getElementById('pstat-best').textContent=userData.bestScore||0;
+  document.getElementById('pstat-games').textContent=userData.totalGames||0;
+  document.getElementById('pstat-coins').textContent=(userData.coins||0).toLocaleString();
+  document.getElementById('pstat-items').textContent=Object.keys(userData.items||{}).length;
+  const rank=allScores.findIndex(s=>s.uid===currentUser)+1;
+  document.getElementById('pstat-rank').textContent=rank?('#'+rank):'—';
+  document.getElementById('pstat-joined').textContent=userData.joinedAt?new Date(userData.joinedAt).toLocaleDateString('id-ID'):'—';
+  
+  const ownedItems=Object.entries(userData.items||{}).filter(([k,v])=>v.type!=='consumable'||v.uses>0);
+  document.getElementById('owned-items-list').innerHTML=ownedItems.length?ownedItems.map(([k,v])=>{
+    const item=SHOP_ITEMS.find(i=>i.id===k);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border2);">
+      <span style="font-size:1.3rem;">${item?.icon||'🎁'}</span>
+      <div style="flex:1;">
+        <div style="font-size:11px;color:#fff;">${item?.name||k}</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.4);">${v.uses?v.uses+'x tersisa':'Dimiliki'}</div>
+      </div>
+    </div>`;
+  }).join(''):'<div class="text-muted" style="text-align:center;padding:14px;">Belum ada item. Beli di Shop!</div>';
+  
+  onValue(ref(db,`users/${currentUser}/purchases`),snap=>{
+    const data=snap.val();
+    if(!data){document.getElementById('purchase-history').innerHTML='<div class="text-muted" style="text-align:center;padding:14px;">Belum ada pembelian</div>';return;}
+    const items=Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0)).slice(0,10);
+    document.getElementById('purchase-history').innerHTML=items.map(([id,p])=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border2);">
+        <span style="font-size:1.3rem;">${p.icon||'🛒'}</span>
+        <div style="flex:1;">
+          <div style="font-size:11px;color:#fff;">${p.itemName}</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);">${timeAgo(p.timestamp)}</div>
+        </div>
+        <span style="font-size:11px;color:var(--yellow);font-family:'Orbitron',sans-serif;">🪙${p.price}</span>
+      </div>`).join('');
+  });
+}
+
+function buildAvatarPicker(){
+  const picker=document.getElementById('avatar-picker');
+  picker.innerHTML=AVATARS.map(a=>`<div style="width:36px;height:36px;border-radius:50%;background:var(--card2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:all .2s;" class="av-opt" data-av="${a}" onclick="selectAvatar('${a}')">${a}</div>`).join('';
+}
+
+window.selectAvatar=function(av){
+  document.querySelectorAll('.av-opt').forEach(el=>{el.style.borderColor='var(--border2)';el.style.background='var(--card2)';});
+  const sel=document.querySelector(`.av-opt[data-av="${av}"]`);
+  if(sel){sel.style.borderColor='var(--cyan)';sel.style.background='rgba(0,255,247,.1)';}
+  userData.selectedAvatar=av;
+};
+
+document.getElementById('btn-open-edit').addEventListener('click',()=>{
+  document.getElementById('edit-username').value=userData?.username||currentUser;
+  document.getElementById('edit-bio').value=userData?.bio||'';
+  document.getElementById('edit-password').value='';
+  document.getElementById('edit-status').className='status-msg';
+  document.getElementById('edit-status').textContent='';
+  selectAvatar(userData?.avatar||'😎');
+  openModal('modal-profile-edit');
+});
+
+document.getElementById('btn-save-profile').addEventListener('click',async()=>{
+  const newName=document.getElementById('edit-username').value.trim().toLowerCase();
+  const newBio=document.getElementById('edit-bio').value.trim();
+  const newPass=document.getElementById('edit-password').value;
+  const newAvatar=userData.selectedAvatar||userData?.avatar||'😎';
+  if(!newName){setStatus('edit-status','Username tidak boleh kosong!','error');return;}
+  const updates={username:newName,bio:newBio,avatar:newAvatar};
+  if(newPass&&newPass.length>=6)updates.passwordHash=hashPass(newPass);
+  try{
+    await update(ref(db,`users/${currentUser}`),updates);
+    closeModal('modal-profile-edit');
+    showToast('✅ Profil diperbarui!');
+  }catch(e){setStatus('edit-status','Error: '+e.message,'error');}
+});
+
+document.getElementById('btn-logout').addEventListener('click',()=>{
+  localStorage.removeItem('blitz_user');
+  location.reload();
+});
+
+// ── BROADCAST
+function listenBroadcast(){
+  onValue(query(ref(db,'broadcasts'),orderByChild('timestamp'),limitToLast(1)),snap=>{
+    const data=snap.val();
+    if(!data)return;
+    const bc=Object.values(data)[0];
+    if(!bc)return;
+    const banner=document.getElementById('broadcast-banner');
+    document.getElementById('bc-text').textContent=bc.text||'';
+    banner.classList.add('show');
+  });
+}
+
+document.getElementById('bc-close-btn').addEventListener('click',()=>{
+  document.getElementById('broadcast-banner').classList.remove('show');
+});
+
+// ── EVENT LISTENERS
+document.getElementById('btn-login').addEventListener('click',doLogin);
+document.getElementById('btn-register').addEventListener('click',doRegister);
+['login-user','login-pass'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();}));
+['reg-user','reg-pass','reg-pass2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doRegister();}));
+
+autoLogin();
+</script>
+</body>
+</html>
