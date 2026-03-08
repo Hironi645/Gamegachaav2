@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>⚙️ BLITZ ADMIN</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#00fff7;--pink:#ff006e;--yellow:#ffe600;--green:#00ff88;--purple:#b44bff;--red:#ff3333;--dark:#060810;--dark2:#090c18;--card:#0d1424;--card2:#111827;--border:rgba(0,255,247,0.12);--border2:rgba(255,255,255,0.07);}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{background:var(--dark);color:#e0e0e0;font-family:'Share Tech Mono',monospace;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,0,110,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,110,0.018) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--dark);}::-webkit-scrollbar-thumb{background:var(--pink);border-radius:2px;}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh;position:relative;z-index:2;}
+@media(max-width:760px){.admin-layout{grid-template-columns:1fr;}.sidebar{height:auto;position:relative !important;}.sb-nav{display:flex;overflow-x:auto;flex-wrap:nowrap;padding:5px !important;}.s-tab{white-space:nowrap;min-width:fit-content;border-left:none !important;border-bottom:3px solid transparent;}.s-tab.active{border-left-color:transparent !important;border-bottom-color:var(--pink) !important;}.sb-foot{display:none;}.sb-who{display:none !important;}}
+.sidebar{background:var(--dark2);border-right:1px solid rgba(255,0,110,.12);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;}
+.sb-logo{padding:20px 18px 14px;border-bottom:1px solid rgba(255,0,110,.1);}
+.sb-logo h1{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:900;color:var(--pink);letter-spacing:2px;}
+.sb-logo p{font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:3px;}
+.sb-who{display:flex;align-items:center;gap:8px;padding:11px 18px;border-bottom:1px solid rgba(255,0,110,.1);background:rgba(255,0,110,.04);}
+.adot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 1.2s infinite;box-shadow:0 0 6px var(--green);flex-shrink:0;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.sb-nav{padding:10px 0;flex:1;}
+.s-tab{display:flex;align-items:center;gap:9px;padding:10px 18px;cursor:pointer;transition:all .2s;border-left:3px solid transparent;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase;position:relative;}
+.s-tab:hover{background:rgba(255,255,255,.04);color:#fff;}
+.s-tab.active{background:rgba(255,0,110,.08);border-left-color:var(--pink);color:var(--pink);}
+.s-tab .icon{font-size:13px;width:16px;text-align:center;}
+.s-tab .badge{background:var(--pink);color:#fff;font-size:8px;font-family:'Orbitron',sans-serif;font-weight:700;padding:1px 5px;border-radius:10px;margin-left:auto;}
+.sb-foot{padding:14px 18px;border-top:1px solid rgba(255,0,110,.1);}
+.main-content{display:flex;flex-direction:column;min-height:100vh;}
+.topbar{background:rgba(6,8,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,0,110,.1);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:3px;color:#fff;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.live-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;letter-spacing:2px;color:var(--green);border:1px solid rgba(0,255,136,.25);padding:3px 9px;border-radius:20px;}
+.content{padding:20px;flex:1;}
+@media(max-width:480px){.content{padding:12px;}.stats-row{grid-template-columns:repeat(2,1fr) !important;}}
+.apage{display:none;animation:fadeUp .35s ease both;}
+.apage.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:20px;}
+.stat-box{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:16px;position:relative;overflow:hidden;}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.stat-box.c::before{background:var(--cyan);}.stat-box.p::before{background:var(--pink);}.stat-box.y::before{background:var(--yellow);}.stat-box.g::before{background:var(--green);}.stat-box.v::before{background:var(--purple);}
+.sv{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;line-height:1;}
+.sl{font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:5px;text-transform:uppercase;}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;position:relative;overflow:hidden;margin-bottom:14px;}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--pink),transparent 70%);}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.panel-title{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:4px;color:var(--pink);text-transform:uppercase;opacity:.9;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:11px;}
+th{background:rgba(255,0,110,.08);color:var(--pink);font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;padding:9px 11px;text-align:left;border-bottom:1px solid rgba(255,0,110,.15);}
+td{padding:9px 11px;border-bottom:1px solid var(--border2);color:rgba(255,255,255,.8);vertical-align:middle;}
+tr:hover td{background:rgba(255,255,255,.02);}
+.tbl-actions{display:flex;gap:5px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:none;padding:10px 14px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:all .2s;touch-action:manipulation;}
+.btn-full{width:100%;}
+.btn-pink{background:var(--pink);color:#fff;border:2px solid var(--pink);}
+.btn-pink:hover:not(:disabled),.btn-pink:active:not(:disabled){background:#ff2d85;box-shadow:0 0 16px rgba(255,0,110,.4);}
+.btn-cyan{background:transparent;border:2px solid var(--cyan);color:var(--cyan);}
+.btn-cyan:hover:not(:disabled),.btn-cyan:active:not(:disabled){background:var(--cyan);color:#000;}
+.btn-yellow{background:var(--yellow);color:#000;border:2px solid var(--yellow);}
+.btn-yellow:hover:not(:disabled),.btn-yellow:active:not(:disabled){background:#fff176;}
+.btn-green{background:var(--green);color:#000;border:2px solid var(--green);}
+.btn-green:hover:not(:disabled),.btn-green:active:not(:disabled){background:#33ffaa;}
+.btn-red{background:transparent;border:1px solid var(--red);color:var(--red);}
+.btn-red:hover:not(:disabled),.btn-red:active:not(:disabled){background:rgba(255,51,51,.1);}
+.btn-dark{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid var(--border2);}
+.btn-dark:hover:not(:disabled),.btn-dark:active:not(:disabled){background:rgba(255,255,255,.1);color:#fff;}
+.btn-purple{background:var(--purple);color:#fff;border:2px solid var(--purple);}
+.btn-purple:hover:not(:disabled),.btn-purple:active:not(:disabled){background:#c96bff;}
+.btn-sm{padding:6px 10px;font-size:8px;}
+.btn-xs{padding:4px 8px;font-size:7px;letter-spacing:1px;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.field{margin-bottom:11px;}
+.field label{display:block;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:4px;}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;padding:10px 11px;font-family:'Share Tech Mono',monospace;font-size:12px;border-radius:4px;outline:none;transition:all .2s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(255,0,110,.1);}
+.field input::placeholder{color:rgba(255,255,255,.2);}
+.field select option{background:var(--dark2);}
+.field textarea{resize:vertical;min-height:70px;width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;padding:8px 11px;font-family:'Share Tech Mono',monospace;font-size:12px;border-radius:4px;outline:none;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:480px){.grid-2{grid-template-columns:1fr;}}
+.modal-overlay{position:fixed;inset:0;background:rgba(6,8,16,.92);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:var(--card);border:1px solid rgba(255,0,110,.2);border-radius:12px;padding:24px;max-width:420px;width:100%;position:relative;animation:popIn .3s ease both;max-height:90vh;overflow-y:auto;}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),var(--cyan));border-radius:12px 12px 0 0;}
+@keyframes popIn{from{opacity:0;transform:scale(.75);}to{opacity:1;transform:scale(1);}}
+.modal-close{position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(255,255,255,.4);font-size:17px;cursor:pointer;}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:2px;color:var(--pink);margin-bottom:3px;}
+.modal-sub{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:2px;margin-bottom:16px;}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--card);border:1px solid var(--border);color:#fff;padding:10px 20px;border-radius:30px;font-size:11px;letter-spacing:1px;z-index:300;transition:transform .3s ease;white-space:nowrap;max-width:90vw;text-align:center;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{border-color:var(--green);color:var(--green);}
+.toast.error{border-color:var(--pink);color:var(--pink);}
+.status-msg{text-align:center;padding:8px;font-size:10px;border-radius:4px;margin-top:8px;display:none;letter-spacing:1px;}
+.status-msg.error{display:block;background:rgba(255,0,110,.08);border:1px solid rgba(255,0,110,.3);color:var(--pink);}
+.status-msg.success{display:block;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.3);color:var(--green);}
+.tag{display:inline-block;font-size:8px;letter-spacing:1px;padding:2px 6px;border-radius:3px;font-family:'Orbitron',sans-serif;font-weight:700;}
+.tag-admin{background:rgba(255,0,110,.15);color:var(--pink);border:1px solid rgba(255,0,110,.3);}
+.tag-vip{background:rgba(180,75,255,.15);color:var(--purple);border:1px solid rgba(180,75,255,.3);}
+.tag-player{background:rgba(0,255,247,.08);color:var(--cyan);border:1px solid rgba(0,255,247,.2);}
+.tag-pending{background:rgba(255,230,0,.1);color:var(--yellow);border:1px solid rgba(255,230,0,.3);}
+.tag-approved{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.3);}
+.tag-rejected{background:rgba(255,51,51,.1);color:var(--red);border:1px solid rgba(255,51,51,.3);}
+.tag-active{background:rgba(0,255,136,.08);color:var(--green);border:1px solid rgba(0,255,136,.2);}
+.tag-banned{background:rgba(255,51,51,.1);color:var(--red);border:1px solid rgba(255,51,51,.3);}
+.auth-screen{position:fixed;inset:0;z-index:500;background:var(--dark);display:flex;align-items:center;justify-content:center;}
+.auth-box{background:var(--card);border:1px solid rgba(255,0,110,.2);border-radius:12px;padding:38px 30px;width:90%;max-width:380px;position:relative;overflow:hidden;}
+.auth-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),var(--cyan));}
+.divider{height:1px;background:var(--border2);margin:12px 0;}
+.text-muted{color:rgba(255,255,255,.3);font-size:11px;}
+.loading{text-align:center;padding:20px;color:var(--pink);font-size:10px;letter-spacing:3px;animation:blink 1.2s infinite;}
+.search-bar{background:rgba(255,255,255,.04);border:1px solid var(--border2);color:#fff;padding:10px 13px;font-family:'Share Tech Mono',monospace;font-size:12px;border-radius:4px;outline:none;transition:border-color .2s;width:100%;max-width:260px;}
+.search-bar:focus{border-color:var(--pink);}
+/* TOPUP REQUEST CARD */
+.req-card{background:var(--card2);border:1px solid var(--border2);border-radius:7px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden;}
+.req-card.pending{border-left:3px solid var(--yellow);}
+.req-card.approved{border-left:3px solid var(--green);opacity:.7;}
+.req-card.rejected{border-left:3px solid var(--red);opacity:.6;}
+.req-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;}
+.req-user{font-size:13px;color:#fff;font-weight:600;}
+.req-meta{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:8px;}
+.req-coins{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--yellow);}
+.req-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;}
+/* BROADCAST */
+.bc-compose{background:rgba(255,0,110,.06);border:1px solid rgba(255,0,110,.15);border-radius:8px;padding:16px;}
+.bc-compose h4{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--pink);margin-bottom:12px;}
+.bc-item{padding:10px 0;border-bottom:1px solid var(--border2);display:flex;align-items:flex-start;gap:10px;}
+.bc-content{flex:1;}
+.bc-text-preview{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;word-break:break-word;}
+.bc-meta{font-size:9px;color:rgba(255,255,255,.3);margin-top:3px;}
+.mt-10{margin-top:10px;}
+/* Payment info */
+.pay-info{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:14px;}
+.pay-info-item{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;text-align:center;flex:1;min-width:120px;}
+.pay-info-icon{font-size:1.8rem;margin-bottom:4px;}
+.pay-info-name{font-size:11px;color:#fff;font-weight:700;}
+.pay-info-num{font-size:12px;color:var(--cyan);font-family:'Orbitron',sans-serif;margin-top:2px;}
+/* Shop items list */
+.shop-item-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.shop-item-card{background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:12px;text-align:center;}
+.shop-item-icon{font-size:1.5rem;margin-bottom:5px;}
+.shop-item-name{font-size:10px;color:#fff;font-family:'Orbitron',sans-serif;margin-bottom:3px;}
+.shop-item-price{font-size:11px;color:var(--yellow);}
+/* Player profile view */
+.player-view-card{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:16px;margin-bottom:14px;}
+.player-view-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.player-view-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.player-view-info{flex:1;}
+.player-view-name{font-family:'Orbitron',sans-serif;font-size:1rem;color:#fff;}
+.player-view-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.player-view-stat{text-align:center;padding:8px;background:var(--card);border-radius:4px;}
+.player-view-stat-val{font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--cyan);}
+.player-view-stat-lbl{font-size:8px;color:rgba(255,255,255,.4);letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- MODALS -->
+
+<!-- MODAL: EDIT SCORE -->
+<div class="modal-overlay" id="modal-edit-score">
+  <div class="modal-box" style="max-width:380px;">
+    <button class="modal-close" onclick="closeModal('modal-edit-score')">✕</button>
+    <div class="modal-title">✏️ EDIT SKOR</div>
+    <div class="modal-sub" id="es-sub">LEADERBOARD</div>
+    <input type="hidden" id="es-uid">
+    <input type="hidden" id="es-key">
+    <div style="background:rgba(0,255,247,.05);border:1px solid rgba(0,255,247,.15);border-radius:6px;padding:12px;margin-bottom:14px;">
+      <div style="font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:4px;">SKOR SAAT INI</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--cyan);" id="es-current">0</div>
+    </div>
+    <div class="field"><label>Skor Baru</label><input type="number" id="es-new-score" min="0" placeholder="Masukkan skor baru..."></div>
+    <div class="field"><label>Alasan (opsional)</label><input type="text" id="es-reason" placeholder="Contoh: Koreksi manual..."></div>
+    <div class="status-msg" id="es-status"></div>
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button class="btn btn-dark" style="flex:1" onclick="closeModal('modal-edit-score')">BATAL</button>
+      <button class="btn btn-cyan" style="flex:1" id="btn-save-score">💾 SIMPAN</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-edit-user">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-edit-user')">✕</button>
+    <div class="modal-title">EDIT PEMAIN</div>
+    <div class="modal-sub">UBAH DATA AKUN</div>
+    <input type="hidden" id="eu-uid">
+    <div class="grid-2">
+      <div class="field"><label>Koin</label><input type="number" id="eu-coins" min="0"></div>
+      <div class="field"><label>Best Score</label><input type="number" id="eu-best" min="0"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Role</label><select id="eu-role"><option value="player">Player</option><option value="admin">Admin</option></select></div>
+      <div class="field"><label>VIP</label><select id="eu-vip"><option value="false">Tidak VIP</option><option value="true">VIP 👑</option></select></div>
+    </div>
+    <div class="field"><label>Bio</label><input type="text" id="eu-bio" maxlength="100" placeholder="Bio..."></div>
+    <div class="field"><label>Password Baru (kosongkan jika tidak)</label><input type="password" id="eu-pass" placeholder="Password baru..."></div>
+    <div class="status-msg" id="eu-status"></div>
+    <button class="btn btn-pink btn-full mt-10" id="btn-save-user">💾 SIMPAN</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-give-item">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-give-item')">✕</button>
+    <div class="modal-title">BERI ITEM</div>
+    <div class="modal-sub" id="gi-sub">KE PEMAIN</div>
+    <input type="hidden" id="gi-uid">
+    <div class="field"><label>Pilih Item</label>
+      <select id="gi-item">
+        <option value="vip">👑 VIP Pass</option>
+        <option value="boost_2x">🚀 Boost 2x</option>
+        <option value="auto_clicker">🤖 Auto Clicker</option>
+        <option value="time_freeze">❄️ Time Freeze</option>
+        <option value="combo_master">🔥 Combo Master</option>
+        <option value="lucky_charm">🍀 Lucky Charm</option>
+        <option value="mega_boost">⚡ Mega Boost</option>
+        <option value="extra_time">⏱️ Extra Time</option>
+        <option value="shield">🛡️ Lucky Shield</option>
+        <option value="second_chance">🔄 Second Chance</option>
+        <option value="avatar_fire">🔥 Avatar Api</option>
+        <option value="avatar_star">⭐ Avatar Bintang</option>
+        <option value="avatar_dragon">🐉 Avatar Naga</option>
+        <option value="avatar_angel">👼 Avatar Angel</option>
+        <option value="avatar_demon">😈 Avatar Demon</option>
+        <option value="title_legend">🏅 Gelar Legend</option>
+        <option value="title_master">🎖️ Gelar Master</option>
+        <option value="title_king">👑 Gelar King</option>
+        <option value="effect_rainbow">🌈 Effect Rainbow</option>
+      </select>
+    </div>
+    <div class="field"><label>Jumlah / Uses</label><input type="number" id="gi-uses" value="1" min="1"></div>
+    <button class="btn btn-purple btn-full mt-10" id="btn-give-item">🎁 BERI ITEM</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-view-player">
+  <div class="modal-box" style="max-width:500px;">
+    <button class="modal-close" onclick="closeModal('modal-view-player')">✕</button>
+    <div class="modal-title">DETAIL PEMAIN</div>
+    <div class="modal-sub" id="vp-sub">PROFIL LENGKAP</div>
+    <div id="vp-content">
+      <div class="loading">MEMUAT...</div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div class="auth-screen" id="admin-auth">
+  <div class="auth-box">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;color:var(--pink);letter-spacing:3px;">⚙️ ADMIN</div>
+      <div style="font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-top:5px;">BLITZ CLICKER PANEL</div>
+    </div>
+    <div class="field"><label>Username Admin</label><input type="text" id="admin-user" placeholder="Username..." autocomplete="username"></div>
+    <div class="field"><label>Password</label><input type="password" id="admin-pass" placeholder="Password..." autocomplete="current-password"></div>
+    <div class="status-msg" id="auth-status"></div>
+    <button class="btn btn-pink btn-full mt-10" id="btn-admin-login">🔐 MASUK</button>
+  </div>
+</div>
+
+<!-- ADMIN LAYOUT -->
+<div class="admin-layout" id="admin-panel" style="display:none;">
+  <aside class="sidebar">
+    <div class="sb-logo"><h1>⚙️ BLITZ ADMIN</h1><p>CONTROL PANEL</p></div>
+    <div class="sb-who"><div class="adot"></div><div><div style="font-size:11px;color:#fff;letter-spacing:1px;" id="sb-name">ADMIN</div><div style="font-size:8px;color:var(--pink);letter-spacing:2px;">ADMINISTRATOR</div></div></div>
+    <nav class="sb-nav">
+      <div class="s-tab active" data-page="dashboard"><span class="icon">📊</span>Dashboard</div>
+      <div class="s-tab" data-page="topup-req"><span class="icon">💰</span>Top Up Request<span class="badge" id="badge-req">0</span></div>
+      <div class="s-tab" data-page="players"><span class="icon">👥</span>Pemain<span class="badge" id="badge-pl">0</span></div>
+      <div class="s-tab" data-page="scores"><span class="icon">🏆</span>Leaderboard</div>
+      <div class="s-tab" data-page="shop-items"><span class="icon">🛒</span>Shop Items</div>
+      <div class="s-tab" data-page="broadcast"><span class="icon">📢</span>Broadcast</div>
+      <div class="s-tab" data-page="chat-mod"><span class="icon">💬</span>Chat</div>
+      <div class="s-tab" data-page="logs"><span class="icon">📋</span>Log Aktivitas</div>
+      <div class="s-tab" data-page="settings"><span class="icon">⚙️</span>Pengaturan</div>
+    </nav>
+    <div class="sb-foot">
+      <button class="btn btn-dark btn-full btn-sm" id="btn-admin-logout">🚪 LOGOUT</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">DASHBOARD</div>
+      <div class="topbar-right">
+        <div class="live-badge"><div class="adot"></div>LIVE</div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="apage active" id="apage-dashboard">
+        <div class="stats-row">
+          <div class="stat-box c"><div class="sv" style="color:var(--cyan)" id="d-players">—</div><div class="sl">Total Pemain</div></div>
+          <div class="stat-box p"><div class="sv" style="color:var(--pink)" id="d-games">—</div><div class="sl">Total Game</div></div>
+          <div class="stat-box y"><div class="sv" style="color:var(--yellow)" id="d-coins">—</div><div class="sl">Koin Beredar</div></div>
+          <div class="stat-box v"><div class="sv" style="color:var(--purple)" id="d-vip">—</div><div class="sl">Pemain VIP</div></div>
+          <div class="stat-box g"><div class="sv" style="color:var(--green)" id="d-pending">—</div><div class="sl">Request Pending</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="panel"><div class="panel-head"><div class="panel-title">▸ TOP 5</div></div><div id="dash-top5"><div class="loading">MEMUAT...</div></div></div>
+          <div class="panel"><div class="panel-head"><div class="panel-title">▸ REQUEST TERBARU</div><button class="btn btn-dark btn-sm" onclick="showAdminPage('topup-req')">Lihat Semua</button></div><div id="dash-req"><div class="loading">MEMUAT...</div></div></div>
+        </div>
+        
+        <!-- Champion Section -->
+        <div class="panel" style="background:linear-gradient(135deg,rgba(255,230,0,.1),var(--card));border-color:rgba(255,230,0,.3);">
+          <div class="panel-head"><div class="panel-title" style="color:var(--yellow);">▸ CHAMPION SAAT INI</div></div>
+          <div id="dash-champion"><div class="loading">MEMUAT...</div></div>
+        </div>
+      </div>
+
+      <!-- TOPUP REQUESTS -->
+      <div class="apage" id="apage-topup-req">
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <button class="btn btn-dark btn-sm" onclick="filterReq('pending')" id="f-pending">⏳ PENDING</button>
+          <button class="btn btn-dark btn-sm" onclick="filterReq('approved')" id="f-approved">✅ DISETUJUI</button>
+          <button class="btn btn-dark btn-sm" onclick="filterReq('rejected')" id="f-rejected">❌ DITOLAK</button>
+          <button class="btn btn-dark btn-sm" onclick="filterReq('all')" id="f-all">📋 SEMUA</button>
+        </div>
+        <div id="req-list"><div class="loading">MEMUAT...</div></div>
+      </div>
+
+      <!-- PLAYERS -->
+      <div class="apage" id="apage-players">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+          <input type="text" class="search-bar" id="player-search" placeholder="🔍 Cari pemain...">
+          <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:2px;" id="player-count"></div>
+        </div>
+        <div class="panel" style="padding:0;">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Av</th><th>Username</th><th>Koin</th><th>Score</th><th>Game</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody id="players-tbody"><tr><td colspan="7" class="loading">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCORES -->
+      <div class="apage" id="apage-scores">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+          <div style="font-size:10px;color:rgba(255,255,255,.3);" id="scores-count"></div>
+          <button class="btn btn-red btn-sm" id="btn-reset-scores">🗑️ RESET SEMUA</button>
+        </div>
+        <div class="panel" style="padding:0;">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Pemain</th><th>Skor</th><th>VIP</th><th>Waktu</th><th>Aksi</th></tr></thead>
+              <tbody id="scores-tbody"><tr><td colspan="6" class="loading">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOP ITEMS -->
+      <div class="apage" id="apage-shop-items">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">▸ DAFTAR ITEM SHOP</div></div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:14px;">Item-item yang tersedia di shop untuk pemain beli.</div>
+          <div class="shop-item-list" id="shop-items-list">
+            <div class="loading">MEMUAT...</div>
+          </div>
+        </div>
+        
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">▸ TAMBAH ITEM BARU</div></div>
+          <div class="grid-2">
+            <div class="field"><label>Nama Item</label><input type="text" id="new-item-name" placeholder="Nama item..."></div>
+            <div class="field"><label>Icon (emoji)</label><input type="text" id="new-item-icon" placeholder="Contoh: 🎁"></div>
+          </div>
+          <div class="field"><label>Deskripsi</label><input type="text" id="new-item-desc" placeholder="Deskripsi item..."></div>
+          <div class="grid-2">
+            <div class="field"><label>Harga (koin)</label><input type="number" id="new-item-price" placeholder="500" min="0"></div>
+            <div class="field"><label>Type</label>
+              <select id="new-item-type">
+                <option value="consumable">Consumable</option>
+                <option value="cosmetic">Cosmetic</option>
+                <option value="vip">VIP</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Uses (0 untuk permanent)</label><input type="number" id="new-item-uses" placeholder="5" min="0"></div>
+          <button class="btn btn-cyan" id="btn-add-item">➕ TAMBAH ITEM</button>
+        </div>
+      </div>
+
+      <!-- BROADCAST -->
+      <div class="apage" id="apage-broadcast">
+        <div class="panel">
+          <div class="panel-title">▸ KIRIM BROADCAST KE SEMUA PEMAIN</div>
+          <div class="bc-compose">
+            <h4>📢 TULIS PESAN BROADCAST</h4>
+            <div class="field"><label>Judul / Topik</label><input type="text" id="bc-title" placeholder="Contoh: Maintenance, Update, Event..." maxlength="50"></div>
+            <div class="field"><label>Isi Pesan</label><textarea id="bc-msg" placeholder="Tulis pesan yang akan tampil ke semua pemain..." maxlength="300"></textarea></div>
+            <div class="field">
+              <label>Tipe</label>
+              <select id="bc-type">
+                <option value="info">ℹ️ Informasi</option>
+                <option value="event">🎉 Event</option>
+                <option value="maintenance">🔧 Maintenance</option>
+                <option value="promo">💰 Promo</option>
+                <option value="warning">⚠️ Peringatan</option>
+              </select>
+            </div>
+            <button class="btn btn-pink" id="btn-send-bc">📢 KIRIM BROADCAST SEKARANG</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">▸ RIWAYAT BROADCAST</div><button class="btn btn-red btn-sm" id="btn-clear-bc">🗑️ HAPUS SEMUA</button></div>
+          <div id="bc-history"><div class="loading">MEMUAT...</div></div>
+        </div>
+      </div>
+
+      <!-- CHAT MOD -->
+      <div class="apage" id="apage-chat-mod">
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <button class="btn btn-red btn-sm" id="btn-clear-chat">🗑️ HAPUS SEMUA CHAT</button>
+        </div>
+        <div class="panel" style="padding:14px;">
+          <div id="admin-chat" style="max-height:480px;overflow-y:auto;"></div>
+        </div>
+      </div>
+
+      <!-- LOGS -->
+      <div class="apage" id="apage-logs">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">▸ ACTIVITY LOG</div><button class="btn btn-red btn-sm" id="btn-clear-logs">HAPUS LOG</button></div>
+          <div id="logs-list"><div class="loading">MEMUAT...</div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="apage" id="apage-settings">
+        <!-- Payment Info -->
+        <div class="panel" style="background:linear-gradient(135deg,rgba(0,255,136,.05),rgba(0,255,247,.03));">
+          <div class="panel-title" style="color:var(--green);">▸ INFO PEMBAYARAN E-WALLET</div>
+          <div class="pay-info">
+            <div class="pay-info-item">
+              <div class="pay-info-icon">💙</div>
+              <div class="pay-info-name">DANA</div>
+              <div class="pay-info-num" id="set-dana-display">085119654305</div>
+            </div>
+            <div class="pay-info-item">
+              <div class="pay-info-icon">💜</div>
+              <div class="pay-info-name">OVO</div>
+              <div class="pay-info-num" id="set-ovo-display">085119654305</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4);text-align:center;">Atas Nama: <strong style="color:var(--yellow);">BLITZ GAME</strong></div>
+        </div>
+        
+        <div class="panel">
+          <div class="panel-title">▸ PENGATURAN GAME</div>
+          <div class="grid-2">
+            <div class="field"><label>Durasi Game (detik)</label><input type="number" id="set-dur" value="10" min="5" max="60"></div>
+            <div class="field"><label>Koin Registrasi</label><input type="number" id="set-reg" value="500" min="0"></div>
+          </div>
+          <div class="grid-2">
+            <div class="field"><label>Bonus VIP (%)</label><input type="number" id="set-vip" value="50" min="0"></div>
+            <div class="field"><label>Nomor DANA/OVO</label><input type="text" id="set-ewallet" value="085119654305" placeholder="08xxxxxxxxxx"></div>
+          </div>
+          <div class="field"><label>Nama Pemilik E-Wallet</label><input type="text" id="set-ewallet-name" value="BLITZ GAME" placeholder="Nama pemilik..."></div>
+          <button class="btn btn-pink" id="btn-save-settings">💾 SIMPAN</button>
+        </div>
+        <div class="panel">
+          <div class="panel-title">▸ DANGER ZONE</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="btn btn-red" id="dz-scores">🗑️ Reset Semua Skor</button>
+            <button class="btn btn-red" id="dz-chat">🗑️ Hapus Semua Chat</button>
+            <button class="btn btn-red" id="dz-bc">🗑️ Hapus Semua Broadcast</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase,ref,get,set,update,push,remove,onValue,query,orderByChild,limitToLast,serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app=initializeApp({databaseURL:"https://game-9b3b9-default-rtdb.asia-southeast1.firebasedatabase.app/"});
+const db=getDatabase(app);
+
+let adminUser=null, allPlayers={}, allReqs={}, allScoresData=[], reqFilter='pending';
+const DEFAULT_EWALLET = '085119654305';
+
+const SHOP_ITEMS = [
+  {id:'vip',name:'VIP PASS',icon:'👑',desc:'Aura ungu eksklusif, crown di nama, bonus koin +50% setiap game!',price:2000,type:'vip'},
+  {id:'boost_2x',name:'BOOST 2X',icon:'🚀',desc:'Koin 2x lipat untuk 5 game berikutnya.',price:500,type:'consumable',uses:5},
+  {id:'auto_clicker',name:'AUTO CLICKER',icon:'🤖',desc:'Klik otomatis 5x/detik selama 10 detik!',price:800,type:'consumable',uses:3},
+  {id:'time_freeze',name:'TIME FREEZE',icon:'❄️',desc:'Bekukan waktu selama 3 detik!',price:600,type:'consumable',uses:3},
+  {id:'combo_master',name:'COMBO MASTER',icon:'🔥',desc:'Setiap 10 klik berturut-turut = +5 bonus klik!',price:700,type:'consumable',uses:5},
+  {id:'lucky_charm',name:'LUCKY CHARM',icon:'🍀',desc:'25% chance dapat +10 koin bonus setiap game!',price:450,type:'consumable',uses:10},
+  {id:'mega_boost',name:'MEGA BOOST',icon:'⚡',desc:'Koin 3x lipat + waktu +5 detik untuk 3 game!',price:1500,type:'consumable',uses:3},
+  {id:'extra_time',name:'EXTRA TIME',icon:'⏱️',desc:'Tambah 3 detik waktu untuk 3 game.',price:400,type:'consumable',uses:3},
+  {id:'shield',name:'LUCKY SHIELD',icon:'🛡️',desc:'Skor minimum 20 klik dijamin untuk 3 game.',price:350,type:'consumable',uses:3},
+  {id:'second_chance',name:'SECOND CHANCE',icon:'🔄',desc:'Main ulang 1x tanpa pengurangan jika skor rendah!',price:550,type:'consumable',uses:2},
+  {id:'avatar_fire',name:'AVATAR API',icon:'🔥',desc:'Avatar eksklusif api berkobar.',price:300,type:'cosmetic'},
+  {id:'avatar_star',name:'AVATAR BINTANG',icon:'⭐',desc:'Avatar bintang berkilauan.',price:300,type:'cosmetic'},
+  {id:'avatar_dragon',name:'AVATAR NAGA',icon:'🐉',desc:'Avatar naga legendaris.',price:800,type:'cosmetic'},
+  {id:'avatar_angel',name:'AVATAR ANGEL',icon:'👼',desc:'Avatar malaikat suci.',price:600,type:'cosmetic'},
+  {id:'avatar_demon',name:'AVATAR DEMON',icon:'😈',desc:'Avatar iblis kekar.',price:600,type:'cosmetic'},
+  {id:'title_legend',name:'GELAR: LEGEND',icon:'🏅',desc:'Gelar LEGEND di bawah namamu.',price:1500,type:'cosmetic'},
+  {id:'title_master',name:'GELAR: MASTER',icon:'🎖️',desc:'Gelar MASTER yang ditakuti.',price:1000,type:'cosmetic'},
+  {id:'title_king',name:'GELAR: KING',icon:'👑',desc:'Gelar KING untuk pemenang.',price:1200,type:'cosmetic'},
+  {id:'effect_rainbow',name:'EFFECT RAINBOW',icon:'🌈',desc:'Efek klik berwarna-warni!',price:500,type:'cosmetic'},
+];
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type;void t.offsetWidth;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function setStatus(id,msg,type){const el=document.getElementById(id);el.textContent=msg;el.className='status-msg '+type;}
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+window.closeModal=closeModal;
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  overlay.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});
+});
+// Close on ESC
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.show').forEach(m=>closeModal(m.id));});
+function timeAgo(ts){if(!ts)return '';const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'d lalu';if(s<3600)return Math.floor(s/60)+'m lalu';if(s<86400)return Math.floor(s/3600)+'j lalu';return Math.floor(s/86400)+'hr lalu';}
+function hashPass(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}return h.toString(36);}
+function addLog(action,detail){push(ref(db,'admin_logs'),{admin:adminUser,action,detail,timestamp:serverTimestamp()});}
+
+// ── AUTH
+async function doAdminLogin(){
+  const user=document.getElementById('admin-user').value.trim().toLowerCase();
+  const pass=document.getElementById('admin-pass').value;
+  if(!user||!pass){setStatus('auth-status','Isi semua kolom!','error');return;}
+  setStatus('auth-status','Memeriksa...','success');
+  try{
+    const snap=await get(ref(db,`users/${user}`));
+    if(!snap.exists()){setStatus('auth-status','Akun tidak ditemukan!','error');return;}
+    const data=snap.val();
+    if(data.passwordHash!==hashPass(pass)){setStatus('auth-status','Password salah!','error');return;}
+    if(data.role!=='admin'){setStatus('auth-status','Bukan akun admin!','error');return;}
+    adminUser=user;localStorage.setItem('blitz_admin',user);
+    document.getElementById('admin-auth').style.display='none';
+    document.getElementById('admin-panel').style.display='grid';
+    document.getElementById('sb-name').textContent=user.toUpperCase();
+    initAdmin();
+  }catch(e){setStatus('auth-status','Error: '+e.message,'error');}
+}
+
+async function autoAdminLogin(){
+  const saved=localStorage.getItem('blitz_admin');
+  if(saved){
+    try{
+      const snap=await get(ref(db,`users/${saved}`));
+      if(snap.exists()&&snap.val().role==='admin'){
+        adminUser=saved;
+        document.getElementById('admin-auth').style.display='none';
+        document.getElementById('admin-panel').style.display='grid';
+        document.getElementById('sb-name').textContent=saved.toUpperCase();
+        initAdmin();return;
+      }
+    }catch(e){
+      console.error('autoAdminLogin error:',e);
+      showToast('Gagal terhubung ke database. Refresh halaman.','error');
+    }
+  }
+}
+
+document.getElementById('btn-admin-login').addEventListener('click',doAdminLogin);
+['admin-user','admin-pass'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doAdminLogin();}));
+document.getElementById('btn-admin-logout').addEventListener('click',()=>{localStorage.removeItem('blitz_admin');location.reload();});
+
+// ── INIT
+function initAdmin(){
+  listenPlayers();listenScores();listenRequests();listenChat();listenLogs();listenBroadcasts();loadSettings();renderShopItems();
+}
+
+// ── NAV
+const pageTitles={dashboard:'DASHBOARD','topup-req':'TOP UP REQUEST',players:'KELOLA PEMAIN',scores:'LEADERBOARD','shop-items':'SHOP ITEMS',broadcast:'BROADCAST',  'chat-mod':'MODERASI CHAT',logs:'LOG AKTIVITAS',settings:'PENGATURAN'};
+function showAdminPage(name){
+  document.querySelectorAll('.apage').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.s-tab').forEach(t=>t.classList.toggle('active',t.dataset.page===name));
+  document.getElementById('apage-'+name).classList.add('active');
+  document.getElementById('topbar-title').textContent=pageTitles[name]||name.toUpperCase();
+}
+window.showAdminPage=showAdminPage;
+document.querySelectorAll('.s-tab').forEach(t=>t.addEventListener('click',()=>showAdminPage(t.dataset.page)));
+
+// ── PLAYERS
+function listenPlayers(){
+  try{
+  onValue(ref(db,'users'),snap=>{
+    allPlayers=snap.val()||{};
+    renderDashboard();renderPlayersTable();
+    document.getElementById('badge-pl').textContent=Object.keys(allPlayers).length;
+    document.getElementById('player-count').textContent=Object.keys(allPlayers).length+' pemain';
+  },err=>{
+    console.error('listenPlayers error:',err);
+    showToast('Gagal memuat data pemain','error');
+  });
+  }catch(e){
+    console.error('listenPlayers setup error:',e);
+  }
+}
+
+function renderPlayersTable(filter=''){
+  const rows=Object.entries(allPlayers).filter(([k])=>!filter||k.includes(filter.toLowerCase())).sort((a,b)=>(b[1].bestScore||0)-(a[1].bestScore||0));
+  document.getElementById('players-tbody').innerHTML=rows.length?rows.map(([uid,p])=>`
+    <tr>
+      <td style="font-size:1.2rem;">${p.avatar||'😎'}</td>
+      <td><strong style="color:#fff;">${esc(uid)}</strong> ${p.isVip?'<span class="tag tag-vip">VIP</span>':''} ${p.role==='admin'?'<span class="tag tag-admin">ADMIN</span>':''}</td>
+      <td><span style="color:var(--yellow);font-family:'Orbitron',sans-serif;font-size:11px;">🪙${(p.coins||0).toLocaleString()}</span></td>
+      <td><span style="color:var(--cyan);font-family:'Orbitron',sans-serif;">${p.bestScore||0}</span></td>
+      <td>${p.totalGames||0}</td>
+      <td><span class="tag ${p.banned?'tag-banned':'tag-active'}">${p.banned?'BANNED':'AKTIF'}</span></td>
+      <td><div class="tbl-actions">
+        <button class="btn btn-cyan btn-xs" onclick="viewPlayer('${uid}')">👁️</button>
+        <button class="btn btn-cyan btn-xs" onclick="editUser('${uid}')">✏️</button>
+        <button class="btn btn-purple btn-xs" onclick="giveItemTo('${uid}')">🎁</button>
+        <button class="btn ${p.banned?'btn-green':'btn-red'} btn-xs" onclick="toggleBan('${uid}')">${p.banned?'UNBAN':'BAN'}</button>
+        <button class="btn btn-red btn-xs" onclick="deleteUser('${uid}')">🗑️</button>
+      </div></td>
+    </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;padding:20px;color:rgba(255,255,255,.3);">Tidak ditemukan</td></tr>';
+}
+
+document.getElementById('player-search').addEventListener('input',e=>renderPlayersTable(e.target.value));
+
+window.viewPlayer=async function(uid){
+  const p=allPlayers[uid];if(!p)return;
+  const rank=allScoresData.findIndex(s=>s.uid===uid)+1;
+  
+  const itemsList=Object.entries(p.items||{}).map(([k,v])=>{
+    const item=SHOP_ITEMS.find(i=>i.id===k);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border2);">
+      <span style="font-size:1.2rem;">${item?.icon||'🎁'}</span>
+      <div style="flex:1;"><div style="font-size:10px;color:#fff;">${item?.name||k}</div></div>
+      <span style="font-size:9px;color:var(--cyan);">${v.uses?v.uses+'x':'✓'}</span>
+    </div>`;
+  }).join('')||'<div class="text-muted" style="padding:10px;">Tidak ada item</div>';
+  
+  document.getElementById('vp-content').innerHTML=`
+    <div class="player-view-card">
+      <div class="player-view-header">
+        <div class="player-view-avatar">${p.avatar||'😎'}</div>
+        <div class="player-view-info">
+          <div class="player-view-name">${esc(uid)} ${p.isVip?'👑':''}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);">${p.bio||'Tidak ada bio'}</div>
+        </div>
+      </div>
+      <div class="player-view-stats">
+        <div class="player-view-stat"><div class="player-view-stat-val">${p.bestScore||0}</div><div class="player-view-stat-lbl">BEST</div></div>
+        <div class="player-view-stat"><div class="player-view-stat-val">${p.totalGames||0}</div><div class="player-view-stat-lbl">GAMES</div></div>
+        <div class="player-view-stat"><div class="player-view-stat-val" style="color:var(--yellow);">🪙${(p.coins||0).toLocaleString()}</div><div class="player-view-stat-lbl">KOINS</div></div>
+        <div class="player-view-stat"><div class="player-view-stat-val" style="color:var(--purple);">${rank?'#'+rank:'—'}</div><div class="player-view-stat-lbl">RANK</div></div>
+        <div class="player-view-stat"><div class="player-view-stat-val">${Object.keys(p.items||{}).length}</div><div class="player-view-stat-lbl">ITEMS</div></div>
+        <div class="player-view-stat"><div class="player-view-stat-val" style="font-size:.8rem;color:rgba(255,255,255,.6);">${p.joinedAt?new Date(p.joinedAt).toLocaleDateString('id-ID'):'—'}</div><div class="player-view-stat-lbl">JOINED</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">▸ ITEM DIMILIKI</div>
+      <div style="max-height:200px;overflow-y:auto;">${itemsList}</div>
+    </div>
+  `;
+  openModal('modal-view-player');
+};
+
+window.editUser=function(uid){
+  const p=allPlayers[uid];if(!p)return;
+  document.getElementById('eu-uid').value=uid;
+  document.getElementById('eu-coins').value=p.coins||0;
+  document.getElementById('eu-best').value=p.bestScore||0;
+  document.getElementById('eu-role').value=p.role||'player';
+  document.getElementById('eu-vip').value=p.isVip?'true':'false';
+  document.getElementById('eu-bio').value=p.bio||'';
+  document.getElementById('eu-pass').value='';
+  document.getElementById('eu-status').className='status-msg';
+  document.getElementById('eu-status').textContent='';
+  openModal('modal-edit-user');
+};
+
+document.getElementById('btn-save-user').addEventListener('click',async()=>{
+  const uid=document.getElementById('eu-uid').value;
+  const updates={coins:parseInt(document.getElementById('eu-coins').value)||0,bestScore:parseInt(document.getElementById('eu-best').value)||0,role:document.getElementById('eu-role').value,isVip:document.getElementById('eu-vip').value==='true',bio:document.getElementById('eu-bio').value.trim()};
+  const np=document.getElementById('eu-pass').value;
+  if(np&&np.length>=6)updates.passwordHash=hashPass(np);
+  try{
+    await update(ref(db,`users/${uid}`),updates);
+    addLog('EDIT_USER',`Edit ${uid}`);closeModal('modal-edit-user');showToast(`✅ ${uid} diperbarui!`);
+  }catch(e){setStatus('eu-status','Error: '+e.message,'error');}
+});
+
+window.giveItemTo=function(uid){
+  document.getElementById('gi-uid').value=uid;
+  document.getElementById('gi-sub').textContent='KE: '+uid.toUpperCase();
+  openModal('modal-give-item');
+};
+
+document.getElementById('btn-give-item').addEventListener('click',async()=>{
+  const uid=document.getElementById('gi-uid').value;
+  const itemId=document.getElementById('gi-item').value;
+  const uses=parseInt(document.getElementById('gi-uses').value)||1;
+  const updates={};
+  if(itemId==='vip')updates.isVip=true;
+  const cur=allPlayers[uid]?.items?.[itemId]?.uses||0;
+  updates[`items/${itemId}`]={uses:itemId==='vip'?1:cur+uses,type:itemId==='vip'?'vip':'item',giftedBy:'admin'};
+  try{
+    await update(ref(db,`users/${uid}`),updates);
+    addLog('GIVE_ITEM',`Beri ${itemId} ke ${uid}`);closeModal('modal-give-item');showToast(`🎁 Item diberikan ke ${uid}!`);
+  }catch(e){showToast('Error: '+e.message,'error');}
+});
+
+window.toggleBan=async function(uid){
+  const nb=!allPlayers[uid]?.banned;
+  try{
+    await update(ref(db,`users/${uid}`),{banned:nb});
+    addLog(nb?'BAN':'UNBAN',uid);showToast(nb?`🚫 ${uid} dibanned`:`✅ ${uid} di-unban`);
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+window.deleteUser=async function(uid){
+  if(!confirm(`Hapus "${uid}"? Permanen!`))return;
+  try{
+    await remove(ref(db,`users/${uid}`));addLog('DELETE_USER',uid);showToast(`🗑️ ${uid} dihapus!`,'error');
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+// ── TOP UP REQUESTS
+function listenRequests(){
+  try{
+  onValue(query(ref(db,'topup_requests'),orderByChild('requestedAt'),limitToLast(200)),snap=>{
+    allReqs=snap.val()||{};
+    const pending=Object.values(allReqs).filter(r=>r.status==='pending').length;
+    document.getElementById('badge-req').textContent=pending;
+    document.getElementById('d-pending').textContent=pending;
+    renderRequests();
+    renderDashboard();
+  },err=>{
+    console.error('listenRequests error:',err);
+  });
+  }catch(e){
+    console.error('listenRequests setup error:',e);
+  }
+}
+
+window.filterReq=function(f){
+  reqFilter=f;
+  ['pending','approved','rejected','all'].forEach(x=>{
+    const el=document.getElementById('f-'+x);
+    el.className='btn '+(f===x?'btn-pink':'btn-dark')+' btn-sm';
+  });
+  renderRequests();
+};
+
+function renderRequests(){
+  const entries=Object.entries(allReqs).sort((a,b)=>(b[1].requestedAt||0)-(a[1].requestedAt||0));
+  const filtered=reqFilter==='all'?entries:entries.filter(([,r])=>r.status===reqFilter);
+  if(!filtered.length){document.getElementById('req-list').innerHTML='<div class="text-muted" style="text-align:center;padding:24px;">Tidak ada request '+(reqFilter==='all'?'':'dengan status '+reqFilter)+'</div>';return;}
+  document.getElementById('req-list').innerHTML=filtered.map(([key,req])=>`
+    <div class="req-card ${req.status}">
+      <div class="req-head">
+        <div>
+          <div class="req-user">👤 ${esc(req.username||req.uid)}</div>
+          <div class="req-meta">📦 ${esc(req.pkgLabel)} · ${esc(req.price)} · ${timeAgo(req.requestedAt)}</div>
+          ${req.paymentMethod?`<div style="font-size:10px;color:var(--cyan);margin-top:2px;">💳 ${req.paymentMethod.toUpperCase()}</div>`:''}
+          ${req.note?`<div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:3px;">📝 ${esc(req.note)}</div>`:''}
+        </div>
+        <span class="tag tag-${req.status}">${req.status==='pending'?'MENUNGGU':req.status==='approved'?'DISETUJUI':'DITOLAK'}</span>
+      </div>
+      <div class="req-coins">🪙 +${(req.coins||0).toLocaleString()} koin</div>
+      ${req.status==='pending'?`
+      <div class="req-actions">
+        <button class="btn btn-green btn-sm" onclick="approveReq('${key}')">✅ SETUJUI & KIRIM KOIN</button>
+        <button class="btn btn-red btn-sm" onclick="rejectReq('${key}')">❌ TOLAK</button>
+      </div>`:req.status==='approved'?`<div style="font-size:10px;color:var(--green);margin-top:6px;">✅ Disetujui oleh ${esc(req.approvedBy||'admin')} · ${timeAgo(req.approvedAt)}</div>`:`<div style="font-size:10px;color:var(--red);margin-top:6px;">❌ Ditolak · ${esc(req.rejectReason||'')}</div>`}
+    </div>`).join('');
+}
+
+window.approveReq=async function(key){
+  const req=allReqs[key];if(!req||req.status!=='pending')return;
+  if(!confirm(`Setujui top up ${req.pkgLabel} untuk ${req.username}? Koin +${req.coins} akan otomatis masuk.`))return;
+  const player=allPlayers[req.uid];
+  const newCoins=(player?.coins||0)+req.coins;
+  try{
+    await update(ref(db,`users/${req.uid}`),{coins:newCoins});
+    await update(ref(db,`topup_requests/${key}`),{status:'approved',approvedBy:adminUser,approvedAt:serverTimestamp()});
+    const txSnap=await get(ref(db,`users/${req.uid}/transactions`));
+    if(txSnap.exists()){
+      const txs=Object.entries(txSnap.val());
+      const match=txs.reverse().find(([,t])=>t.type==='topup_request'&&t.status==='pending'&&t.pkg===req.pkgLabel);
+      if(match)await update(ref(db,`users/${req.uid}/transactions/${match[0]}`),{status:'approved'});
+    }
+    await push(ref(db,'chat'),{name:'📢 SISTEM',text:`🎉 Top up ${req.pkgLabel} milik ${req.username} telah DISETUJUI! +🪙${req.coins} koin masuk.`,isSystem:true,uid:'admin',timestamp:serverTimestamp()});
+    addLog('APPROVE_TOPUP',`Setujui ${req.pkgLabel} untuk ${req.uid}: +${req.coins} koin`);
+    showToast(`✅ Top up disetujui! +${req.coins} koin ke ${req.username}`);
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+window.rejectReq=async function(key){
+  const req=allReqs[key];if(!req||req.status!=='pending')return;
+  const reason=prompt('Alasan penolakan (opsional):');
+  try{
+    await update(ref(db,`topup_requests/${key}`),{status:'rejected',rejectedBy:adminUser,rejectReason:reason||'',rejectedAt:serverTimestamp()});
+    const txSnap=await get(ref(db,`users/${req.uid}/transactions`));
+    if(txSnap.exists()){
+      const txs=Object.entries(txSnap.val());
+      const match=txs.reverse().find(([,t])=>t.type==='topup_request'&&t.status==='pending'&&t.pkg===req.pkgLabel);
+      if(match)await update(ref(db,`users/${req.uid}/transactions/${match[0]}`),{status:'rejected'});
+    }
+    addLog('REJECT_TOPUP',`Tolak ${req.pkgLabel} dari ${req.uid}`);
+    showToast(`❌ Request ${req.username} ditolak`,'error');
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+// ── SCORES
+function listenScores(){
+  onValue(query(ref(db,'scores'),orderByChild('score'),limitToLast(100)),snap=>{
+    const data=snap.val()||{};
+    const best={};
+    Object.entries(data).forEach(([k,v])=>{if(!best[v.uid]||v.score>best[v.uid].score)best[v.uid]={...v,_key:k};});
+    allScoresData=Object.values(best).sort((a,b)=>b.score-a.score);
+    document.getElementById('scores-count').textContent=allScoresData.length+' skor';
+    renderScoresTable();renderDashboard();
+  });
+}
+
+function renderScoresTable(){
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('scores-tbody').innerHTML=allScoresData.slice(0,50).map((s,i)=>`
+    <tr>
+      <td style="font-family:'Orbitron',sans-serif;font-weight:700;color:${i<3?['#ffe600','#c0c0c0','#cd7f32'][i]:'rgba(255,255,255,.4)'};">${i<3?medals[i]:'#'+(i+1)}</td>
+      <td><strong style="color:#fff;">${esc(s.name||s.uid)}</strong></td>
+      <td><span style="font-family:'Orbitron',sans-serif;font-size:13px;color:var(--cyan);">${s.score}</span></td>
+      <td>${s.isVip?'<span class="tag tag-vip">VIP</span>':''}</td>
+      <td style="font-size:10px;color:rgba(255,255,255,.3);">${timeAgo(s.timestamp)}</td>
+      <td><button class="btn btn-red btn-xs" onclick="deleteScore('${s._key}')">🗑️</button> <button class="btn btn-cyan btn-xs" onclick="editScore('${s._key}','${s.uid}',${s.score})">✏️</button></td>
+    </tr>`).join('')||'<tr><td colspan="6" style="text-align:center;padding:20px;color:rgba(255,255,255,.3);">Belum ada skor</td></tr>';
+}
+
+window.editScore=function(key,uid,currentScore){
+  document.getElementById('es-uid').value=uid;
+  document.getElementById('es-key').value=key;
+  document.getElementById('es-current').textContent=currentScore;
+  document.getElementById('es-new-score').value=currentScore;
+  document.getElementById('es-sub').textContent='PEMAIN: '+uid.toUpperCase();
+  document.getElementById('es-status').className='status-msg';
+  document.getElementById('es-reason').value='';
+  openModal('modal-edit-score');
+};
+
+document.getElementById('btn-save-score').addEventListener('click',async()=>{
+  const uid=document.getElementById('es-uid').value;
+  const key=document.getElementById('es-key').value;
+  const newScore=parseInt(document.getElementById('es-new-score').value);
+  const reason=document.getElementById('es-reason').value.trim();
+  if(isNaN(newScore)||newScore<0){setStatus('es-status','Skor tidak valid!','error');return;}
+  try{
+    // Update score entry in scores collection
+    await update(ref(db,`scores/${key}`),{score:newScore,editedBy:adminUser,editedAt:serverTimestamp()});
+    // Also update bestScore on user if this is their best
+    const playerSnap=await get(ref(db,`users/${uid}`));
+    if(playerSnap.exists()){
+      const player=playerSnap.val();
+      if(newScore>=(player.bestScore||0)){
+        await update(ref(db,`users/${uid}`),{bestScore:newScore});
+      }
+    }
+    addLog('EDIT_SCORE',`Edit skor ${uid}: ${document.getElementById('es-current').textContent} → ${newScore}${reason?' ('+reason+')':''}`);
+    closeModal('modal-edit-score');
+    showToast(`✅ Skor ${uid} diubah ke ${newScore}!`);
+  }catch(e){setStatus('es-status','Error: '+e.message,'error');}
+});
+
+window.deleteScore=async function(key){
+  if(!confirm('Hapus skor ini?'))return;
+  try{
+    await remove(ref(db,`scores/${key}`));addLog('DELETE_SCORE',`Hapus skor key: ${key}`);showToast('Skor dihapus','error');
+  }catch(e){showToast('Error: '+e.message,'error');}
+};
+
+document.getElementById('btn-reset-scores').addEventListener('click',async()=>{
+  if(!confirm('HAPUS SEMUA SKOR?'))return;
+  try{
+    await remove(ref(db,'scores'));addLog('RESET_SCORES','Reset semua');showToast('🗑️ Semua skor direset!','error');
+  }catch(e){showToast('Error: '+e.message,'error');}
+});
+
+// ── SHOP ITEMS
+function renderShopItems(){
+  document.getElementById('shop-items-list').innerHTML=SHOP_ITEMS.map(item=>`
+    <div class="shop-item-card">
+      <div class="shop-item-icon">${item.icon}</div>
+      <div class="shop-item-name">${item.name}</div>
+      <div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:5px;">${item.desc.substring(0,30)}...</div>
+      <div class="shop-item-price">🪙 ${item.price.toLocaleString()}</div>
+      <div style="font-size:8px;color:var(--cyan);margin-top:3px;">${item.type}${item.uses?' · '+item.uses+' uses':''}</div>
+    </div>
+  `).join('');
+}
+
+// ── BROADCAST
+document.getElementById('btn-send-bc').addEventListener('click',async()=>{
+  const title=document.getElementById('bc-title').value.trim();
+  const msg=document.getElementById('bc-msg').value.trim();
+  const type=document.getElementById('bc-type').value;
+  if(!msg){showToast('Tulis pesan dulu!','error');return;}
+  const typeIcon={info:'ℹ️',event:'🎉',maintenance:'🔧',promo:'💰',warning:'⚠️'};
+  const fullText=`${typeIcon[type]||'📢'} ${title?'['+title+'] ':''}${msg}`;
+  try{
+    await push(ref(db,'broadcasts'),{title:title||'',text:fullText,type,by:adminUser,timestamp:serverTimestamp()});
+    await push(ref(db,'chat'),{name:'📢 SISTEM',text:fullText,isSystem:true,uid:'admin',timestamp:serverTimestamp()});
+    addLog('BROADCAST',fullText.slice(0,80));
+    document.getElementById('bc-title').value='';document.getElementById('bc-msg').value='';
+    showToast('📢 Broadcast terkirim ke semua pemain!');
+  }catch(e){showToast('Error: '+e.message,'error');}
+});
+
+function listenBroadcasts(){
+  onValue(query(ref(db,'broadcasts'),orderByChild('timestamp'),limitToLast(20)),snap=>{
+    const data=snap.val();
+    if(!data){document.getElementById('bc-history').innerHTML='<div class="text-muted" style="text-align:center;padding:16px;">Belum ada broadcast</div>';return;}
+    const items=Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0));
+    document.getElementById('bc-history').innerHTML=items.map(([id,bc])=>`
+      <div class="bc-item">
+        <div class="bc-content">
+          <div class="bc-text-preview">${esc(bc.text)}</div>
+          <div class="bc-meta">oleh ${esc(bc.by||'admin')} · ${timeAgo(bc.timestamp)}</div>
+        </div>
+        <button class="btn btn-red btn-xs" onclick="deleteBc('${id}')">🗑️</button>
+      </div>`).join('');
+  });
+}
+
+window.deleteBc=async function(id){try{await remove(ref(db,`broadcasts/${id}`));showToast('Broadcast dihapus','error');}catch(e){showToast('Error: '+e.message,'error');}};
+document.getElementById('btn-clear-bc').addEventListener('click',async()=>{if(!confirm('Hapus semua broadcast?'))return;try{await remove(ref(db,'broadcasts'));showToast('Semua broadcast dihapus','error');}catch(e){showToast('Error: '+e.message,'error');}});
+
+// ── CHAT
+function listenChat(){
+  onValue(query(ref(db,'chat'),orderByChild('timestamp'),limitToLast(100)),snap=>{
+    const data=snap.val();
+    if(!data){document.getElementById('admin-chat').innerHTML='<div class="text-muted" style="text-align:center;padding:20px;">Belum ada chat</div>';return;}
+    const msgs=Object.entries(data).sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0));
+    document.getElementById('admin-chat').innerHTML=msgs.map(([id,m])=>`
+      <div style="display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border2);">
+        <div style="flex:1;">
+          <div style="display:flex;gap:7px;align-items:center;margin-bottom:2px;">
+            <span style="color:${m.isSystem?'var(--pink)':m.isVip?'var(--purple)':'var(--cyan)'};font-size:10px;">${m.isSystem?'📢 ':''}${esc(m.name)}</span>
+            <span style="font-size:9px;color:rgba(255,255,255,.3);">${timeAgo(m.timestamp)}</span>
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,.75);word-break:break-word;">${esc(m.text)}</div>
+        </div>
+        <button class="btn btn-red btn-xs" onclick="deleteChat('${id}')">🗑️</button>
+      </div>`).join('');
+  });
+}
+
+window.deleteChat=async function(id){try{await remove(ref(db,`chat/${id}`));addLog('DELETE_CHAT',id);showToast('Pesan dihapus','error');}catch(e){showToast('Error: '+e.message,'error');}};
+document.getElementById('btn-clear-chat').addEventListener('click',async()=>{if(!confirm('Hapus SEMUA chat?'))return;try{await remove(ref(db,'chat'));addLog('CLEAR_CHAT','Hapus semua chat');showToast('Chat dihapus','error');}catch(e){showToast('Error: '+e.message,'error');}});
+
+// ── LOGS
+function listenLogs(){
+  onValue(query(ref(db,'admin_logs'),orderByChild('timestamp'),limitToLast(60)),snap=>{
+    const data=snap.val();
+    if(!data){document.getElementById('logs-list').innerHTML='<div class="text-muted" style="text-align:center;padding:18px;">Belum ada log</div>';return;}
+    const icons={EDIT_USER:'✏️',BAN:'🚫',UNBAN:'✅',DELETE_USER:'🗑️',GIVE_ITEM:'🎁',DELETE_SCORE:'🏆',RESET_SCORES:'🗑️',DELETE_CHAT:'💬',CLEAR_CHAT:'💬',BROADCAST:'📢',APPROVE_TOPUP:'✅',REJECT_TOPUP:'❌',SAVE_SETTINGS:'⚙️',VIEW_PLAYER:'👁️'};
+    const logs=Object.values(data).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+    document.getElementById('logs-list').innerHTML=logs.map(l=>`
+      <div style="display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--border2);">
+        <span style="font-size:1rem;flex-shrink:0;">${icons[l.action]||'📋'}</span>
+        <div style="flex:1;font-size:10px;color:rgba(255,255,255,.65);word-break:break-word;"><strong>${l.action}</strong> — ${esc(l.detail)} <span style="color:rgba(255,255,255,.35);">by ${esc(l.admin)}</span></div>
+        <span style="font-size:9px;color:rgba(255,255,255,.3);flex-shrink:0;">${timeAgo(l.timestamp)}</span>
+      </div>`).join('');
+  });
+}
+
+document.getElementById('btn-clear-logs').addEventListener('click',async()=>{if(!confirm('Hapus semua log?'))return;try{await remove(ref(db,'admin_logs'));showToast('Log dihapus','error');}catch(e){showToast('Error: '+e.message,'error');}});
+
+// ── SETTINGS
+async function loadSettings(){
+  try{
+    const snap=await get(ref(db,'settings'));
+    if(snap.exists()){
+      const s=snap.val();
+      document.getElementById('set-dur').value=s.gameDuration||10;
+      document.getElementById('set-reg').value=s.regCoins||500;
+      document.getElementById('set-vip').value=s.vipBonus||50;
+      document.getElementById('set-ewallet').value=s.ewalletNumber||DEFAULT_EWALLET;
+      document.getElementById('set-ewallet-name').value=s.ewalletName||'BLITZ GAME';
+      document.getElementById('set-dana-display').textContent=s.ewalletNumber||DEFAULT_EWALLET;
+      document.getElementById('set-ovo-display').textContent=s.ewalletNumber||DEFAULT_EWALLET;
+    }
+  }catch(e){console.error('loadSettings error:',e);}
+}
+
+document.getElementById('btn-save-settings').addEventListener('click',async()=>{
+  const settings={
+    gameDuration:parseInt(document.getElementById('set-dur').value)||10,
+    regCoins:parseInt(document.getElementById('set-reg').value)||500,
+    vipBonus:parseInt(document.getElementById('set-vip').value)||50,
+    ewalletNumber:document.getElementById('set-ewallet').value.trim()||DEFAULT_EWALLET,
+    ewalletName:document.getElementById('set-ewallet-name').value.trim()||'BLITZ GAME'
+  };
+  try{
+    await set(ref(db,'settings'),settings);
+    document.getElementById('set-dana-display').textContent=settings.ewalletNumber;
+    document.getElementById('set-ovo-display').textContent=settings.ewalletNumber;
+    addLog('SAVE_SETTINGS','Update pengaturan');showToast('✅ Pengaturan disimpan!');
+  }catch(e){showToast('Error: '+e.message,'error');}
+});
+
+document.getElementById('dz-scores').addEventListener('click',async()=>{if(!confirm('RESET SEMUA SKOR?'))return;try{await remove(ref(db,'scores'));addLog('RESET_SCORES','Dari settings');showToast('Semua skor direset!','error');}catch(e){showToast('Error: '+e.message,'error');}});
+document.getElementById('dz-chat').addEventListener('click',async()=>{if(!confirm('HAPUS SEMUA CHAT?'))return;try{await remove(ref(db,'chat'));showToast('Chat dihapus!','error');}catch(e){showToast('Error: '+e.message,'error');}});
+document.getElementById('dz-bc').addEventListener('click',async()=>{if(!confirm('HAPUS SEMUA BROADCAST?'))return;try{await remove(ref(db,'broadcasts'));showToast('Broadcast dihapus!','error');}catch(e){showToast('Error: '+e.message,'error');}});
+
+// ── DASHBOARD
+function renderDashboard(){
+  const players=Object.values(allPlayers);
+  document.getElementById('d-players').textContent=players.length;
+  document.getElementById('d-games').textContent=players.reduce((s,p)=>s+(p.totalGames||0),0);
+  document.getElementById('d-coins').textContent=players.reduce((s,p)=>s+(p.coins||0),0).toLocaleString();
+  document.getElementById('d-vip').textContent=players.filter(p=>p.isVip).length;
+  document.getElementById('dash-top5').innerHTML=allScoresData.slice(0,5).map((s,i)=>`
+    <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border2);">
+      <span style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;width:22px;color:${i<3?['#ffe600','#c0c0c0','#cd7f32'][i]:'rgba(255,255,255,.4)'};">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</span>
+      <span style="flex:1;font-size:11px;color:#fff;">${esc(s.name||s.uid)}</span>
+      <span style="font-family:'Orbitron',sans-serif;font-size:12px;color:var(--cyan);">${s.score}</span>
+    </div>`).join('')||'<div class="text-muted" style="text-align:center;padding:14px;">Belum ada data</div>';
+  const reqEntries=Object.entries(allReqs).sort((a,b)=>(b[1].requestedAt||0)-(a[1].requestedAt||0)).slice(0,4);
+  document.getElementById('dash-req').innerHTML=reqEntries.length?reqEntries.map(([,r])=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border2);">
+      <div><div style="font-size:11px;color:#fff;">${esc(r.username)} — ${esc(r.pkgLabel)}</div><div style="font-size:9px;color:rgba(255,255,255,.3);">${timeAgo(r.requestedAt)}</div></div>
+      <span class="tag tag-${r.status}">${r.status==='pending'?'MENUNGGU':r.status==='approved'?'OK':'TOLAK'}</span>
+    </div>`).join(''):'<div class="text-muted" style="text-align:center;padding:14px;">Belum ada request</div>';
+  
+  // Champion section
+  if(allScoresData.length > 0){
+    const champ = allScoresData[0];
+    const champPlayer = allPlayers[champ.uid];
+    document.getElementById('dash-champion').innerHTML=`
+      <div style="display:flex;align-items:center;gap:15px;">
+        <div style="font-size:3rem;animation:crownBounce 1s infinite;">👑</div>
+        <div style="flex:1;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;">${esc(champ.name||champ.uid)}</div>
+          <div style="font-size:11px;color:var(--cyan);">${champ.score.toLocaleString()} klik · ${champ.isVip?'👑 VIP':''}</div>
+        </div>
+      </div>
+    `;
+  } else {
+    document.getElementById('dash-champion').innerHTML='<div class="text-muted" style="text-align:center;">Belum ada champion</div>';
+  }
+}
+
+// Add crown bounce animation
+const crownStyle = document.createElement('style');
+crownStyle.textContent = `
+  @keyframes crownBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+`;
+document.head.appendChild(crownStyle);
+
+// Loading timeout - force show auth after 10 seconds
+setTimeout(()=>{
+  const authScreen = document.getElementById('admin-auth');
+  const adminPanel = document.getElementById('admin-panel');
+  if(authScreen && authScreen.style.display !== 'none' && adminPanel && adminPanel.style.display !== 'grid'){
+    showToast('Koneksi timeout. Silakan login manual.','error');
+  }
+}, 10000);
+
+autoAdminLogin();
+</script>
+</body>
+</html>
