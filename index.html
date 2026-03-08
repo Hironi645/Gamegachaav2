@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ BLITZ CLICKER</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#00fff7;--pink:#ff006e;--yellow:#ffe600;--green:#00ff88;--purple:#b44bff;--dark:#060810;--dark2:#090c18;--card:#0d1424;--card2:#111827;--border:rgba(0,255,247,0.12);--border2:rgba(255,255,255,0.07);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dark);color:#e0e0e0;font-family:'Share Tech Mono',monospace;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,247,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,247,0.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;opacity:0;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh);opacity:0;}10%{opacity:.5;}90%{opacity:.2;}100%{transform:translateY(-10vh);opacity:0;}}
+body.vip-active::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(180,75,255,.15),transparent 70%);pointer-events:none;z-index:1;animation:vipPulse 3s ease-in-out infinite;}
+@keyframes vipPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+.vip-badge{display:none;background:linear-gradient(135deg,#b44bff,#ff006e);color:#fff;font-size:9px;letter-spacing:2px;padding:2px 8px;border-radius:20px;font-family:'Orbitron',sans-serif;font-weight:700;}
+.vip-active .vip-badge{display:inline-block;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--dark);}::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px;}
+.wrapper{position:relative;z-index:2;max-width:960px;margin:0 auto;padding:0 14px 100px;}
+.nav{position:sticky;top:0;z-index:50;background:rgba(6,8,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 14px;}
+.nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:54px;flex-wrap:wrap;gap:4px;}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-tabs{display:flex;gap:2px;flex-wrap:wrap;}
+.nav-tab{background:transparent;border:none;color:rgba(255,255,255,.4);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;padding:5px 9px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:uppercase;}
+.nav-tab:hover{color:#fff;background:rgba(255,255,255,.06);}
+.nav-tab.active{color:var(--cyan);background:rgba(0,255,247,.08);border:1px solid rgba(0,255,247,.2);}
+.nav-tab.has-notif{position:relative;}
+.nav-tab.has-notif::after{content:'';position:absolute;top:4px;right:4px;width:6px;height:6px;background:var(--pink);border-radius:50%;animation:blink 1s infinite;}
+.nav-user{display:flex;align-items:center;gap:8px;}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid transparent;transition:all .2s;}
+.vip-active .nav-avatar{border-color:var(--purple);box-shadow:0 0 12px rgba(180,75,255,.5);}
+.nav-coins{font-size:11px;color:var(--yellow);letter-spacing:1px;}
+.page{display:none;animation:fadeUp .4s ease both;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.auth-wrap{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 0;}
+.auth-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:40px 32px;width:100%;max-width:420px;position:relative;overflow:hidden;}
+.auth-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--pink));}
+.auth-logo{text-align:center;margin-bottom:28px;}
+.auth-logo h1{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.auth-logo p{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:3px;margin-top:4px;}
+.auth-tabs{display:flex;margin-bottom:22px;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.auth-tab{flex:1;background:transparent;border:none;color:rgba(255,255,255,.4);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;padding:10px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.auth-tab.active{background:rgba(0,255,247,.1);color:var(--cyan);}
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:5px;}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;padding:9px 13px;font-family:'Share Tech Mono',monospace;font-size:13px;border-radius:4px;outline:none;transition:all .2s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,255,247,.1);}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.2);}
+.field select option{background:var(--dark2);}
+.field textarea{resize:vertical;min-height:70px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;padding:10px 18px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:all .2s;}
+.btn-full{width:100%;}
+.btn-cyan{background:transparent;border:2px solid var(--cyan);color:var(--cyan);}
+.btn-cyan:hover:not(:disabled){background:var(--cyan);color:#000;box-shadow:0 0 25px rgba(0,255,247,.4);transform:translateY(-1px);}
+.btn-pink{background:var(--pink);color:#fff;border:2px solid var(--pink);}
+.btn-pink:hover:not(:disabled){background:#ff2d85;box-shadow:0 0 25px rgba(255,0,110,.4);transform:translateY(-1px);}
+.btn-yellow{background:var(--yellow);color:#000;border:2px solid var(--yellow);}
+.btn-yellow:hover:not(:disabled){background:#fff176;transform:translateY(-1px);}
+.btn-green{background:var(--green);color:#000;border:2px solid var(--green);}
+.btn-green:hover:not(:disabled){background:#33ffaa;transform:translateY(-1px);}
+.btn-purple{background:var(--purple);color:#fff;border:2px solid var(--purple);}
+.btn-purple:hover:not(:disabled){background:#c96bff;transform:translateY(-1px);}
+.btn-dark{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid var(--border2);}
+.btn-dark:hover:not(:disabled){background:rgba(255,255,255,.1);color:#fff;}
+.btn-sm{padding:6px 12px;font-size:10px;}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative;overflow:hidden;margin-bottom:14px;}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),transparent 70%);}
+.panel-title{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:16px;opacity:.8;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--yellow);text-transform:uppercase;}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+@media(max-width:480px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+.stat-card{background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:13px;text-align:center;}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;color:var(--cyan);}
+.stat-lbl{font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:4px;text-transform:uppercase;}
+/* GAME */
+.game-layout{display:grid;grid-template-columns:1fr 260px;gap:14px;}
+@media(max-width:660px){.game-layout{grid-template-columns:1fr;}}
+.score-big{font-family:'Orbitron',sans-serif;font-size:3.5rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px rgba(0,255,247,.5);line-height:1;text-align:center;transition:transform .08s;}
+.score-big.pop{transform:scale(1.2);color:var(--yellow);}
+.timer-track{background:rgba(255,255,255,.07);border-radius:3px;height:5px;overflow:hidden;margin:8px 0 14px;}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:3px;transition:width .1s linear;}
+/* Game states */
+.game-ready-state,.game-active-state,.game-waiting-state{text-align:center;}
+.click-btn{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,247,.2),rgba(0,255,247,.04));border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-size:2.8rem;cursor:pointer;transition:all .08s;box-shadow:0 0 30px rgba(0,255,247,.15),inset 0 0 20px rgba(0,255,247,.06);user-select:none;position:relative;overflow:hidden;margin:0 auto;}
+.click-btn:active{transform:scale(.88);box-shadow:0 0 60px rgba(0,255,247,.5);}
+.click-btn.vip-btn{border-color:var(--purple);box-shadow:0 0 30px rgba(180,75,255,.4),inset 0 0 20px rgba(180,75,255,.1);}
+.click-btn.disabled{opacity:.25;pointer-events:none;}
+.start-btn-big{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,255,136,.2),rgba(0,255,136,.04));border:2px solid var(--green);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:all .15s;box-shadow:0 0 30px rgba(0,255,136,.2),inset 0 0 20px rgba(0,255,136,.06);user-select:none;margin:0 auto;color:var(--green);font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:2px;gap:4px;}
+.start-btn-big:hover{transform:scale(1.05);box-shadow:0 0 50px rgba(0,255,136,.4);}
+.start-btn-big span{font-size:2rem;}
+.float-txt{position:absolute;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--yellow);pointer-events:none;animation:floatTxt .8s ease-out forwards;z-index:99;}
+@keyframes floatTxt{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-60px) scale(1.4);}}
+/* LB */
+.lb-item{background:var(--card2);border:1px solid var(--border2);border-radius:5px;padding:10px 14px;display:flex;align-items:center;gap:11px;margin-bottom:7px;position:relative;overflow:hidden;}
+.lb-item.rank-1{border-color:rgba(255,230,0,.3);background:linear-gradient(135deg,rgba(255,230,0,.06),var(--card2));}
+.lb-item.rank-2{border-color:rgba(192,192,192,.2);}
+.lb-item.rank-3{border-color:rgba(205,127,50,.2);}
+.lb-item.is-me::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.lb-item.is-vip::after{content:'VIP';position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:8px;letter-spacing:2px;color:var(--purple);font-family:'Orbitron',sans-serif;font-weight:700;opacity:.6;}
+.rank-num{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;width:26px;text-align:center;flex-shrink:0;}
+.rank-1 .rank-num{color:var(--yellow);}
+.rank-2 .rank-num{color:#c0c0c0;}
+.rank-3 .rank-num{color:#cd7f32;}
+.lb-name{flex:1;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-score{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--cyan);flex-shrink:0;}
+.lb-empty{text-align:center;padding:24px;color:rgba(255,255,255,.2);font-size:11px;letter-spacing:2px;border:1px dashed var(--border2);border-radius:5px;}
+.lb-loading{text-align:center;padding:20px;color:var(--cyan);font-size:11px;letter-spacing:3px;animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+/* SHOP */
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;}
+.shop-card{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:16px;text-align:center;transition:all .2s;position:relative;overflow:hidden;}
+.shop-card:hover{border-color:rgba(0,255,247,.3);transform:translateY(-2px);}
+.shop-card.vip-card{border-color:rgba(180,75,255,.3);background:linear-gradient(135deg,rgba(180,75,255,.08),var(--card2));}
+.shop-card.vip-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--pink));}
+.shop-icon{font-size:2.2rem;margin-bottom:8px;}
+.shop-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:#fff;margin-bottom:5px;}
+.shop-desc{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:12px;line-height:1.5;letter-spacing:.5px;}
+.shop-price{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:10px;}
+.owned-badge{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);color:var(--green);font-size:9px;letter-spacing:2px;padding:3px 9px;border-radius:20px;display:inline-block;}
+/* TOPUP - REQUEST SYSTEM */
+.topup-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.topup-card{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .2s;}
+.topup-card:hover{border-color:rgba(255,230,0,.4);transform:translateY(-2px);}
+.topup-card.selected{border-color:var(--yellow);background:rgba(255,230,0,.08);}
+.topup-amount{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;color:var(--yellow);}
+.topup-coins{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:2px;margin-top:3px;}
+.topup-price{font-size:11px;color:var(--green);margin-top:7px;font-weight:700;}
+.topup-bonus{font-size:8px;color:var(--pink);letter-spacing:1px;margin-top:2px;}
+/* Request status */
+.req-status{display:inline-block;font-size:9px;letter-spacing:2px;padding:3px 8px;border-radius:3px;font-family:'Orbitron',sans-serif;font-weight:700;}
+.req-pending{background:rgba(255,230,0,.1);color:var(--yellow);border:1px solid rgba(255,230,0,.3);}
+.req-approved{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.3);}
+.req-rejected{background:rgba(255,0,110,.1);color:var(--pink);border:1px solid rgba(255,0,110,.3);}
+/* Payment instruction box */
+.pay-box{background:rgba(255,230,0,.05);border:1px solid rgba(255,230,0,.2);border-radius:8px;padding:16px;margin-top:14px;}
+.pay-box h4{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--yellow);margin-bottom:10px;}
+.pay-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:11px;color:rgba(255,255,255,.7);line-height:1.5;}
+.pay-num{width:20px;height:20px;border-radius:50%;background:var(--yellow);color:#000;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+/* PROFILE */
+.profile-header{display:flex;align-items:center;gap:18px;margin-bottom:20px;padding:18px;background:var(--card2);border:1px solid var(--border2);border-radius:8px;}
+.profile-av{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));display:flex;align-items:center;justify-content:center;font-size:26px;border:3px solid transparent;flex-shrink:0;}
+.vip-active .profile-av{border-color:var(--purple);box-shadow:0 0 20px rgba(180,75,255,.5);}
+/* CHAT */
+.chat-wrap{height:300px;overflow-y:auto;padding:12px;background:rgba(0,0,0,.2);border-radius:6px;margin-bottom:10px;border:1px solid var(--border2);}
+.chat-msg{margin-bottom:9px;animation:fadeUp .3s ease;}
+.chat-meta{font-size:10px;margin-bottom:2px;display:flex;align-items:center;gap:6px;}
+.chat-sender{color:var(--cyan);letter-spacing:1px;}
+.chat-sender.is-vip{color:var(--purple);}
+.chat-sender.is-system{color:var(--pink);}
+.chat-time{color:rgba(255,255,255,.25);}
+.chat-text{font-size:11px;color:rgba(255,255,255,.8);line-height:1.5;padding-left:4px;letter-spacing:.4px;}
+.chat-msg.is-broadcast .chat-text{color:var(--yellow);background:rgba(255,0,110,.05);border-left:2px solid var(--pink);padding:6px 8px;border-radius:2px;}
+.chat-row{display:flex;gap:8px;}
+.chat-row input{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border2);color:#fff;padding:8px 12px;font-family:'Share Tech Mono',monospace;font-size:12px;border-radius:4px;outline:none;transition:border-color .2s;}
+.chat-row input:focus{border-color:var(--cyan);}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(6,8,16,.9);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.modal-overlay.show{display:flex;}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px 26px;max-width:420px;width:92%;position:relative;animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;max-height:90vh;overflow-y:auto;}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:12px 12px 0 0;}
+@keyframes popIn{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:scale(1);}}
+.modal-close{position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:2px;color:var(--yellow);margin-bottom:4px;}
+.modal-sub{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:2px;margin-bottom:20px;}
+/* RESULT OVERLAY */
+.result-overlay{position:fixed;inset:0;background:rgba(6,8,16,.93);z-index:150;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.result-overlay.show{display:flex;}
+.result-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:36px 28px;text-align:center;max-width:340px;width:92%;position:relative;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;}
+.result-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:12px 12px 0 0;}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--card);border:1px solid var(--border);color:#fff;padding:10px 22px;border-radius:30px;font-size:12px;letter-spacing:1px;z-index:300;transition:transform .3s ease;white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{border-color:var(--green);color:var(--green);}
+.toast.error{border-color:var(--pink);color:var(--pink);}
+.toast.info{border-color:var(--yellow);color:var(--yellow);}
+.status-msg{text-align:center;padding:8px;font-size:11px;border-radius:4px;margin-top:10px;display:none;letter-spacing:1px;}
+.status-msg.error{display:block;background:rgba(255,0,110,.08);border:1px solid rgba(255,0,110,.3);color:var(--pink);}
+.status-msg.success{display:block;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.3);color:var(--green);}
+.loading-screen{position:fixed;inset:0;background:var(--dark);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.loading-logo{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:blink 1.5s infinite;}
+.loading-bar{width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.loading-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:2px;animation:lf 1.5s ease-in-out infinite;}
+@keyframes lf{0%{width:0;}100%{width:100%;}}
+.divider{height:1px;background:var(--border2);margin:14px 0;}
+.live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 1.2s infinite;box-shadow:0 0 8px var(--green);display:inline-block;}
+.text-muted{color:rgba(255,255,255,.3);font-size:11px;}
+.text-yellow{color:var(--yellow);}
+.text-cyan{color:var(--cyan);}
+.tag{display:inline-block;font-size:9px;letter-spacing:2px;padding:2px 7px;border-radius:3px;font-family:'Orbitron',sans-serif;font-weight:700;}
+.tag-cyan{background:rgba(0,255,247,.1);color:var(--cyan);border:1px solid rgba(0,255,247,.2);}
+.tag-yellow{background:rgba(255,230,0,.1);color:var(--yellow);border:1px solid rgba(255,230,0,.2);}
+.tag-purple{background:rgba(180,75,255,.1);color:var(--purple);border:1px solid rgba(180,75,255,.2);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:460px){.grid-2{grid-template-columns:1fr;}}
+.mt-12{margin-top:12px;}
+.coins-display{display:inline-flex;align-items:center;gap:6px;font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:var(--yellow);}
+/* Broadcast banner */
+.broadcast-banner{background:linear-gradient(135deg,rgba(255,0,110,.12),rgba(180,75,255,.08));border:1px solid rgba(255,0,110,.3);border-radius:8px;padding:12px 16px;margin-bottom:14px;display:none;animation:fadeUp .4s ease;}
+.broadcast-banner.show{display:flex;align-items:center;gap:10px;}
+.bc-icon{font-size:1.4rem;flex-shrink:0;}
+.bc-text{flex:1;font-size:12px;color:rgba(255,255,255,.9);line-height:1.5;}
+.bc-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:16px;padding:2px;}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo">⚡ BLITZ</div>
+  <div class="loading-bar"><div class="loading-fill"></div></div>
+  <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.3);">MENGHUBUNGKAN DATABASE...</div>
+</div>
+
+<div class="particles" id="particles"></div>
+<div class="toast" id="toast"></div>
+
+<!-- BROADCAST BANNER (global, always visible on top) -->
+<div class="broadcast-banner" id="broadcast-banner">
+  <div class="bc-icon">📢</div>
+  <div class="bc-text" id="bc-text"></div>
+  <button class="bc-close" id="bc-close-btn">✕</button>
+</div>
+
+<!-- RESULT OVERLAY -->
+<div class="result-overlay" id="result-overlay">
+  <div class="result-box">
+    <div style="font-size:2.8rem;margin-bottom:8px;" id="res-emoji">🏆</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;color:var(--yellow);letter-spacing:2px;margin-bottom:4px;">GAME OVER!</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:2px;margin-bottom:14px;" id="res-name"></div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:3.2rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px rgba(0,255,247,.5);line-height:1;" id="res-score">0</div>
+    <div style="font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.3);margin:4px 0 8px;">KLIK TOTAL</div>
+    <div style="font-size:12px;color:var(--yellow);letter-spacing:2px;margin-bottom:5px;" id="res-coins"></div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;margin-bottom:22px;" id="res-rank"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-cyan" style="flex:1;min-width:100px;" id="btn-play-again">▶ MAIN LAGI</button>
+      <button class="btn btn-dark" style="flex:1;min-width:100px;" id="btn-to-lb">🏆 SKOR</button>
+      <button class="btn btn-dark" style="flex:1;min-width:100px;" id="btn-close-result">✕ TUTUP</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: BUY CONFIRM -->
+<div class="modal-overlay" id="modal-buy-confirm">
+  <div class="modal-box">
+    <button class="modal-close" id="mc-buy">✕</button>
+    <div class="modal-title" id="buy-title">BELI ITEM</div>
+    <div class="modal-sub">KONFIRMASI PEMBELIAN</div>
+    <div style="text-align:center;padding:14px 0;">
+      <div style="font-size:2.5rem;margin-bottom:8px;" id="buy-icon"></div>
+      <div style="font-size:12px;color:rgba(255,255,255,.7);margin-bottom:6px;" id="buy-desc"></div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;color:var(--yellow);" id="buy-price-display"></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-dark" style="flex:1" id="mc-buy-cancel">BATAL</button>
+      <button class="btn btn-yellow" style="flex:1" id="btn-confirm-buy">✓ BELI</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT PROFIL -->
+<div class="modal-overlay" id="modal-profile-edit">
+  <div class="modal-box">
+    <button class="modal-close" id="mc-profile">✕</button>
+    <div class="modal-title">EDIT PROFIL</div>
+    <div class="modal-sub">UBAH DATA AKUNMU</div>
+    <div class="field"><label>Username</label><input type="text" id="edit-username" maxlength="20" placeholder="Username..."></div>
+    <div class="field"><label>Bio</label><textarea id="edit-bio" maxlength="100" placeholder="Ceritakan dirimu..."></textarea></div>
+    <div class="field">
+      <label>Pilih Avatar</label>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;" id="avatar-picker"></div>
+    </div>
+    <div class="field"><label>Password Baru (kosongkan jika tidak)</label><input type="password" id="edit-password" placeholder="Password baru..."></div>
+    <div class="status-msg" id="edit-status"></div>
+    <button class="btn btn-cyan btn-full mt-12" id="btn-save-profile">💾 SIMPAN</button>
+  </div>
+</div>
+
+<!-- MODAL: TOPUP REQUEST -->
+<div class="modal-overlay" id="modal-topup-req">
+  <div class="modal-box">
+    <button class="modal-close" id="mc-topup">✕</button>
+    <div class="modal-title">AJUKAN TOP UP</div>
+    <div class="modal-sub" id="topup-req-sub">KONFIRMASI PAKET</div>
+    <div style="text-align:center;padding:10px 0 16px;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--yellow);" id="tr-coins"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;margin-top:2px;">KOIN</div>
+      <div style="font-size:13px;color:var(--green);margin-top:6px;font-weight:700;" id="tr-price"></div>
+      <div style="font-size:10px;color:var(--pink);margin-top:2px;" id="tr-bonus"></div>
+    </div>
+    <div class="pay-box">
+      <h4>📋 CARA PEMBAYARAN</h4>
+      <div class="pay-step"><div class="pay-num">1</div><div>Transfer ke rekening: <strong style="color:var(--yellow);">BCA 1234567890 a/n BLITZ GAME</strong></div></div>
+      <div class="pay-step"><div class="pay-num">2</div><div>Nominal sesuai paket. Tulis username kamu di keterangan transfer.</div></div>
+      <div class="pay-step"><div class="pay-num">3</div><div>Klik <strong style="color:var(--cyan);">"Kirim Permintaan"</strong>. Admin akan verifikasi & koin masuk otomatis.</div></div>
+    </div>
+    <div class="field mt-12"><label>Catatan (opsional)</label><input type="text" id="tr-note" placeholder="Contoh: sudah transfer tadi..."></div>
+    <div class="status-msg" id="tr-status"></div>
+    <button class="btn btn-green btn-full mt-12" id="btn-send-topup-req">📨 KIRIM PERMINTAAN</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav" style="display:none;">
+  <div class="nav-inner">
+    <div class="nav-logo">⚡ BLITZ</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-page="game">🎮 GAME</button>
+      <button class="nav-tab" data-page="leaderboard">🏆 TOP</button>
+      <button class="nav-tab" data-page="shop">🛒 SHOP</button>
+      <button class="nav-tab" data-page="topup">💰 TOP UP</button>
+      <button class="nav-tab" data-page="chat">💬 CHAT</button>
+      <button class="nav-tab" data-page="profile">👤 PROFIL</button>
+    </div>
+    <div class="nav-user">
+      <div class="nav-coins" id="nav-coins-display">🪙 0</div>
+      <div class="nav-avatar" id="nav-avatar">?</div>
+    </div>
+  </div>
+</nav>
+
+<div class="wrapper">
+
+<!-- AUTH -->
+<div class="page active" id="page-auth">
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div class="auth-logo"><h1>⚡ BLITZ CLICKER</h1><p>REALTIME MULTIPLAYER GAME</p></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuth('login')">MASUK</button>
+        <button class="auth-tab" id="tab-register" onclick="switchAuth('register')">DAFTAR</button>
+      </div>
+      <div id="auth-login-form">
+        <div class="field"><label>Username</label><input type="text" id="login-user" placeholder="Username..." maxlength="20"></div>
+        <div class="field"><label>Password</label><input type="password" id="login-pass" placeholder="Password..."></div>
+        <div class="status-msg" id="login-status"></div>
+        <button class="btn btn-cyan btn-full mt-12" id="btn-login">⚡ MASUK</button>
+      </div>
+      <div id="auth-register-form" style="display:none;">
+        <div class="field"><label>Username</label><input type="text" id="reg-user" placeholder="Huruf kecil, angka, underscore..." maxlength="20"></div>
+        <div class="field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min 6 karakter..."></div>
+        <div class="field"><label>Konfirmasi Password</label><input type="password" id="reg-pass2" placeholder="Ulangi..."></div>
+        <div class="status-msg" id="reg-status"></div>
+        <button class="btn btn-pink btn-full mt-12" id="btn-register">🚀 DAFTAR SEKARANG</button>
+        <div style="text-align:center;margin-top:10px;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:1px;">🎁 Bonus 500 koin untuk pemain baru!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div class="page" id="page-game">
+  <div style="padding-top:18px;">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val" id="stat-best">0</div><div class="stat-lbl">Best Score</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-games">0</div><div class="stat-lbl">Total Main</div></div>
+      <div class="stat-card"><div class="stat-val text-yellow" id="stat-coins-game">0</div><div class="stat-lbl">🪙 Koin</div></div>
+    </div>
+    <div class="game-layout">
+      <div class="panel">
+        <div class="panel-title">▸ <span id="game-player-name">PLAYER</span> <span class="vip-badge">👑 VIP</span></div>
+        <div style="text-align:center;margin-bottom:12px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:3.5rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px rgba(0,255,247,.5);line-height:1;transition:transform .08s;" id="score-display">0</div>
+          <div style="font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-top:3px;">KLIK</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);margin-bottom:5px;"><span>WAKTU</span><span id="timer-txt">10.0s</span></div>
+        <div class="timer-track"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+        <div style="text-align:center;" id="game-center">
+          <!-- READY STATE -->
+          <div id="state-ready">
+            <div class="start-btn-big" id="start-btn-el"><span>▶</span>MULAI</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.25);letter-spacing:2px;margin-top:10px;">TEKAN UNTUK MEMULAI GAME</div>
+          </div>
+          <!-- ACTIVE STATE -->
+          <div id="state-active" style="display:none;">
+            <div class="click-btn" id="click-btn">⚡</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.25);letter-spacing:2px;margin-top:10px;" id="game-hint">TAP SECEPAT MUNGKIN!</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="panel" style="margin-bottom:0;">
+          <div class="panel-title">▸ TOP 5 LIVE <span class="live-dot" style="margin-left:5px;"></span></div>
+          <div id="mini-lb"><div class="lb-loading">MEMUAT...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="page" id="page-leaderboard">
+  <div style="padding-top:18px;">
+    <div class="section-header">
+      <div class="section-title">🏆 Hall of Fame</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:rgba(255,255,255,.3);"><span class="live-dot"></span><span id="lb-total">—</span></div>
+    </div>
+    <div id="lb-full-list"><div class="lb-loading">MEMUAT DATA...</div></div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="page" id="page-shop">
+  <div style="padding-top:18px;">
+    <div class="section-header">
+      <div class="section-title">🛒 Item Shop</div>
+      <div class="coins-display">🪙 <span id="shop-coins">0</span></div>
+    </div>
+    <div class="shop-grid" id="shop-grid"></div>
+  </div>
+</div>
+
+<!-- TOPUP -->
+<div class="page" id="page-topup">
+  <div style="padding-top:18px;">
+    <div class="section-header">
+      <div class="section-title">💰 Top Up Koin</div>
+      <div class="coins-display">🪙 <span id="topup-coins-display">0</span></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">▸ Pilih Paket — Klik untuk Ajukan</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:14px;line-height:1.6;">Pilih paket → ikuti instruksi pembayaran → admin akan verifikasi & koin otomatis masuk. <span style="color:var(--yellow);">Proses maks 1x24 jam.</span></div>
+      <div class="topup-grid" id="topup-grid-main"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">▸ Riwayat Permintaan Top Up</div>
+      <div id="tx-history"><div class="text-muted" style="text-align:center;padding:18px;">Belum ada permintaan</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div class="page" id="page-chat">
+  <div style="padding-top:18px;">
+    <div class="section-header">
+      <div class="section-title">💬 Chat Global</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:2px;display:flex;align-items:center;gap:6px;"><span class="live-dot"></span>REALTIME</div>
+    </div>
+    <div class="panel" style="padding:14px;">
+      <div class="chat-wrap" id="chat-wrap"></div>
+      <div class="chat-row">
+        <input type="text" id="chat-input" placeholder="Ketik pesan..." maxlength="200">
+        <button class="btn btn-cyan btn-sm" id="btn-send-chat">KIRIM</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <div style="padding-top:18px;">
+    <div class="profile-header">
+      <div class="profile-av" id="profile-av">?</div>
+      <div style="flex:1;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;letter-spacing:2px;color:#fff;" id="profile-username">—</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:5px;max-width:220px;" id="profile-bio"></div>
+        <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;">
+          <span class="tag tag-cyan" id="profile-role-tag">PLAYER</span>
+          <span class="vip-badge">👑 VIP</span>
+        </div>
+      </div>
+      <button class="btn btn-dark btn-sm" style="align-self:flex-start;" id="btn-open-edit">✏️ EDIT</button>
+    </div>
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="stat-card"><div class="stat-val text-cyan" id="pstat-best">0</div><div class="stat-lbl">Best Score</div></div>
+      <div class="stat-card"><div class="stat-val" id="pstat-games">0</div><div class="stat-lbl">Total Game</div></div>
+      <div class="stat-card"><div class="stat-val text-yellow" id="pstat-coins">0</div><div class="stat-lbl">🪙 Koin</div></div>
+      <div class="stat-card"><div class="stat-val text-purple" id="pstat-rank">—</div><div class="stat-lbl">Global Rank</div></div>
+      <div class="stat-card"><div class="stat-val text-green" id="pstat-items">0</div><div class="stat-lbl">Item Dimiliki</div></div>
+      <div class="stat-card"><div class="stat-val" style="font-size:.9rem;color:rgba(255,255,255,.6);" id="pstat-joined">—</div><div class="stat-lbl">Bergabung</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">▸ Item Dimiliki</div>
+      <div id="owned-items-list"><div class="text-muted" style="text-align:center;padding:14px;">Belum ada item. Beli di Shop!</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">▸ Riwayat Pembelian</div>
+      <div id="purchase-history"><div class="text-muted" style="text-align:center;padding:14px;">Belum ada pembelian</div></div>
+    </div>
+    <button class="btn btn-dark btn-full" style="margin-top:6px;" id="btn-logout">🚪 LOGOUT</button>
+  </div>
+</div>
+
+</div><!-- /wrapper -->
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase,ref,push,set,get,update,onValue,query,orderByChild,limitToLast,serverTimestamp,remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app = initializeApp({ databaseURL:"https://game-9b3b9-default-rtdb.asia-southeast1.firebasedatabase.app/" });
+const db = getDatabase(app);
+
+const SHOP_ITEMS = [
+  {id:'vip',name:'VIP PASS',icon:'👑',desc:'Aura ungu eksklusif, crown di nama, bonus koin +50% setiap game!',price:2000,type:'vip',color:'vip-card'},
+  {id:'boost_2x',name:'BOOST 2X',icon:'🚀',desc:'Koin 2x lipat untuk 5 game berikutnya.',price:500,type:'consumable',uses:5},
+  {id:'extra_time',name:'EXTRA TIME',icon:'⏱️',desc:'Tambah 3 detik waktu untuk 3 game.',price:400,type:'consumable',uses:3},
+  {id:'shield',name:'LUCKY SHIELD',icon:'🛡️',desc:'Skor minimum 20 klik dijamin untuk 3 game.',price:350,type:'consumable',uses:3},
+  {id:'avatar_fire',name:'AVATAR API',icon:'🔥',desc:'Avatar eksklusif api berkobar.',price:300,type:'cosmetic'},
+  {id:'avatar_star',name:'AVATAR BINTANG',icon:'⭐',desc:'Avatar bintang berkilauan.',price:300,type:'cosmetic'},
+  {id:'avatar_dragon',name:'AVATAR NAGA',icon:'🐉',desc:'Avatar naga legendaris.',price:800,type:'cosmetic'},
+  {id:'title_legend',name:'GELAR: LEGEND',icon:'🏅',desc:'Gelar LEGEND di bawah namamu.',price:1500,type:'cosmetic'},
+];
+const TOPUP_PACKAGES = [
+  {id:'tp1',coins:100,price:'Rp 1.000',bonus:0,label:'STARTER'},
+  {id:'tp2',coins:300,price:'Rp 2.500',bonus:50,label:'BASIC'},
+  {id:'tp3',coins:700,price:'Rp 5.000',bonus:100,label:'PRO'},
+  {id:'tp4',coins:1500,price:'Rp 10.000',bonus:300,label:'ELITE'},
+  {id:'tp5',coins:3500,price:'Rp 20.000',bonus:1000,label:'MEGA'},
+  {id:'tp6',coins:8000,price:'Rp 50.000',bonus:3000,label:'ULTRA'},
+];
+const AVATARS=['😎','🤖','👾','🦊','🐺','🔥','⚡','🎯','💎','🦁','🐉','🌟','👻','🎮','🦅'];
+
+let currentUser=null, userData=null, gameActive=false, gameStarted=false;
+let score=0, timeLeft=10, timerInterval=null, allScores=[], pendingBuy=null, pendingTopup=null;
+
+// ── PARTICLES
+const pw=document.getElementById('particles');
+for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';p.style.cssText=`left:${Math.random()*100}%;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;animation-duration:${6+Math.random()*12}s;animation-delay:${Math.random()*12}s;background:${['#00fff7','#ff006e','#b44bff'][Math.floor(Math.random()*3)]};`;pw.appendChild(p);}
+
+// ── HELPERS
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type;void t.offsetWidth;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function setStatus(id,msg,type){const el=document.getElementById(id);el.textContent=msg;el.className='status-msg '+type;}
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+function timeAgo(ts){if(!ts)return '';const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'d lalu';if(s<3600)return Math.floor(s/60)+'m lalu';return Math.floor(s/3600)+'j lalu';}
+function hashPass(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}return h.toString(36);}
+
+// ── MODAL close buttons
+document.getElementById('mc-buy').onclick=()=>closeModal('modal-buy-confirm');
+document.getElementById('mc-buy-cancel').onclick=()=>closeModal('modal-buy-confirm');
+document.getElementById('mc-profile').onclick=()=>closeModal('modal-profile-edit');
+document.getElementById('mc-topup').onclick=()=>closeModal('modal-topup-req');
+
+// ── AUTH
+window.switchAuth=function(tab){
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-register').classList.toggle('active',tab==='register');
+  document.getElementById('auth-login-form').style.display=tab==='login'?'block':'none';
+  document.getElementById('auth-register-form').style.display=tab==='register'?'block':'none';
+};
+async function doLogin(){
+  const user=document.getElementById('login-user').value.trim().toLowerCase();
+  const pass=document.getElementById('login-pass').value;
+  if(!user||!pass){setStatus('login-status','Isi semua kolom!','error');return;}
+  setStatus('login-status','Memeriksa...','success');
+  try{
+    const snap=await get(ref(db,`users/${user}`));
+    if(!snap.exists()){setStatus('login-status','Akun tidak ditemukan!','error');return;}
+    const data=snap.val();
+    if(data.passwordHash!==hashPass(pass)){setStatus('login-status','Password salah!','error');return;}
+    if(data.banned){setStatus('login-status','Akun kamu dibanned!','error');return;}
+    await update(ref(db,`users/${user}`),{lastLogin:serverTimestamp()});
+    currentUser=user;userData=data;
+    localStorage.setItem('blitz_user',user);
+    initApp();
+  }catch(e){setStatus('login-status','Error: '+e.message,'error');}
+}
+async function doRegister(){
+  const user=document.getElementById('reg-user').value.trim().toLowerCase();
+  const pass=document.getElementById('reg-pass').value;
+  const pass2=document.getElementById('reg-pass2').value;
+  if(!user||!pass||!pass2){setStatus('reg-status','Isi semua kolom!','error');return;}
+  if(user.length<3){setStatus('reg-status','Username min 3 karakter!','error');return;}
+  if(!/^[a-z0-9_]+$/.test(user)){setStatus('reg-status','Username hanya huruf kecil, angka, underscore!','error');return;}
+  if(pass.length<6){setStatus('reg-status','Password min 6 karakter!','error');return;}
+  if(pass!==pass2){setStatus('reg-status','Password tidak cocok!','error');return;}
+  setStatus('reg-status','Membuat akun...','success');
+  try{
+    const snap=await get(ref(db,`users/${user}`));
+    if(snap.exists()){setStatus('reg-status','Username sudah dipakai!','error');return;}
+    const nu={username:user,passwordHash:hashPass(pass),coins:500,bestScore:0,totalGames:0,avatar:'😎',bio:'',isVip:false,items:{},role:'player',joinedAt:serverTimestamp(),lastLogin:serverTimestamp()};
+    await set(ref(db,`users/${user}`),nu);
+    currentUser=user;userData=nu;
+    localStorage.setItem('blitz_user',user);
+    initApp();
+  }catch(e){setStatus('reg-status','Error: '+e.message,'error');}
+}
+async function autoLogin(){
+  const saved=localStorage.getItem('blitz_user');
+  if(saved){
+    try{
+      const snap=await get(ref(db,`users/${saved}`));
+      if(snap.exists()&&!snap.val().banned){currentUser=saved;userData=snap.val();initApp();return;}
+    }catch(e){}
+  }
+  document.getElementById('loading-screen').style.display='none';
+  showPage('auth');
+  document.getElementById('main-nav').style.display='none';
+}
+
+// ── INIT
+function initApp(){
+  document.getElementById('loading-screen').style.display='none';
+  document.getElementById('main-nav').style.display='block';
+  document.getElementById('page-auth').classList.remove('active');
+  applyVip();updateNav();showPage('game');
+  listenScores();listenUserData();listenBroadcast();
+  renderShop();renderTopup();buildAvatarPicker();setupChat();listenTopupRequests();
+  resetGameState();
+}
+function listenUserData(){
+  onValue(ref(db,`users/${currentUser}`),snap=>{
+    if(!snap.exists())return;
+    userData=snap.val();applyVip();updateNav();updateProfilePage();updateGameStats();renderShop();
+  });
+}
+function updateNav(){
+  if(!userData)return;
+  document.getElementById('nav-coins-display').textContent='🪙 '+(userData.coins||0);
+  document.getElementById('nav-avatar').textContent=userData.avatar||'😎';
+  document.getElementById('shop-coins').textContent=userData.coins||0;
+  document.getElementById('topup-coins-display').textContent=userData.coins||0;
+}
+function applyVip(){
+  if(userData?.isVip){document.body.classList.add('vip-active');document.getElementById('click-btn').classList.add('vip-btn');}
+  else{document.body.classList.remove('vip-active');document.getElementById('click-btn').classList.remove('vip-btn');}
+}
+
+// ── NAV
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.page===name));
+  if(name==='profile')updateProfilePage();
+  if(name==='topup')renderTxHistory();
+}
+document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>showPage(t.dataset.page)));
+
+// ── GAME
+const GAME_DURATION=10;
+function updateGameStats(){
+  if(!userData)return;
+  document.getElementById('stat-best').textContent=userData.bestScore||0;
+  document.getElementById('stat-games').textContent=userData.totalGames||0;
+  document.getElementById('stat-coins-game').textContent=userData.coins||0;
+  document.getElementById('game-player-name').textContent=(userData.username||'PLAYER').toUpperCase();
+}
+function resetGameState(){
+  gameStarted=false;gameActive=false;clearInterval(timerInterval);
+  score=0;
+  document.getElementById('score-display').textContent='0';
+  document.getElementById('timer-fill').style.width='100%';
+  document.getElementById('timer-txt').textContent=GAME_DURATION+'.0s';
+  document.getElementById('state-ready').style.display='block';
+  document.getElementById('state-active').style.display='none';
+}
+function startGame(){
+  if(gameActive)return;
+  score=0;gameActive=true;gameStarted=true;
+  const items=userData?.items||{};
+  let extra=0;
+  if(items.extra_time&&items.extra_time.uses>0){extra=3;useConsumable('extra_time');}
+  timeLeft=GAME_DURATION+extra;
+  document.getElementById('score-display').textContent='0';
+  document.getElementById('state-ready').style.display='none';
+  document.getElementById('state-active').style.display='block';
+  document.getElementById('game-hint').textContent=extra?'⏱️ +3 DETIK AKTIF!':'TAP SECEPAT MUNGKIN!';
+  updateTimerBar();
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    timeLeft=Math.max(0,timeLeft-0.1);
+    updateTimerBar();
+    if(timeLeft<=0)endGame();
+  },100);
+}
+function updateTimerBar(){
+  const max=GAME_DURATION+3;
+  const pct=(timeLeft/max)*100;
+  document.getElementById('timer-fill').style.width=Math.min(100,pct)+'%';
+  document.getElementById('timer-txt').textContent=timeLeft.toFixed(1)+'s';
+  const fill=document.getElementById('timer-fill');
+  fill.style.background=pct<30?'linear-gradient(90deg,#ff006e,#f44)':pct<60?'linear-gradient(90deg,#ffe600,#ff006e)':'linear-gradient(90deg,#00fff7,#ff006e)';
+}
+document.getElementById('start-btn-el').addEventListener('click',startGame);
+document.getElementById('click-btn').addEventListener('click',function(e){
+  if(!gameActive)return;
+  score++;
+  const el=document.getElementById('score-display');
+  el.textContent=score;
+  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
+  setTimeout(()=>el.classList.remove('pop'),80);
+  const ft=document.createElement('div');ft.className='float-txt';ft.textContent='+1';
+  const r=this.getBoundingClientRect();ft.style.left=(e.clientX-r.left)+'px';ft.style.top=(e.clientY-r.top-10)+'px';
+  this.appendChild(ft);setTimeout(()=>ft.remove(),800);
+});
+async function endGame(){
+  clearInterval(timerInterval);gameActive=false;
+  document.getElementById('click-btn').classList.add('disabled');
+  document.getElementById('game-hint').textContent='Menyimpan skor...';
+  const items=userData?.items||{};
+  let mult=1;
+  if(userData?.isVip)mult*=1.5;
+  if(items.boost_2x&&items.boost_2x.uses>0){mult*=2;useConsumable('boost_2x');}
+  let finalScore=score;
+  if(items.shield&&items.shield.uses>0&&score<20){finalScore=20;useConsumable('shield');}
+  const earned=Math.floor(finalScore*mult);
+  const newBest=Math.max(userData?.bestScore||0,finalScore);
+  try{
+    await push(ref(db,'scores'),{uid:currentUser,name:userData?.username||currentUser,score:finalScore,isVip:userData?.isVip||false,timestamp:serverTimestamp()});
+    await update(ref(db,`users/${currentUser}`),{bestScore:newBest,coins:(userData?.coins||0)+earned,totalGames:(userData?.totalGames||0)+1});
+    showResult(finalScore,earned,mult);
+  }catch(e){document.getElementById('game-hint').textContent='❌ Error menyimpan!';}
+  document.getElementById('click-btn').classList.remove('disabled');
+}
+function showResult(finalScore,coins,mult){
+  const sorted=[...allScores].sort((a,b)=>b.score-a.score);
+  const rank=sorted.findIndex(s=>s.uid===currentUser)+1;
+  document.getElementById('res-name').textContent=(userData?.username||currentUser).toUpperCase();
+  document.getElementById('res-score').textContent=finalScore;
+  document.getElementById('res-coins').textContent=`+🪙 ${coins} koin${mult>1?' ('+mult+'x!)':''}`;
+  document.getElementById('res-emoji').textContent=rank===1?'🥇':rank<=3?'🏆':finalScore>=50?'🔥':'⚡';
+  document.getElementById('res-rank').innerHTML=rank===1?'🥇 NOMOR 1 GLOBAL!':rank<=3?`🥉 TOP ${rank} DARI ${sorted.length}`:rank>0?`PERINGKAT #<span style="color:var(--yellow)">${rank}</span> DARI ${sorted.length}`:'';
+  document.getElementById('result-overlay').classList.add('show');
+}
+document.getElementById('btn-play-again').addEventListener('click',()=>{
+  document.getElementById('result-overlay').classList.remove('show');
+  resetGameState();setTimeout(startGame,200);
+});
+document.getElementById('btn-to-lb').addEventListener('click',()=>{
+  document.getElementById('result-overlay').classList.remove('show');
+  resetGameState();showPage('leaderboard');
+});
+document.getElementById('btn-close-result').addEventListener('click',()=>{
+  document.getElementById('result-overlay').classList.remove('show');
+  resetGameState();
+});
+
+// ── LEADERBOARD
+function listenScores(){
+  onValue(query(ref(db,'scores'),orderByChild('score'),limitToLast(100)),snap=>{
+    const data=snap.val();
+    if(!data){allScores=[];renderLB([]);return;}
+    const best={};
+    Object.values(data).forEach(v=>{if(!best[v.uid]||v.score>best[v.uid].score)best[v.uid]=v;});
+    allScores=Object.values(best).sort((a,b)=>b.score-a.score);
+    renderLB(allScores);
+    document.getElementById('lb-total').textContent=allScores.length+' pemain';
+  });
+}
+function renderLB(arr){
+  const medals=['🥇','🥈','🥉'];
+  const build=(item,rank)=>{
+    const isMe=item.uid===currentUser;
+    return `<div class="lb-item ${rank<=3?'rank-'+rank:''} ${isMe?'is-me':''} ${item.isVip?'is-vip':''}">
+      <div class="rank-num">${rank<=3?medals[rank-1]:'#'+rank}</div>
+      <div class="lb-name">${esc(item.name)}${isMe?' <span style="font-size:8px;color:var(--cyan);margin-left:4px;">◀YOU</span>':''}</div>
+      <div class="lb-score">${item.score}</div>
+    </div>`;
+  };
+  const empty='<div class="lb-empty">Belum ada data. Main dulu! 🚀</div>';
+  document.getElementById('mini-lb').innerHTML=arr.length?arr.slice(0,5).map((x,i)=>build(x,i+1)).join(''):empty;
+  document.getElementById('lb-full-list').innerHTML=arr.length?arr.map((x,i)=>build(x,i+1)).join(''):empty;
+}
+
+// ── SHOP
+function renderShop(){
+  document.getElementById('shop-grid').innerHTML=SHOP_ITEMS.map(item=>{
+    const owned=userData?.items?.[item.id];
+    const isOwned=owned&&(item.type==='vip'||item.type==='cosmetic');
+    const uses=owned?.uses||0;
+    return `<div class="shop-card ${item.color||''}">
+      <div class="shop-icon">${item.icon}</div>
+      <div class="shop-name">${item.name}</div>
+      <div class="shop-desc">${item.desc}</div>
+      ${item.uses?`<div style="font-size:9px;color:var(--cyan);letter-spacing:1px;margin-bottom:7px;">${uses>0?'Sisa: '+uses+'x':'Habis — beli lagi'}</div>`:''}
+      <div class="shop-price">🪙 ${item.price.toLocaleString()}</div>
+      ${isOwned&&item.type!=='consumable'?`<span class="owned-badge">✓ DIMILIKI</span>`:`<button class="btn btn-yellow btn-sm btn-full" onclick="initBuy('${item.id}')">BELI</button>`}
+    </div>`;
+  }).join('');
+}
+window.initBuy=function(itemId){
+  const item=SHOP_ITEMS.find(i=>i.id===itemId);
+  if(!item)return;
+  if((userData?.coins||0)<item.price){showToast('Koin tidak cukup! Top up dulu.','error');return;}
+  pendingBuy=item;
+  document.getElementById('buy-title').textContent='BELI '+item.name;
+  document.getElementById('buy-icon').textContent=item.icon;
+  document.getElementById('buy-desc').textContent=item.desc;
+  document.getElementById('buy-price-display').textContent='🪙 '+item.price.toLocaleString();
+  openModal('modal-buy-confirm');
+};
+document.getElementById('btn-confirm-buy').addEventListener('click',async()=>{
+  if(!pendingBuy)return;
+  const item=pendingBuy;
+  const newCoins=(userData?.coins||0)-item.price;
+  if(newCoins<0){showToast('Koin tidak cukup!','error');return;}
+  const updates={coins:newCoins};
+  if(item.type==='vip')updates.isVip=true;
+  const curUses=userData?.items?.[item.id]?.uses||0;
+  if(item.uses)updates[`items/${item.id}`]={uses:curUses+item.uses,type:item.type};
+  else updates[`items/${item.id}`]={type:item.type,ownedAt:Date.now()};
+  await push(ref(db,`users/${currentUser}/purchases`),{itemId:item.id,itemName:item.name,icon:item.icon,price:item.price,timestamp:serverTimestamp()});
+  await update(ref(db,`users/${currentUser}`),updates);
+  closeModal('modal-buy-confirm');renderShop();
+  showToast(`${item.icon} ${item.name} berhasil dibeli!`);pendingBuy=null;
+});
+async function useConsumable(itemId){
+  const cur=userData?.items?.[itemId]?.uses||0;
+  if(cur<=0)return;
+  await update(ref(db,`users/${currentUser}/items/${itemId}`),{uses:cur-1});
+}
+
+// ── TOPUP — REQUEST SYSTEM
+function renderTopup(){
+  document.getElementById('topup-grid-main').innerHTML=TOPUP_PACKAGES.map(pkg=>`
+    <div class="topup-card" onclick="initTopupReq('${pkg.id}')">
+      <div style="font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:5px;">${pkg.label}</div>
+      <div class="topup-amount">${pkg.coins.toLocaleString()}</div>
+      <div class="topup-coins">KOIN</div>
+      ${pkg.bonus>0?`<div class="topup-bonus">+${pkg.bonus} BONUS!</div>`:''}
+      <div class="topup-price">${pkg.price}</div>
+    </div>`).join('');
+}
+window.initTopupReq=function(pkgId){
+  const pkg=TOPUP_PACKAGES.find(p=>p.id===pkgId);
+  if(!pkg)return;
+  pendingTopup=pkg;
+  const total=pkg.coins+pkg.bonus;
+  document.getElementById('topup-req-sub').textContent=pkg.label+' — '+pkg.price;
+  document.getElementById('tr-coins').textContent=total.toLocaleString();
+  document.getElementById('tr-price').textContent=pkg.price;
+  document.getElementById('tr-bonus').textContent=pkg.bonus>0?'+'+pkg.bonus+' BONUS KOIN!':'';
+  document.getElementById('tr-note').value='';
+  document.getElementById('tr-status').className='status-msg';
+  openModal('modal-topup-req');
+};
+document.getElementById('btn-send-topup-req').addEventListener('click',async()=>{
+  if(!pendingTopup)return;
+  const note=document.getElementById('tr-note').value.trim();
+  const pkg=pendingTopup;
+  const total=pkg.coins+pkg.bonus;
+  setStatus('tr-status','Mengirim permintaan...','success');
+  try{
+    await push(ref(db,'topup_requests'),{
+      uid:currentUser, username:userData?.username||currentUser,
+      pkgId:pkg.id, pkgLabel:pkg.label, price:pkg.price,
+      coins:total, note:note||'', status:'pending',
+      requestedAt:serverTimestamp()
+    });
+    await push(ref(db,`users/${currentUser}/transactions`),{
+      type:'topup_request',pkg:pkg.label,coins:total,price:pkg.price,status:'pending',timestamp:serverTimestamp()
+    });
+    setStatus('tr-status','✅ Permintaan terkirim! Tunggu konfirmasi admin.','success');
+    setTimeout(()=>{closeModal('modal-topup-req');renderTxHistory();},1800);
+    showToast('📨 Permintaan top up terkirim!');
+    pendingTopup=null;
+  }catch(e){setStatus('tr-status','Error: '+e.message,'error');}
+});
+
+function listenTopupRequests(){
+  // Listen for approved topups for this user
+  onValue(query(ref(db,'topup_requests'),orderByChild('uid')),snap=>{
+    if(!snap.exists())return;
+    Object.entries(snap.val()).forEach(([key,req])=>{
+      if(req.uid===currentUser&&req.status==='approved'&&!req.notified){
+        showToast(`🎉 Top up ${req.pkgLabel} DISETUJUI! +🪙${req.coins}`, 'success');
+        update(ref(db,`topup_requests/${key}`),{notified:true});
+      }
+    });
+  });
+}
+
+async function renderTxHistory(){
+  try{
+    const snap=await get(ref(db,`users/${currentUser}/transactions`));
+    if(!snap.exists()){document.getElementById('tx-history').innerHTML='<div class="text-muted" style="text-align:center;padding:18px;">Belum ada permintaan</div>';return;}
+    const txs=Object.values(snap.val()).reverse().slice(0,15);
+    document.getElementById('tx-history').innerHTML=txs.map(tx=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border2);">
+        <div>
+          <div style="font-size:12px;color:#fff;letter-spacing:1px;">${esc(tx.pkg||'Top Up')}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.3);">${timeAgo(tx.timestamp)} · ${esc(tx.price||'')}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:12px;color:var(--yellow);">+🪙${(tx.coins||0).toLocaleString()}</div>
+          ${tx.status?`<span class="req-status req-${tx.status||'pending'}">${tx.status==='pending'?'MENUNGGU':tx.status==='approved'?'DISETUJUI':'DITOLAK'}</span>`:''}
+        </div>
+      </div>`).join('');
+  }catch(e){}
+}
+
+// ── CHAT
+function setupChat(){
+  onValue(query(ref(db,'chat'),orderByChild('timestamp'),limitToLast(60)),snap=>{
+    const data=snap.val();
+    if(!data)return;
+    const msgs=Object.values(data).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+    const wrap=document.getElementById('chat-wrap');
+    wrap.innerHTML=msgs.map(m=>`
+      <div class="chat-msg ${m.isSystem?'is-broadcast':''}">
+        <div class="chat-meta">
+          <span class="chat-sender ${m.isVip?'is-vip':''} ${m.isSystem?'is-system':''}">${m.isSystem?'📢 ':m.isVip?'👑 ':''}${esc(m.name)}</span>
+          <span class="chat-time">${timeAgo(m.timestamp)}</span>
+        </div>
+        <div class="chat-text">${esc(m.text)}</div>
+      </div>`).join('');
+    wrap.scrollTop=wrap.scrollHeight;
+  });
+  async function sendChat(){
+    const inp=document.getElementById('chat-input');
+    const text=inp.value.trim();if(!text)return;inp.value='';
+    await push(ref(db,'chat'),{name:userData?.username||currentUser,text,isVip:userData?.isVip||false,uid:currentUser,timestamp:serverTimestamp()});
+  }
+  document.getElementById('btn-send-chat').addEventListener('click',sendChat);
+  document.getElementById('chat-input').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
+}
+
+// ── BROADCAST BANNER
+function listenBroadcast(){
+  onValue(query(ref(db,'broadcasts'),orderByChild('timestamp'),limitToLast(1)),snap=>{
+    if(!snap.exists())return;
+    const entries=Object.entries(snap.val());
+    if(!entries.length)return;
+    const [key,bc]=entries[entries.length-1];
+    const seen=localStorage.getItem('seen_bc');
+    if(seen===key)return;
+    document.getElementById('bc-text').textContent=bc.text||'';
+    document.getElementById('broadcast-banner').classList.add('show');
+    document.getElementById('bc-close-btn').onclick=()=>{
+      document.getElementById('broadcast-banner').classList.remove('show');
+      localStorage.setItem('seen_bc',key);
+    };
+  });
+}
+
+// ── PROFILE
+function updateProfilePage(){
+  if(!userData)return;
+  document.getElementById('profile-av').textContent=userData.avatar||'😎';
+  document.getElementById('profile-username').textContent=(userData.username||currentUser).toUpperCase();
+  document.getElementById('profile-bio').textContent=userData.bio||'Belum ada bio.';
+  document.getElementById('pstat-best').textContent=userData.bestScore||0;
+  document.getElementById('pstat-games').textContent=userData.totalGames||0;
+  document.getElementById('pstat-coins').textContent=userData.coins||0;
+  document.getElementById('pstat-items').textContent=Object.keys(userData.items||{}).length;
+  document.getElementById('pstat-joined').textContent=userData.joinedAt?new Date(userData.joinedAt).toLocaleDateString('id'):'—';
+  const rank=allScores.findIndex(s=>s.uid===currentUser)+1;
+  document.getElementById('pstat-rank').textContent=rank>0?'#'+rank:'—';
+  document.getElementById('profile-role-tag').textContent=userData.role==='admin'?'⚡ ADMIN':userData.isVip?'👑 VIP':'PLAYER';
+  const items=userData.items||{};
+  const keys=Object.keys(items);
+  document.getElementById('owned-items-list').innerHTML=keys.length
+    ?keys.map(k=>{const si=SHOP_ITEMS.find(s=>s.id===k);const v=items[k];return `<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border2);"><span style="font-size:1.3rem;">${si?.icon||'?'}</span><div style="flex:1;"><div style="font-size:12px;color:#fff;">${si?.name||k}</div>${v.uses!=null?`<div style="font-size:9px;color:var(--cyan);">Sisa: ${v.uses}x</div>`:''}</div><span class="tag tag-cyan">${v.type||'item'}</span></div>`;}).join('')
+    :'<div class="text-muted" style="text-align:center;padding:13px;">Belum ada item. Beli di Shop!</div>';
+  get(ref(db,`users/${currentUser}/purchases`)).then(snap=>{
+    if(!snap.exists()){document.getElementById('purchase-history').innerHTML='<div class="text-muted" style="text-align:center;padding:13px;">Belum ada pembelian</div>';return;}
+    const h=Object.values(snap.val()).reverse().slice(0,8);
+    document.getElementById('purchase-history').innerHTML=h.map(p=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border2);"><div style="display:flex;align-items:center;gap:7px;"><span style="font-size:1.1rem;">${p.icon}</span><div><div style="font-size:11px;color:#fff;">${esc(p.itemName)}</div><div style="font-size:9px;color:rgba(255,255,255,.3);">${timeAgo(p.timestamp)}</div></div></div><div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--pink);">-🪙${p.price}</div></div>`).join('');
+  });
+}
+function buildAvatarPicker(){
+  document.getElementById('avatar-picker').innerHTML=AVATARS.map(a=>`<span style="font-size:1.5rem;cursor:pointer;padding:4px;border-radius:4px;border:1px solid transparent;transition:all .15s;" data-av="${a}">${a}</span>`).join('');
+  document.getElementById('avatar-picker').addEventListener('click',e=>{
+    const av=e.target.dataset.av;if(!av)return;
+    document.querySelectorAll('#avatar-picker span').forEach(el=>{el.style.borderColor=el.dataset.av===av?'var(--cyan)':'transparent';el.style.background=el.dataset.av===av?'rgba(0,255,247,.1)':'transparent';});
+    document.getElementById('avatar-picker').dataset.selected=av;
+  });
+}
+document.getElementById('btn-open-edit').addEventListener('click',()=>{
+  document.getElementById('edit-username').value=userData?.username||currentUser;
+  document.getElementById('edit-bio').value=userData?.bio||'';
+  document.getElementById('edit-password').value='';
+  document.getElementById('avatar-picker').dataset.selected=userData?.avatar||'😎';
+  openModal('modal-profile-edit');
+});
+document.getElementById('btn-save-profile').addEventListener('click',async()=>{
+  const bio=document.getElementById('edit-bio').value.trim();
+  const avatar=document.getElementById('avatar-picker').dataset.selected||userData?.avatar||'😎';
+  const newPass=document.getElementById('edit-password').value;
+  const updates={bio,avatar};
+  if(newPass&&newPass.length>=6)updates.passwordHash=hashPass(newPass);
+  else if(newPass&&newPass.length>0){setStatus('edit-status','Password min 6 karakter!','error');return;}
+  await update(ref(db,`users/${currentUser}`),updates);
+  setStatus('edit-status','Profil berhasil disimpan!','success');
+  showToast('✅ Profil diperbarui!');
+  setTimeout(()=>closeModal('modal-profile-edit'),1200);
+});
+
+// ── LOGOUT
+document.getElementById('btn-logout').addEventListener('click',()=>{
+  localStorage.removeItem('blitz_user');currentUser=null;userData=null;
+  document.getElementById('main-nav').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-auth').classList.add('active');
+  document.body.classList.remove('vip-active');
+  showToast('Berhasil logout!');
+});
+
+// ── AUTH EVENTS
+document.getElementById('btn-login').addEventListener('click',doLogin);
+document.getElementById('btn-register').addEventListener('click',doRegister);
+['login-user','login-pass'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();}));
+['reg-user','reg-pass','reg-pass2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doRegister();}));
+
+autoLogin();
+</script>
+</body>
+</html>
